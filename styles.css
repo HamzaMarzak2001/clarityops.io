@@ -1763,14 +1763,14 @@ html.lenis, html.lenis body {
 .client-logos__track {
   display: flex;
   align-items: center;
-  gap: 40px;
+  gap: 56px;
   width: max-content;
   animation: scroll-logos 40s linear infinite;
 }
 
 .client-logos__track img {
-  height: 75px;
-  width: 170px;
+  height: 55px;
+  width: auto;
   object-fit: contain;
   opacity: 0.5;
   filter: brightness(0) invert(1);
