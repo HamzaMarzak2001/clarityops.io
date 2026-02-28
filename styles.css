@@ -1769,8 +1769,8 @@ html.lenis, html.lenis body {
 }
 
 .client-logos__track img {
-  height: 55px;
-  width: auto;
+  height: 50px;
+  width: 140px;
   object-fit: contain;
   opacity: 0.5;
   filter: brightness(0) invert(1);
