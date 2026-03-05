@@ -408,54 +408,19 @@ img { max-width: 100%; display: block; }
   mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, black 20%, transparent 70%);
   z-index: 0;
   pointer-events: none;
+  overflow: hidden;
 }
 
-/* Horizontal light beam traveling down the grid lines */
-.hero__grid::before {
-  content: '';
+/* Grid traveling dot */
+.grid-dot {
   position: absolute;
-  left: 0;
-  width: 100%;
-  height: 120px;
-  top: -120px;
-  background: linear-gradient(to bottom,
-    transparent 0%,
-    rgba(252,255,2,0.03) 20%,
-    rgba(252,255,2,0.10) 50%,
-    rgba(252,255,2,0.03) 80%,
-    transparent 100%
-  );
-  animation: gridLineDown 7s linear infinite;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: rgba(252,255,2,0.9);
+  box-shadow: 0 0 6px 2px rgba(252,255,2,0.4), 0 0 12px 4px rgba(252,255,2,0.15);
   pointer-events: none;
-}
-
-@keyframes gridLineDown {
-  0% { top: -120px; }
-  100% { top: 100%; }
-}
-
-/* Vertical light beam traveling across the grid lines */
-.hero__grid::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  height: 100%;
-  width: 120px;
-  left: -120px;
-  background: linear-gradient(to right,
-    transparent 0%,
-    rgba(110,183,7,0.03) 20%,
-    rgba(110,183,7,0.10) 50%,
-    rgba(110,183,7,0.03) 80%,
-    transparent 100%
-  );
-  animation: gridLineAcross 9s linear infinite 3s;
-  pointer-events: none;
-}
-
-@keyframes gridLineAcross {
-  0% { left: -120px; }
-  100% { left: 100%; }
+  will-change: transform;
 }
 
 /* ─── Lenis smooth scroll ─── */

@@ -355,3 +355,102 @@ function updateGlow() {
   requestAnimationFrame(updateGlow);
 }
 updateGlow();
+
+/* ─── Grid Traveling Dots ──────────────────────────────────── */
+(function() {
+  var grid = document.querySelector('.hero__grid');
+  if (!grid) return;
+
+  var CELL = 60;
+  var DOT_COUNT = 5;
+  var SPEED = 40; // pixels per second
+
+  function spawnDot() {
+    var rect = grid.getBoundingClientRect();
+    var cols = Math.floor(rect.width / CELL);
+    var rows = Math.floor(rect.height / CELL);
+    if (cols < 2 || rows < 2) return;
+
+    var dot = document.createElement('div');
+    dot.className = 'grid-dot';
+    grid.appendChild(dot);
+
+    // Start at a random grid intersection
+    var col = Math.floor(Math.random() * cols);
+    var row = Math.floor(Math.random() * rows);
+    var x = col * CELL;
+    var y = row * CELL;
+
+    // Pick initial direction: 0=right, 1=down, 2=left, 3=up
+    var dir = Math.floor(Math.random() * 4);
+    var steps = 3 + Math.floor(Math.random() * 8); // how many segments before disappearing
+    var step = 0;
+
+    dot.style.left = x + 'px';
+    dot.style.top = y + 'px';
+    dot.style.opacity = '0';
+
+    // Fade in
+    requestAnimationFrame(function() { dot.style.transition = 'opacity 0.4s'; dot.style.opacity = '1'; });
+
+    function moveNext() {
+      if (step >= steps) {
+        // Fade out and remove
+        dot.style.opacity = '0';
+        setTimeout(function() { dot.remove(); spawnDot(); }, 500);
+        return;
+      }
+
+      // Calculate next position (one cell in current direction)
+      var nx = x, ny = y;
+      if (dir === 0) nx += CELL;
+      else if (dir === 1) ny += CELL;
+      else if (dir === 2) nx -= CELL;
+      else ny -= CELL;
+
+      // Bounds check — if out of bounds, turn
+      var maxX = cols * CELL;
+      var maxY = rows * CELL;
+      if (nx < 0 || nx > maxX || ny < 0 || ny > maxY) {
+        // Pick a new valid direction
+        var tries = 0;
+        do {
+          dir = Math.floor(Math.random() * 4);
+          nx = x; ny = y;
+          if (dir === 0) nx += CELL;
+          else if (dir === 1) ny += CELL;
+          else if (dir === 2) nx -= CELL;
+          else ny -= CELL;
+          tries++;
+        } while ((nx < 0 || nx > maxX || ny < 0 || ny > maxY) && tries < 10);
+        if (tries >= 10) { dot.remove(); spawnDot(); return; }
+      }
+
+      var duration = (CELL / SPEED) * 1000;
+      dot.style.transition = 'left ' + duration + 'ms linear, top ' + duration + 'ms linear';
+      dot.style.left = nx + 'px';
+      dot.style.top = ny + 'px';
+      x = nx;
+      y = ny;
+      step++;
+
+      // At each intersection, maybe change direction
+      setTimeout(function() {
+        if (Math.random() < 0.4) {
+          // Turn 90 degrees
+          if (dir === 0 || dir === 2) dir = Math.random() < 0.5 ? 1 : 3;
+          else dir = Math.random() < 0.5 ? 0 : 2;
+        }
+        moveNext();
+      }, duration);
+    }
+
+    // Start moving after a brief delay
+    setTimeout(moveNext, 200 + Math.random() * 800);
+  }
+
+  // Stagger the initial spawns
+  for (var i = 0; i < DOT_COUNT; i++) {
+    (function(delay) { setTimeout(spawnDot, delay); })(i * 600);
+  }
+})();
