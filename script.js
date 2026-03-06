@@ -461,12 +461,13 @@ updateGlow();
   var SERVICE_COUNT = 4;
 
   // Arc geometry (matches SVG viewBox 500x500)
+  // Horizontal arc: left to right, bulging upward
   var ARC_CX = 250;
   var ARC_CY = 250;
   var ARC_R = 220;
-  var ARC_START = -Math.PI / 2; // top
-  var ARC_END = Math.PI / 2;    // bottom
-  var ARC_SPAN = ARC_END - ARC_START; // PI (180 degrees)
+  var ARC_START = Math.PI;       // left (9 o'clock)
+  var ARC_END = 0;               // right (3 o'clock)
+  var ARC_SPAN = ARC_END - ARC_START; // -PI (goes counterclockwise from left to right over the top)
 
   // Orb glow colors per service
   var COLORS = [
@@ -502,16 +503,22 @@ updateGlow();
     var exactService = progress * (SERVICE_COUNT - 1);
     var activeIdx = Math.round(Math.min(Math.max(exactService, 0), SERVICE_COUNT - 1));
 
-    // Smooth rotation offset so active service sits at angle 0 (rightmost)
+    // Smooth rotation offset so active service sits at angle -PI/2 (topmost)
     var smoothAngle = ARC_START + (exactService / (SERVICE_COUNT - 1)) * ARC_SPAN;
-    var rotOffset = -smoothAngle;
+    var rotOffset = (-Math.PI / 2) - smoothAngle;
 
     // Position each node along the arc
     nodes.forEach(function(node, i) {
       var angle = SLOTS[i] + rotOffset;
 
-      // Clamp angle so icons don't go past the arc ends
-      angle = Math.max(ARC_START - 0.3, Math.min(ARC_END + 0.3, angle));
+      // Normalize angle to [-PI, PI] range
+      while (angle > Math.PI) angle -= 2 * Math.PI;
+      while (angle < -Math.PI) angle += 2 * Math.PI;
+
+      // Clamp to the visible arc range (PI to 0 going through -PI/2)
+      // Visible range: angle between -PI and 0 (upper half)
+      if (angle > 0.3) angle = 0.3;
+      if (angle < -Math.PI - 0.3) angle = -Math.PI - 0.3;
 
       var pt = getPointOnArc(angle);
       node.style.left = (pt.x / 500) * 100 + '%';
@@ -521,8 +528,8 @@ updateGlow();
       node.classList.toggle('arc-node--active', isActive);
       node.classList.toggle('arc-node--inactive', !isActive);
 
-      // Fade out nodes beyond arc range
-      if (Math.abs(angle) > Math.PI / 2 + 0.15) {
+      // Fade out nodes beyond arc range (below the horizontal center line)
+      if (angle > 0.15 || angle < -Math.PI - 0.15) {
         node.style.opacity = '0';
       } else {
         node.style.opacity = '';

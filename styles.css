@@ -1028,8 +1028,8 @@ html.lenis, html.lenis body {
 
 .arc-stage {
   position: relative;
-  width: 340px;
-  height: 340px;
+  width: 500px;
+  height: 280px;
   margin: 0 auto;
   flex-shrink: 0;
 }
@@ -2285,7 +2285,7 @@ html.lenis, html.lenis body {
   .float-badge--3 { display: none; }
 
   /* Arc responsive: tablet */
-  .arc-stage { width: 340px; height: 340px; }
+  .arc-stage { width: 420px; height: 240px; }
   .arc-orb { width: 100px; height: 100px; }
   .arc-orb__icon { width: 48px; height: 48px; }
   .arc-orb__icon svg { width: 28px; height: 28px; }
