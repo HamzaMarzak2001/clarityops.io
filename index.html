@@ -384,92 +384,139 @@
 
   <!-- ───────────────────────────── SERVICES ────────────────────────────────── -->
   <section class="services section" id="services">
-    <div class="container">
-      <div class="section__header" data-animate="fade-up">
-        <span class="section__tag">What We Do</span>
-        <h2 class="section__title">Everything you need to <span class="gradient-text">systematize your business</span></h2>
-      </div>
-      <div class="services__grid">
+    <div class="arc-scroll" id="arcScroll">
+      <div class="arc-sticky" id="arcSticky">
+        <div class="container">
 
-        <div class="service-card" data-animate="fade-up" data-delay="0">
-          <div class="service-card__icon">
-            <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-              <rect x="2" y="2" width="10" height="10" rx="2" fill="url(#g1)"/>
-              <rect x="16" y="2" width="10" height="10" rx="2" fill="url(#g1)" opacity="0.6"/>
-              <rect x="2" y="16" width="10" height="10" rx="2" fill="url(#g1)" opacity="0.6"/>
-              <rect x="16" y="16" width="10" height="10" rx="2" fill="url(#g1)" opacity="0.4"/>
-              <defs><linearGradient id="g1" x1="0" y1="0" x2="28" y2="28" gradientUnits="userSpaceOnUse"><stop stop-color="#fcff02"/><stop offset="1" stop-color="#6eb707"/></linearGradient></defs>
-            </svg>
+          <div class="section__header" data-animate="fade-up">
+            <span class="section__tag">What We Do</span>
+            <h2 class="section__title">Everything you need to <span class="gradient-text">systematize your business</span></h2>
           </div>
-          <h3 class="service-card__title">Notion Workspace Builds</h3>
-          <p class="service-card__desc">Custom Notion systems built around your workflow. Project management, CRMs, client portals, SOPs — all in one place.</p>
-          <ul class="service-card__features">
-            <li>Full workspace architecture</li>
-            <li>Custom databases & views</li>
-            <li>Team wikis & SOPs</li>
-            <li>Client & project portals</li>
-          </ul>
-          <a href="https://calendly.com/hamzamrz/notion-requirement-call" target="_blank" class="service-card__link">Get Started →</a>
-        </div>
 
-        <div class="service-card service-card--featured" data-animate="fade-up" data-delay="100">
-          <div class="service-card__badge">Most Popular</div>
-          <div class="service-card__icon">
-            <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-              <path d="M14 2L4 8v12l10 6 10-6V8L14 2z" stroke="url(#g2)" stroke-width="2" fill="none"/>
-              <path d="M14 2v18M4 8l10 6 10-6" stroke="url(#g2)" stroke-width="1.5"/>
-              <defs><linearGradient id="g2" x1="2" y1="2" x2="26" y2="26" gradientUnits="userSpaceOnUse"><stop stop-color="#fcff02"/><stop offset="1" stop-color="#6eb707"/></linearGradient></defs>
+          <!-- Arc visualization -->
+          <div class="arc-stage" id="arcStage">
+            <svg class="arc-path" viewBox="0 0 500 500" fill="none">
+              <path d="M 250 30 A 220 220 0 0 1 250 470" stroke="url(#arcGrad)" stroke-width="1.5" stroke-dasharray="4 8" fill="none" opacity="0.5"/>
+              <defs>
+                <linearGradient id="arcGrad" x1="250" y1="30" x2="250" y2="470" gradientUnits="userSpaceOnUse">
+                  <stop stop-color="#fcff02" stop-opacity="0.4"/>
+                  <stop offset="1" stop-color="#6eb707" stop-opacity="0.4"/>
+                </linearGradient>
+              </defs>
             </svg>
-          </div>
-          <h3 class="service-card__title">Automations</h3>
-          <p class="service-card__desc">Connect your tools and eliminate manual work. We build workflows using Make.com, n8n, and Zapier that run in the background so you don't have to.</p>
-          <ul class="service-card__features">
-            <li>Make.com, n8n & Zapier flows</li>
-            <li>CRM & sales pipelines</li>
-            <li>Lead capture & follow-up</li>
-            <li>Invoice & billing automation</li>
-          </ul>
-          <a href="https://calendly.com/hamzamrz/notion-requirement-call" target="_blank" class="service-card__link">Get Started →</a>
-        </div>
 
-        <div class="service-card" data-animate="fade-up" data-delay="200">
-          <div class="service-card__icon">
-            <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-              <circle cx="14" cy="14" r="4" fill="url(#g3)"/>
-              <path d="M14 4v4M14 20v4M4 14h4M20 14h4M7 7l2.8 2.8M18.2 18.2L21 21M7 21l2.8-2.8M18.2 9.8L21 7" stroke="url(#g3)" stroke-width="2" stroke-linecap="round"/>
-              <defs><linearGradient id="g3" x1="2" y1="2" x2="26" y2="26" gradientUnits="userSpaceOnUse"><stop stop-color="#fcff02"/><stop offset="1" stop-color="#6eb707"/></linearGradient></defs>
-            </svg>
-          </div>
-          <h3 class="service-card__title">AI Integration</h3>
-          <p class="service-card__desc">Bring AI into your operations. From AI agents to smart automations, we help you work faster with less effort.</p>
-          <ul class="service-card__features">
-            <li>Custom AI agents</li>
-            <li>AI-powered reporting</li>
-            <li>Smart lead qualification</li>
-            <li>Automated content generation</li>
-          </ul>
-          <a href="https://calendly.com/hamzamrz/notion-requirement-call" target="_blank" class="service-card__link">Get Started →</a>
-        </div>
+            <!-- Central orb -->
+            <div class="arc-orb" id="arcOrb">
+              <div class="arc-orb__glow"></div>
+              <div class="arc-orb__icon" id="arcOrbIcon"></div>
+            </div>
 
-        <div class="service-card" data-animate="fade-up" data-delay="300">
-          <div class="service-card__icon">
-            <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-              <path d="M14 4c5.52 0 10 4.48 10 10s-4.48 10-10 10S4 19.52 4 14 8.48 4 14 4z" stroke="url(#g4)" stroke-width="2" fill="none"/>
-              <path d="M14 9v5l3.5 3.5" stroke="url(#g4)" stroke-width="2" stroke-linecap="round"/>
-              <defs><linearGradient id="g4" x1="2" y1="2" x2="26" y2="26" gradientUnits="userSpaceOnUse"><stop stop-color="#fcff02"/><stop offset="1" stop-color="#6eb707"/></linearGradient></defs>
-            </svg>
-          </div>
-          <h3 class="service-card__title">Retainer Support</h3>
-          <p class="service-card__desc">Ongoing support, improvements, and new builds. Your systems grow as your business does. Never get stuck again.</p>
-          <ul class="service-card__features">
-            <li>Ongoing system maintenance</li>
-            <li>New feature builds</li>
-            <li>Priority support</li>
-            <li>Monthly optimization</li>
-          </ul>
-          <a href="https://calendly.com/hamzamrz/notion-requirement-call" target="_blank" class="service-card__link">Get Started →</a>
-        </div>
+            <!-- Service icon nodes -->
+            <div class="arc-node" data-service="0" id="arcNode0">
+              <div class="arc-node__dot">
+                <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+                  <rect x="2" y="2" width="10" height="10" rx="2" fill="url(#gn1)"/>
+                  <rect x="16" y="2" width="10" height="10" rx="2" fill="url(#gn1)" opacity="0.6"/>
+                  <rect x="2" y="16" width="10" height="10" rx="2" fill="url(#gn1)" opacity="0.6"/>
+                  <rect x="16" y="16" width="10" height="10" rx="2" fill="url(#gn1)" opacity="0.4"/>
+                  <defs><linearGradient id="gn1" x1="0" y1="0" x2="28" y2="28" gradientUnits="userSpaceOnUse"><stop stop-color="#fcff02"/><stop offset="1" stop-color="#6eb707"/></linearGradient></defs>
+                </svg>
+              </div>
+              <span class="arc-node__label">Notion Builds</span>
+            </div>
 
+            <div class="arc-node" data-service="1" id="arcNode1">
+              <div class="arc-node__dot">
+                <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+                  <path d="M14 2L4 8v12l10 6 10-6V8L14 2z" stroke="url(#gn2)" stroke-width="2" fill="none"/>
+                  <path d="M14 2v18M4 8l10 6 10-6" stroke="url(#gn2)" stroke-width="1.5"/>
+                  <defs><linearGradient id="gn2" x1="2" y1="2" x2="26" y2="26" gradientUnits="userSpaceOnUse"><stop stop-color="#fcff02"/><stop offset="1" stop-color="#6eb707"/></linearGradient></defs>
+                </svg>
+              </div>
+              <span class="arc-node__label">Automations</span>
+            </div>
+
+            <div class="arc-node" data-service="2" id="arcNode2">
+              <div class="arc-node__dot">
+                <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+                  <circle cx="14" cy="14" r="4" fill="url(#gn3)"/>
+                  <path d="M14 4v4M14 20v4M4 14h4M20 14h4M7 7l2.8 2.8M18.2 18.2L21 21M7 21l2.8-2.8M18.2 9.8L21 7" stroke="url(#gn3)" stroke-width="2" stroke-linecap="round"/>
+                  <defs><linearGradient id="gn3" x1="2" y1="2" x2="26" y2="26" gradientUnits="userSpaceOnUse"><stop stop-color="#fcff02"/><stop offset="1" stop-color="#6eb707"/></linearGradient></defs>
+                </svg>
+              </div>
+              <span class="arc-node__label">AI Integration</span>
+            </div>
+
+            <div class="arc-node" data-service="3" id="arcNode3">
+              <div class="arc-node__dot">
+                <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+                  <path d="M14 4c5.52 0 10 4.48 10 10s-4.48 10-10 10S4 19.52 4 14 8.48 4 14 4z" stroke="url(#gn4)" stroke-width="2" fill="none"/>
+                  <path d="M14 9v5l3.5 3.5" stroke="url(#gn4)" stroke-width="2" stroke-linecap="round"/>
+                  <defs><linearGradient id="gn4" x1="2" y1="2" x2="26" y2="26" gradientUnits="userSpaceOnUse"><stop stop-color="#fcff02"/><stop offset="1" stop-color="#6eb707"/></linearGradient></defs>
+                </svg>
+              </div>
+              <span class="arc-node__label">Retainer Support</span>
+            </div>
+          </div>
+
+          <!-- Service content cards -->
+          <div class="arc-content" id="arcContent">
+            <div class="arc-content__card arc-content__card--active" data-service-content="0">
+              <h3 class="arc-content__title">Notion Workspace Builds</h3>
+              <p class="arc-content__desc">Custom Notion systems built around your workflow. Project management, CRMs, client portals, SOPs — all in one place.</p>
+              <ul class="arc-content__features">
+                <li>Full workspace architecture</li>
+                <li>Custom databases & views</li>
+                <li>Team wikis & SOPs</li>
+                <li>Client & project portals</li>
+              </ul>
+              <a href="https://calendly.com/hamzamrz/notion-requirement-call" target="_blank" class="arc-content__link">Get Started <span>&rarr;</span></a>
+            </div>
+            <div class="arc-content__card" data-service-content="1">
+              <div class="arc-content__badge">Most Popular</div>
+              <h3 class="arc-content__title">Automations</h3>
+              <p class="arc-content__desc">Connect your tools and eliminate manual work. We build workflows using Make.com, n8n, and Zapier that run in the background so you don't have to.</p>
+              <ul class="arc-content__features">
+                <li>Make.com, n8n & Zapier flows</li>
+                <li>CRM & sales pipelines</li>
+                <li>Lead capture & follow-up</li>
+                <li>Invoice & billing automation</li>
+              </ul>
+              <a href="https://calendly.com/hamzamrz/notion-requirement-call" target="_blank" class="arc-content__link">Get Started <span>&rarr;</span></a>
+            </div>
+            <div class="arc-content__card" data-service-content="2">
+              <h3 class="arc-content__title">AI Integration</h3>
+              <p class="arc-content__desc">Bring AI into your operations. From AI agents to smart automations, we help you work faster with less effort.</p>
+              <ul class="arc-content__features">
+                <li>Custom AI agents</li>
+                <li>AI-powered reporting</li>
+                <li>Smart lead qualification</li>
+                <li>Automated content generation</li>
+              </ul>
+              <a href="https://calendly.com/hamzamrz/notion-requirement-call" target="_blank" class="arc-content__link">Get Started <span>&rarr;</span></a>
+            </div>
+            <div class="arc-content__card" data-service-content="3">
+              <h3 class="arc-content__title">Retainer Support</h3>
+              <p class="arc-content__desc">Ongoing support, improvements, and new builds. Your systems grow as your business does. Never get stuck again.</p>
+              <ul class="arc-content__features">
+                <li>Ongoing system maintenance</li>
+                <li>New feature builds</li>
+                <li>Priority support</li>
+                <li>Monthly optimization</li>
+              </ul>
+              <a href="https://calendly.com/hamzamrz/notion-requirement-call" target="_blank" class="arc-content__link">Get Started <span>&rarr;</span></a>
+            </div>
+          </div>
+
+          <!-- Progress dots -->
+          <div class="arc-progress" id="arcProgress">
+            <button class="arc-progress__dot arc-progress__dot--active" data-goto="0" aria-label="Notion Builds"></button>
+            <button class="arc-progress__dot" data-goto="1" aria-label="Automations"></button>
+            <button class="arc-progress__dot" data-goto="2" aria-label="AI Integration"></button>
+            <button class="arc-progress__dot" data-goto="3" aria-label="Retainer Support"></button>
+          </div>
+
+        </div>
       </div>
     </div>
   </section>

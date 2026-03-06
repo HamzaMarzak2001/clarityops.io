@@ -187,16 +187,7 @@ if (connectors) {
   connectorObserver.observe(connectors);
 }
 
-/* ─── Service card mouse-tracking glow ──────────────────────── */
-document.querySelectorAll('.service-card').forEach(card => {
-  card.addEventListener('mousemove', (e) => {
-    const rect = card.getBoundingClientRect();
-    const x = ((e.clientX - rect.left) / rect.width) * 100;
-    const y = ((e.clientY - rect.top) / rect.height) * 100;
-    card.style.setProperty('--mouse-x', x + '%');
-    card.style.setProperty('--mouse-y', y + '%');
-  });
-});
+/* (Service card mouse-tracking removed — replaced by arc animation) */
 
 /* ─── Scroll effects: darkening + parallax ──────────────────── */
 const scrollDarken = document.getElementById('scrollDarken');
@@ -453,4 +444,189 @@ updateGlow();
   for (var i = 0; i < DOT_COUNT; i++) {
     (function(delay) { setTimeout(spawnDot, delay); })(i * 600);
   }
+})();
+
+/* ─── Arc Services Scroll Animation ──────────────────────────── */
+(function() {
+  var arcScroll = document.getElementById('arcScroll');
+  var arcStage = document.getElementById('arcStage');
+  var arcOrbIcon = document.getElementById('arcOrbIcon');
+  var arcOrb = document.getElementById('arcOrb');
+
+  if (!arcScroll || !arcStage) return;
+
+  var nodes = document.querySelectorAll('.arc-node');
+  var contentCards = document.querySelectorAll('.arc-content__card');
+  var progressDots = document.querySelectorAll('.arc-progress__dot');
+  var SERVICE_COUNT = 4;
+
+  // Arc geometry (matches SVG viewBox 500x500)
+  var ARC_CX = 250;
+  var ARC_CY = 250;
+  var ARC_R = 220;
+  var ARC_START = -Math.PI / 2; // top
+  var ARC_END = Math.PI / 2;    // bottom
+  var ARC_SPAN = ARC_END - ARC_START; // PI (180 degrees)
+
+  // Orb glow colors per service
+  var COLORS = [
+    { r: 252, g: 255, b: 2 },
+    { r: 180, g: 230, b: 10 },
+    { r: 110, g: 183, b: 7 },
+    { r: 80, g: 200, b: 60 }
+  ];
+
+  // Slot angles for 4 items evenly on the semicircle
+  var SLOTS = [];
+  for (var i = 0; i < SERVICE_COUNT; i++) {
+    SLOTS[i] = ARC_START + (i / (SERVICE_COUNT - 1)) * ARC_SPAN;
+  }
+
+  // Grab icon SVGs for the orb center
+  var iconSVGs = [];
+  nodes.forEach(function(node) {
+    var svg = node.querySelector('.arc-node__dot svg');
+    if (svg) iconSVGs.push(svg.outerHTML);
+  });
+
+  var currentService = -1;
+
+  function getPointOnArc(angle) {
+    return {
+      x: ARC_CX + ARC_R * Math.cos(angle),
+      y: ARC_CY + ARC_R * Math.sin(angle)
+    };
+  }
+
+  function updateArc(progress) {
+    var exactService = progress * (SERVICE_COUNT - 1);
+    var activeIdx = Math.round(Math.min(Math.max(exactService, 0), SERVICE_COUNT - 1));
+
+    // Smooth rotation offset so active service sits at angle 0 (rightmost)
+    var smoothAngle = ARC_START + (exactService / (SERVICE_COUNT - 1)) * ARC_SPAN;
+    var rotOffset = -smoothAngle;
+
+    // Position each node along the arc
+    nodes.forEach(function(node, i) {
+      var angle = SLOTS[i] + rotOffset;
+
+      // Clamp angle so icons don't go past the arc ends
+      angle = Math.max(ARC_START - 0.3, Math.min(ARC_END + 0.3, angle));
+
+      var pt = getPointOnArc(angle);
+      node.style.left = (pt.x / 500) * 100 + '%';
+      node.style.top = (pt.y / 500) * 100 + '%';
+
+      var isActive = (i === activeIdx);
+      node.classList.toggle('arc-node--active', isActive);
+      node.classList.toggle('arc-node--inactive', !isActive);
+
+      // Fade out nodes beyond arc range
+      if (Math.abs(angle) > Math.PI / 2 + 0.15) {
+        node.style.opacity = '0';
+      } else {
+        node.style.opacity = '';
+      }
+    });
+
+    // Update content and orb when active service changes
+    if (activeIdx !== currentService) {
+      currentService = activeIdx;
+
+      // Update orb icon
+      if (iconSVGs[activeIdx]) {
+        arcOrbIcon.innerHTML = iconSVGs[activeIdx];
+        var orbSvg = arcOrbIcon.querySelector('svg');
+        if (orbSvg) {
+          orbSvg.style.width = '32px';
+          orbSvg.style.height = '32px';
+        }
+      }
+
+      // Update orb glow color
+      var c = COLORS[activeIdx];
+      var glow = arcOrb.querySelector('.arc-orb__glow');
+      if (glow) {
+        glow.style.background = 'radial-gradient(circle, rgba(' + c.r + ',' + c.g + ',' + c.b + ',0.15) 0%, rgba(' + c.r + ',' + c.g + ',' + c.b + ',0.06) 40%, transparent 70%)';
+      }
+
+      // Swap content cards
+      contentCards.forEach(function(card, i) {
+        card.classList.toggle('arc-content__card--active', i === activeIdx);
+      });
+
+      // Update progress dots
+      progressDots.forEach(function(dot, i) {
+        dot.classList.toggle('arc-progress__dot--active', i === activeIdx);
+      });
+    }
+  }
+
+  // Scroll handler
+  var scrollTicking = false;
+  function onScroll() {
+    var rect = arcScroll.getBoundingClientRect();
+    var scrollTop = -rect.top;
+    var scrollHeight = arcScroll.offsetHeight - window.innerHeight;
+    var progress = Math.max(0, Math.min(1, scrollTop / scrollHeight));
+    updateArc(progress);
+  }
+
+  window.addEventListener('scroll', function() {
+    if (!scrollTicking) {
+      requestAnimationFrame(function() {
+        onScroll();
+        scrollTicking = false;
+      });
+      scrollTicking = true;
+    }
+  }, { passive: true });
+
+  // Click on progress dots
+  progressDots.forEach(function(dot) {
+    dot.addEventListener('click', function() {
+      var idx = parseInt(dot.dataset.goto);
+      if (isNaN(idx)) return;
+      var rect = arcScroll.getBoundingClientRect();
+      var absoluteTop = rect.top + window.scrollY;
+      var scrollHeight = arcScroll.offsetHeight - window.innerHeight;
+      var targetScroll = absoluteTop + (idx / (SERVICE_COUNT - 1)) * scrollHeight;
+      if (typeof lenis !== 'undefined') {
+        lenis.scrollTo(targetScroll, { duration: 1.2 });
+      } else {
+        window.scrollTo({ top: targetScroll, behavior: 'smooth' });
+      }
+    });
+  });
+
+  // Click on arc nodes
+  nodes.forEach(function(node) {
+    node.addEventListener('click', function() {
+      var idx = parseInt(node.dataset.service);
+      if (isNaN(idx)) return;
+      var rect = arcScroll.getBoundingClientRect();
+      var absoluteTop = rect.top + window.scrollY;
+      var scrollHeight = arcScroll.offsetHeight - window.innerHeight;
+      var targetScroll = absoluteTop + (idx / (SERVICE_COUNT - 1)) * scrollHeight;
+      if (typeof lenis !== 'undefined') {
+        lenis.scrollTo(targetScroll, { duration: 1.2 });
+      } else {
+        window.scrollTo({ top: targetScroll, behavior: 'smooth' });
+      }
+    });
+  });
+
+  // Initial state
+  updateArc(0);
+
+  // Mobile: show all cards
+  function checkMobile() {
+    if (window.innerWidth <= 768) {
+      contentCards.forEach(function(card) {
+        card.classList.add('arc-content__card--active');
+      });
+    }
+  }
+  checkMobile();
+  window.addEventListener('resize', checkMobile);
 })();
