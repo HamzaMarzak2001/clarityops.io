@@ -1014,7 +1014,7 @@ html.lenis, html.lenis body {
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  padding: 20px 0;
+  padding: 24px 0 16px;
 }
 
 .arc-sticky .section__header {
@@ -1023,13 +1023,13 @@ html.lenis, html.lenis body {
 }
 
 .arc-sticky .section__title {
-  font-size: 1.6rem;
+  font-size: 1.85rem;
 }
 
 .arc-stage {
   position: relative;
-  width: 500px;
-  height: 280px;
+  width: 750px;
+  height: 300px;
   margin: 0 auto;
   flex-shrink: 0;
 }
@@ -1112,15 +1112,14 @@ html.lenis, html.lenis body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
   transition: opacity 0.4s ease;
   z-index: 3;
   cursor: pointer;
 }
 
 .arc-node__dot {
-  width: 48px;
-  height: 48px;
+  width: 56px;
+  height: 56px;
   border-radius: 50%;
   background: var(--card-bg);
   border: 1px solid var(--border);
@@ -1134,8 +1133,8 @@ html.lenis, html.lenis body {
 }
 
 .arc-node__dot svg {
-  width: 22px;
-  height: 22px;
+  width: 26px;
+  height: 26px;
 }
 
 .arc-node--active .arc-node__dot {
@@ -1146,7 +1145,10 @@ html.lenis, html.lenis body {
 }
 
 .arc-node__label {
-  font-size: 0.7rem;
+  position: absolute;
+  top: 100%;
+  margin-top: 6px;
+  font-size: 0.78rem;
   font-weight: 600;
   color: var(--muted);
   letter-spacing: 0.02em;
@@ -1167,9 +1169,9 @@ html.lenis, html.lenis body {
 /* ─── Arc Content Cards ─── */
 .arc-content {
   position: relative;
-  max-width: 520px;
-  margin: 16px auto 0;
-  min-height: 220px;
+  max-width: 640px;
+  margin: 12px auto 0;
+  min-height: 270px;
   text-align: center;
 }
 
@@ -1204,18 +1206,18 @@ html.lenis, html.lenis body {
 }
 
 .arc-content__title {
-  font-size: 1.5rem;
+  font-size: 1.75rem;
   font-weight: 700;
-  margin-bottom: 12px;
+  margin-bottom: 14px;
   color: var(--text);
 }
 
 .arc-content__desc {
   color: var(--muted);
-  font-size: 0.95rem;
-  line-height: 1.7;
+  font-size: 1.05rem;
+  line-height: 1.75;
   margin-bottom: 20px;
-  max-width: 480px;
+  max-width: 560px;
 }
 
 .arc-content__features {
@@ -1231,7 +1233,7 @@ html.lenis, html.lenis body {
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 0.88rem;
+  font-size: 0.95rem;
   color: var(--muted);
 }
 
@@ -1264,7 +1266,7 @@ html.lenis, html.lenis body {
   display: flex;
   justify-content: center;
   gap: 12px;
-  margin-top: 24px;
+  margin-top: 16px;
 }
 
 .arc-progress__dot {
@@ -2285,7 +2287,7 @@ html.lenis, html.lenis body {
   .float-badge--3 { display: none; }
 
   /* Arc responsive: tablet */
-  .arc-stage { width: 420px; height: 240px; }
+  .arc-stage { width: 600px; height: 320px; }
   .arc-orb { width: 100px; height: 100px; }
   .arc-orb__icon { width: 48px; height: 48px; }
   .arc-orb__icon svg { width: 28px; height: 28px; }
