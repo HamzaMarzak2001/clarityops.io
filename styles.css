@@ -1273,6 +1273,25 @@ html.lenis, html.lenis body {
   display: flex;
   flex-direction: column;
   gap: 12px;
+  position: relative;
+  overflow: hidden;
+}
+/* Scanning highlight sweeping down the rows */
+.notion-mock__main::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0;
+  top: -44px;
+  height: 44px;
+  background: linear-gradient(rgba(110,183,7,0), rgba(110,183,7,0.10), rgba(110,183,7,0));
+  pointer-events: none;
+  animation: notionScan 5s ease-in-out infinite;
+}
+@keyframes notionScan {
+  0%   { top: -44px; opacity: 0; }
+  8%   { opacity: 1; }
+  88%  { opacity: 1; }
+  100% { top: 100%; opacity: 0; }
 }
 .notion-row {
   display: flex;
@@ -1281,16 +1300,59 @@ html.lenis, html.lenis body {
 }
 .notion-row--dim { opacity: 0.45; }
 .notion-check {
+  position: relative;
   width: 12px; height: 12px;
   border-radius: 3px;
   border: 1.5px solid rgba(255,255,255,0.25);
   flex-shrink: 0;
 }
+/* Checkmark glyph */
+.notion-check::after {
+  content: '';
+  position: absolute;
+  left: 3px; top: 0;
+  width: 3px; height: 7px;
+  border: solid #0a0c10;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg) scale(0);
+  opacity: 0;
+}
+/* Sequential ticking of each row's checkbox */
+.notion-mock__main .notion-row:nth-child(1) .notion-check { animation: notionCheck 6s ease-in-out infinite 0.4s; }
+.notion-mock__main .notion-row:nth-child(2) .notion-check { animation: notionCheck 6s ease-in-out infinite 1.0s; }
+.notion-mock__main .notion-row:nth-child(3) .notion-check { animation: notionCheck 6s ease-in-out infinite 1.6s; }
+.notion-mock__main .notion-row:nth-child(4) .notion-check { animation: notionCheck 6s ease-in-out infinite 2.2s; }
+.notion-mock__main .notion-row:nth-child(5) .notion-check { animation: notionCheck 6s ease-in-out infinite 2.8s; }
+.notion-mock__main .notion-row:nth-child(1) .notion-check::after { animation: notionTick 6s ease-in-out infinite 0.4s; }
+.notion-mock__main .notion-row:nth-child(2) .notion-check::after { animation: notionTick 6s ease-in-out infinite 1.0s; }
+.notion-mock__main .notion-row:nth-child(3) .notion-check::after { animation: notionTick 6s ease-in-out infinite 1.6s; }
+.notion-mock__main .notion-row:nth-child(4) .notion-check::after { animation: notionTick 6s ease-in-out infinite 2.2s; }
+.notion-mock__main .notion-row:nth-child(5) .notion-check::after { animation: notionTick 6s ease-in-out infinite 2.8s; }
+@keyframes notionCheck {
+  0%, 6%   { background: transparent; border-color: rgba(255,255,255,0.25); transform: scale(1); }
+  10%      { transform: scale(1.28); }
+  14%, 90% { background: var(--green); border-color: var(--green); transform: scale(1); }
+  100%     { background: transparent; border-color: rgba(255,255,255,0.25); }
+}
+@keyframes notionTick {
+  0%, 8%   { transform: rotate(45deg) scale(0); opacity: 0; }
+  16%, 90% { transform: rotate(45deg) scale(1); opacity: 1; }
+  100%     { transform: rotate(45deg) scale(0); opacity: 0; }
+}
 .notion-text {
   height: 7px;
   border-radius: 3px;
-  background: rgba(255,255,255,0.16);
+  background: linear-gradient(90deg,
+    rgba(255,255,255,0.10) 25%,
+    rgba(255,255,255,0.24) 50%,
+    rgba(255,255,255,0.10) 75%);
+  background-size: 200% 100%;
   flex: 1;
+  animation: notionShimmer 2.6s linear infinite;
+}
+@keyframes notionShimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
 }
 .notion-tag {
   font-size: 0.6rem;
@@ -1298,6 +1360,12 @@ html.lenis, html.lenis body {
   padding: 2px 8px;
   border-radius: 100px;
   flex-shrink: 0;
+  animation: notionTagPulse 3s ease-in-out infinite;
+}
+.notion-tag--amber { animation-delay: 1.5s; }
+@keyframes notionTagPulse {
+  0%, 100% { opacity: 0.65; transform: scale(1); }
+  50%      { opacity: 1; transform: scale(1.05); }
 }
 .notion-tag--green { color: #8fd14f; background: rgba(110,183,7,0.18); }
 .notion-tag--amber { color: #f5c451; background: rgba(245,196,81,0.16); }
@@ -1308,15 +1376,40 @@ html.lenis, html.lenis body {
   stroke: rgba(255,255,255,0.15);
   stroke-width: 1.5;
   fill: none;
+  stroke-dasharray: 5 6;
+  animation: flowDash 0.9s linear infinite;
+}
+@keyframes flowDash {
+  to { stroke-dashoffset: -11; }
 }
 .flow-node {
   fill: rgba(255,255,255,0.05);
   stroke: rgba(255,255,255,0.18);
   stroke-width: 1.5;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: flowNodePulse 2.4s ease-in-out infinite;
+}
+.flow-mock circle.flow-node:nth-of-type(2) { animation-delay: 0.3s; }
+.flow-mock circle.flow-node:nth-of-type(4) { animation-delay: 0.9s; }
+.flow-mock circle.flow-node:nth-of-type(5) { animation-delay: 1.2s; }
+@keyframes flowNodePulse {
+  0%, 100% { stroke: rgba(255,255,255,0.18); }
+  50%      { stroke: rgba(110,183,7,0.55); }
 }
 .flow-node--hub {
   fill: rgba(110,183,7,0.12);
   stroke: rgba(110,183,7,0.5);
+  animation: flowHubPulse 2s ease-in-out infinite;
+}
+@keyframes flowHubPulse {
+  0%, 100% { fill: rgba(110,183,7,0.12); stroke: rgba(110,183,7,0.5); }
+  50%      { fill: rgba(110,183,7,0.28); stroke: rgba(110,183,7,0.95); }
+}
+.flow-ring {
+  fill: none;
+  stroke: rgba(110,183,7,0.6);
+  stroke-width: 1.5;
 }
 .flow-dot {
   fill: var(--green);

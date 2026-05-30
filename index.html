@@ -436,6 +436,10 @@
               <path class="flow-line" d="M160,100 C220,100 220,150 280,150" />
               <circle class="flow-node" cx="40" cy="40" r="12" />
               <circle class="flow-node" cx="40" cy="160" r="12" />
+              <circle class="flow-ring" cx="160" cy="100" r="16">
+                <animate attributeName="r" values="16;32" dur="2s" repeatCount="indefinite" />
+                <animate attributeName="opacity" values="0.6;0" dur="2s" repeatCount="indefinite" />
+              </circle>
               <circle class="flow-node flow-node--hub" cx="160" cy="100" r="16" />
               <circle class="flow-node" cx="280" cy="50" r="12" />
               <circle class="flow-node" cx="280" cy="150" r="12" />
