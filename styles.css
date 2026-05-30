@@ -1276,23 +1276,6 @@ html.lenis, html.lenis body {
   position: relative;
   overflow: hidden;
 }
-/* Scanning highlight sweeping down the rows */
-.notion-mock__main::after {
-  content: '';
-  position: absolute;
-  left: 0; right: 0;
-  top: -44px;
-  height: 44px;
-  background: linear-gradient(rgba(110,183,7,0), rgba(110,183,7,0.10), rgba(110,183,7,0));
-  pointer-events: none;
-  animation: notionScan 5s ease-in-out infinite;
-}
-@keyframes notionScan {
-  0%   { top: -44px; opacity: 0; }
-  8%   { opacity: 1; }
-  88%  { opacity: 1; }
-  100% { top: 100%; opacity: 0; }
-}
 .notion-row {
   display: flex;
   align-items: center;
