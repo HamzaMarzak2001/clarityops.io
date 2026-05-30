@@ -1597,6 +1597,8 @@ html.lenis, html.lenis body {
 .testimonials__col-track {
   display: flex;
   flex-direction: column;
+  will-change: transform;
+  backface-visibility: hidden;
 }
 
 .testimonials__col-track[data-direction="up"] {
@@ -1618,9 +1620,7 @@ html.lenis, html.lenis body {
 }
 
 .tcard {
-  background: rgba(255,255,255,0.03);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: rgba(18,20,26,0.55);
   border: 1px solid rgba(255,255,255,0.06);
   border-radius: 14px;
   padding: 20px;
