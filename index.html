@@ -10,6 +10,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
   <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
 </head>
 <body>
@@ -95,15 +96,48 @@
       <span class="particle" style="--x:15%;--y:50%;--dur:7s;--del:2.5s"></span>
       <span class="particle" style="--x:60%;--y:85%;--dur:8s;--del:0.8s"></span>
     </div>
-    <div class="container hero__inner">
-      <div class="hero__content">
+    <!-- Ambient glows -->
+    <div class="hero__glow hero__glow--brand" aria-hidden="true"></div>
+    <div class="hero__glow hero__glow--blue" aria-hidden="true"></div>
+
+    <!-- Orbital constellation -->
+    <div class="hero__orbital" aria-hidden="true">
+      <svg class="hero__orbital-paths" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice">
+        <path class="orbital-path" d="M120,640 C420,420 1020,480 1320,260" />
+        <path class="orbital-path" d="M180,220 C520,360 980,300 1300,620" />
+      </svg>
+      <div class="orbital-node orbital-node--1" style="--del:0s">
+        <span class="orbital-node__dot"></span>
+        <span class="orbital-node__label">Notion</span>
+        <span class="orbital-node__num">2,945</span>
+      </div>
+      <div class="orbital-node orbital-node--2" style="--del:0.8s">
+        <span class="orbital-node__dot"></span>
+        <span class="orbital-node__label">Make.com</span>
+        <span class="orbital-node__num">1,847</span>
+      </div>
+      <div class="orbital-node orbital-node--3" style="--del:1.6s">
+        <span class="orbital-node__dot"></span>
+        <span class="orbital-node__label">Claude</span>
+        <span class="orbital-node__num">891</span>
+      </div>
+      <div class="orbital-node orbital-node--4" style="--del:2.4s">
+        <span class="orbital-node__dot"></span>
+        <span class="orbital-node__label">Slack</span>
+        <span class="orbital-node__num">3,126</span>
+      </div>
+    </div>
+
+    <div class="container hero__inner hero__inner--centered">
+      <div class="hero__content hero__content--centered">
         <div class="hero__badge hero-anim" style="--anim-order:1">
-          <span class="badge__dot"></span>
-          Notion · Automation · AI
+          <span class="badge__sparkle">✦</span>
+          Now booking Q3 builds
+          <span class="badge__arrow">→</span>
         </div>
         <h1 class="hero__title">
           <span class="hero-anim title-word" style="--anim-order:2">We Build the Systems That</span><br />
-          <span class="hero-anim title-word gradient-text" style="--anim-order:3">Run Your Business</span>
+          <span class="hero-anim title-word hero__title-accent" style="--anim-order:3">Run Your Business</span>
         </h1>
         <p class="hero__subtitle hero-anim" style="--anim-order:4">
           ClarityOps helps businesses replace chaos with clean, automated systems built on Notion, powered by Make.com, n8n, Zapier, and AI.
@@ -114,81 +148,34 @@
         </div>
         <div class="hero__social-proof hero-anim" style="--anim-order:6">
           <div class="sp__item">
-            <strong>300+</strong>
-            <span>Businesses Systematized</span>
+            <strong>20+</strong>
+            <span>Businesses Served</span>
           </div>
           <div class="sp__divider"></div>
           <div class="sp__item">
-            <strong>100%</strong>
-            <span>Custom-Built Systems</span>
+            <strong>4+</strong>
+            <span>Years Running</span>
           </div>
           <div class="sp__divider"></div>
           <div class="sp__item">
-            <strong>3x</strong>
-            <span>Average Productivity Gain</span>
+            <strong>$2,500+</strong>
+            <span>Avg Project Value</span>
           </div>
         </div>
       </div>
-      <div class="hero__visual">
-        <div class="dashboard-card-wrapper">
-        <div class="dashboard-card">
-          <div class="dc__header">
-            <div class="dc__dots">
-              <span></span><span></span><span></span>
-            </div>
-            <span class="dc__title">ClarityOps Dashboard</span>
-          </div>
-          <div class="dc__body">
-            <div class="dc__row dc__row--accent">
-              <div class="dc__icon">⚡</div>
-              <div class="dc__info">
-                <span class="dc__label">Automation triggered</span>
-                <span class="dc__val">Lead → CRM → Onboarding</span>
-              </div>
-              <span class="dc__badge dc__badge--green">Live</span>
-            </div>
-            <div class="dc__row">
-              <div class="dc__icon">🤖</div>
-              <div class="dc__info">
-                <span class="dc__label">AI Agent Completed</span>
-                <span class="dc__val">Weekly Ops Report</span>
-              </div>
-              <span class="dc__badge dc__badge--yellow">Done</span>
-            </div>
-            <div class="dc__row">
-              <div class="dc__icon">📊</div>
-              <div class="dc__info">
-                <span class="dc__label">Notion Database Updated</span>
-                <span class="dc__val">12 new tasks synced</span>
-              </div>
-              <span class="dc__badge dc__badge--green">Live</span>
-            </div>
-            <div class="dc__row">
-              <div class="dc__icon">🔄</div>
-              <div class="dc__info">
-                <span class="dc__label">n8n Workflow Completed</span>
-                <span class="dc__val">Invoice → Stripe → Notion</span>
-              </div>
-              <span class="dc__badge dc__badge--green">Live</span>
-            </div>
-          </div>
-          <div class="dc__footer">
-            <span>4 automations running</span>
-            <span class="dc__status"><span class="dc__pulse"></span> All systems operational</span>
-          </div>
-        </div>
-        </div><!-- end dashboard-card-wrapper -->
-        <!-- Floating badges -->
-        <div class="float-badge float-badge--1">
-          <span>⚡</span> Make.com + n8n
-        </div>
-        <div class="float-badge float-badge--2">
-          <span>🔲</span> Notion Expert
-        </div>
-        <div class="float-badge float-badge--3">
-          <span>🤖</span> AI Agents
-        </div>
-      </div>
+    </div>
+
+    <!-- Corner indicators -->
+    <div class="hero__corner hero__corner--bl" aria-hidden="true">
+      <span class="hero__corner-index">01 / 06</span>
+      <span class="hero__corner-sep">·</span>
+      <span class="hero__corner-scroll">SCROLL DOWN</span>
+    </div>
+    <div class="hero__corner hero__corner--br" aria-hidden="true">
+      <span class="hero__corner-label">CLARITYOPS SYSTEMS</span>
+      <span class="hero__corner-bars">
+        <i></i><i></i><i></i><i></i>
+      </span>
     </div>
   </section>
 
@@ -384,140 +371,120 @@
 
   <!-- ───────────────────────────── SERVICES ────────────────────────────────── -->
   <section class="services section" id="services">
-    <div class="arc-scroll" id="arcScroll">
-      <div class="arc-sticky" id="arcSticky">
-        <div class="container">
+    <div class="container">
 
-          <div class="section__header" data-animate="fade-up">
-            <span class="section__tag">What We Do</span>
-            <h2 class="section__title">Everything you need to <span class="gradient-text">systematize your business</span></h2>
-          </div>
-
-          <!-- Arc visualization -->
-          <div class="arc-stage" id="arcStage">
-            <svg class="arc-path" viewBox="0 0 500 500" fill="none">
-              <path d="M 30 250 A 220 220 0 0 1 470 250" stroke="url(#arcGrad)" stroke-width="1.5" stroke-dasharray="4 8" fill="none" opacity="0.5"/>
-              <defs>
-                <linearGradient id="arcGrad" x1="30" y1="250" x2="470" y2="250" gradientUnits="userSpaceOnUse">
-                  <stop stop-color="#fcff02" stop-opacity="0.4"/>
-                  <stop offset="1" stop-color="#6eb707" stop-opacity="0.4"/>
-                </linearGradient>
-              </defs>
-            </svg>
-
-            <!-- Central orb -->
-            <div class="arc-orb" id="arcOrb">
-              <div class="arc-orb__glow"></div>
-              <div class="arc-orb__icon" id="arcOrbIcon"></div>
-            </div>
-
-            <!-- Service icon nodes -->
-            <div class="arc-node" data-service="0" id="arcNode0">
-              <div class="arc-node__dot">
-                <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-                  <rect x="2" y="2" width="10" height="10" rx="2" fill="url(#gn1)"/>
-                  <rect x="16" y="2" width="10" height="10" rx="2" fill="url(#gn1)" opacity="0.6"/>
-                  <rect x="2" y="16" width="10" height="10" rx="2" fill="url(#gn1)" opacity="0.6"/>
-                  <rect x="16" y="16" width="10" height="10" rx="2" fill="url(#gn1)" opacity="0.4"/>
-                  <defs><linearGradient id="gn1" x1="0" y1="0" x2="28" y2="28" gradientUnits="userSpaceOnUse"><stop stop-color="#fcff02"/><stop offset="1" stop-color="#6eb707"/></linearGradient></defs>
-                </svg>
-              </div>
-              <span class="arc-node__label">Notion Builds</span>
-            </div>
-
-            <div class="arc-node" data-service="1" id="arcNode1">
-              <div class="arc-node__dot">
-                <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-                  <path d="M14 2L4 8v12l10 6 10-6V8L14 2z" stroke="url(#gn2)" stroke-width="2" fill="none"/>
-                  <path d="M14 2v18M4 8l10 6 10-6" stroke="url(#gn2)" stroke-width="1.5"/>
-                  <defs><linearGradient id="gn2" x1="2" y1="2" x2="26" y2="26" gradientUnits="userSpaceOnUse"><stop stop-color="#fcff02"/><stop offset="1" stop-color="#6eb707"/></linearGradient></defs>
-                </svg>
-              </div>
-              <span class="arc-node__label">Automations</span>
-            </div>
-
-            <div class="arc-node" data-service="2" id="arcNode2">
-              <div class="arc-node__dot">
-                <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-                  <circle cx="14" cy="14" r="4" fill="url(#gn3)"/>
-                  <path d="M14 4v4M14 20v4M4 14h4M20 14h4M7 7l2.8 2.8M18.2 18.2L21 21M7 21l2.8-2.8M18.2 9.8L21 7" stroke="url(#gn3)" stroke-width="2" stroke-linecap="round"/>
-                  <defs><linearGradient id="gn3" x1="2" y1="2" x2="26" y2="26" gradientUnits="userSpaceOnUse"><stop stop-color="#fcff02"/><stop offset="1" stop-color="#6eb707"/></linearGradient></defs>
-                </svg>
-              </div>
-              <span class="arc-node__label">AI Integration</span>
-            </div>
-
-            <div class="arc-node" data-service="3" id="arcNode3">
-              <div class="arc-node__dot">
-                <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-                  <path d="M14 4c5.52 0 10 4.48 10 10s-4.48 10-10 10S4 19.52 4 14 8.48 4 14 4z" stroke="url(#gn4)" stroke-width="2" fill="none"/>
-                  <path d="M14 9v5l3.5 3.5" stroke="url(#gn4)" stroke-width="2" stroke-linecap="round"/>
-                  <defs><linearGradient id="gn4" x1="2" y1="2" x2="26" y2="26" gradientUnits="userSpaceOnUse"><stop stop-color="#fcff02"/><stop offset="1" stop-color="#6eb707"/></linearGradient></defs>
-                </svg>
-              </div>
-              <span class="arc-node__label">Retainer Support</span>
-            </div>
-          </div>
-
-          <!-- Service content cards -->
-          <div class="arc-content" id="arcContent">
-            <div class="arc-content__card arc-content__card--active" data-service-content="0">
-              <h3 class="arc-content__title">Notion Workspace Builds</h3>
-              <p class="arc-content__desc">Custom Notion systems built around your workflow. Project management, CRMs, client portals, SOPs — all in one place.</p>
-              <ul class="arc-content__features">
-                <li>Full workspace architecture</li>
-                <li>Custom databases & views</li>
-                <li>Team wikis & SOPs</li>
-                <li>Client & project portals</li>
-              </ul>
-              <a href="https://calendly.com/hamzamrz/notion-requirement-call" target="_blank" class="arc-content__link">Get Started <span>&rarr;</span></a>
-            </div>
-            <div class="arc-content__card" data-service-content="1">
-              <div class="arc-content__badge">Most Popular</div>
-              <h3 class="arc-content__title">Automations</h3>
-              <p class="arc-content__desc">Connect your tools and eliminate manual work. We build workflows using Make.com, n8n, and Zapier that run in the background so you don't have to.</p>
-              <ul class="arc-content__features">
-                <li>Make.com, n8n & Zapier flows</li>
-                <li>CRM & sales pipelines</li>
-                <li>Lead capture & follow-up</li>
-                <li>Invoice & billing automation</li>
-              </ul>
-              <a href="https://calendly.com/hamzamrz/notion-requirement-call" target="_blank" class="arc-content__link">Get Started <span>&rarr;</span></a>
-            </div>
-            <div class="arc-content__card" data-service-content="2">
-              <h3 class="arc-content__title">AI Integration</h3>
-              <p class="arc-content__desc">Bring AI into your operations. From AI agents to smart automations, we help you work faster with less effort.</p>
-              <ul class="arc-content__features">
-                <li>Custom AI agents</li>
-                <li>AI-powered reporting</li>
-                <li>Smart lead qualification</li>
-                <li>Automated content generation</li>
-              </ul>
-              <a href="https://calendly.com/hamzamrz/notion-requirement-call" target="_blank" class="arc-content__link">Get Started <span>&rarr;</span></a>
-            </div>
-            <div class="arc-content__card" data-service-content="3">
-              <h3 class="arc-content__title">Retainer Support</h3>
-              <p class="arc-content__desc">Ongoing support, improvements, and new builds. Your systems grow as your business does. Never get stuck again.</p>
-              <ul class="arc-content__features">
-                <li>Ongoing system maintenance</li>
-                <li>New feature builds</li>
-                <li>Priority support</li>
-                <li>Monthly optimization</li>
-              </ul>
-              <a href="https://calendly.com/hamzamrz/notion-requirement-call" target="_blank" class="arc-content__link">Get Started <span>&rarr;</span></a>
-            </div>
-          </div>
-
-          <!-- Progress dots -->
-          <div class="arc-progress" id="arcProgress">
-            <button class="arc-progress__dot arc-progress__dot--active" data-goto="0" aria-label="Notion Builds"></button>
-            <button class="arc-progress__dot" data-goto="1" aria-label="Automations"></button>
-            <button class="arc-progress__dot" data-goto="2" aria-label="AI Integration"></button>
-            <button class="arc-progress__dot" data-goto="3" aria-label="Retainer Support"></button>
-          </div>
-
-        </div>
+      <div class="section__header" data-animate="fade-up">
+        <span class="section__tag">What We Do</span>
+        <h2 class="section__title">Everything you need to <span class="gradient-text">systematize your business</span></h2>
       </div>
+
+      <!-- Glass service cards -->
+      <div class="svc-grid">
+
+        <!-- Card 1: Notion Workspaces -->
+        <article class="svc-card" data-animate="fade-up">
+          <div class="svc-card__visual">
+            <div class="notion-mock">
+              <div class="notion-mock__bar">
+                <span></span><span></span><span></span>
+              </div>
+              <div class="notion-mock__body">
+                <div class="notion-mock__sidebar">
+                  <span></span><span></span><span></span>
+                </div>
+                <div class="notion-mock__main">
+                  <div class="notion-row">
+                    <span class="notion-check"></span>
+                    <span class="notion-text"></span>
+                    <span class="notion-tag notion-tag--green">Active</span>
+                  </div>
+                  <div class="notion-row notion-row--dim">
+                    <span class="notion-check"></span>
+                    <span class="notion-text"></span>
+                  </div>
+                  <div class="notion-row">
+                    <span class="notion-check"></span>
+                    <span class="notion-text"></span>
+                    <span class="notion-tag notion-tag--amber">Review</span>
+                  </div>
+                  <div class="notion-row notion-row--dim">
+                    <span class="notion-check"></span>
+                    <span class="notion-text"></span>
+                  </div>
+                  <div class="notion-row notion-row--dim">
+                    <span class="notion-check"></span>
+                    <span class="notion-text"></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="svc-card__text">
+            <span class="svc-card__eyebrow"><i class="svc-dot"></i>NOTION</span>
+            <h3 class="svc-card__title">Notion Workspaces</h3>
+            <p class="svc-card__desc">Custom Notion systems built around your workflow — project management, CRMs, client portals, and SOPs, all in one place.</p>
+          </div>
+        </article>
+
+        <!-- Card 2: Automations -->
+        <article class="svc-card" data-animate="fade-up" data-delay="100">
+          <div class="svc-card__visual">
+            <svg class="flow-mock" viewBox="0 0 320 200" fill="none">
+              <path class="flow-line" d="M40,40 C100,40 100,100 160,100" />
+              <path class="flow-line" d="M40,160 C100,160 100,100 160,100" />
+              <path class="flow-line" d="M160,100 C220,100 220,50 280,50" />
+              <path class="flow-line" d="M160,100 C220,100 220,150 280,150" />
+              <circle class="flow-node" cx="40" cy="40" r="12" />
+              <circle class="flow-node" cx="40" cy="160" r="12" />
+              <circle class="flow-node flow-node--hub" cx="160" cy="100" r="16" />
+              <circle class="flow-node" cx="280" cy="50" r="12" />
+              <circle class="flow-node" cx="280" cy="150" r="12" />
+              <circle class="flow-dot" r="4">
+                <animateMotion dur="2.4s" repeatCount="indefinite" path="M40,40 C100,40 100,100 160,100 C220,100 220,50 280,50" />
+              </circle>
+              <circle class="flow-dot" r="4">
+                <animateMotion dur="2.4s" begin="0.8s" repeatCount="indefinite" path="M40,160 C100,160 100,100 160,100 C220,100 220,150 280,150" />
+              </circle>
+              <circle class="flow-dot" r="4">
+                <animateMotion dur="2.4s" begin="1.6s" repeatCount="indefinite" path="M40,40 C100,40 100,100 160,100 C220,100 220,150 280,150" />
+              </circle>
+            </svg>
+          </div>
+          <div class="svc-card__text">
+            <span class="svc-card__eyebrow"><i class="svc-dot"></i>AUTOMATION</span>
+            <h3 class="svc-card__title">Automations</h3>
+            <p class="svc-card__desc">Connect your tools and eliminate manual work with Make.com, n8n, and Zapier workflows that run quietly in the background.</p>
+          </div>
+        </article>
+
+        <!-- Card 3: AI Agents -->
+        <article class="svc-card" data-animate="fade-up" data-delay="200">
+          <div class="svc-card__visual">
+            <div class="term-mock">
+              <div class="term-mock__bar">
+                <span></span><span></span><span></span>
+              </div>
+              <div class="term-mock__body">
+                <p class="term-line term-line--1">&rarr; Scanning inbox...</p>
+                <p class="term-line term-line--2">&rarr; Found 3 priority emails</p>
+                <p class="term-line term-line--3">&rarr; Drafting replies</p>
+                <p class="term-line term-line--4">&rarr; Logged to Notion ✓</p>
+              </div>
+            </div>
+          </div>
+          <div class="svc-card__text">
+            <span class="svc-card__eyebrow"><i class="svc-dot"></i>AI</span>
+            <h3 class="svc-card__title">AI Agents</h3>
+            <p class="svc-card__desc">Bring AI into your operations — from agents that handle inbox triage to smart automations that work faster with less effort.</p>
+          </div>
+        </article>
+
+      </div>
+
+      <p class="svc-retainer" data-animate="fade-up">
+        We also offer ongoing retainer support for teams that need a dedicated systems partner.
+      </p>
+
     </div>
   </section>
 
