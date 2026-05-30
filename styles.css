@@ -396,6 +396,25 @@ img { max-width: 100%; display: block; }
   padding: 140px 0 80px;
 }
 
+/* Bottom fade: blends the clipped glow into the page background so the
+   hero→next-section transition stays homogeneous (no hard seam). */
+.hero::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 260px;
+  background: linear-gradient(
+    to bottom,
+    rgba(2,2,4,0) 0%,
+    rgba(2,2,4,0.6) 60%,
+    rgba(2,2,4,1) 100%
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
 /* ─── Hero Grid Overlay ─── */
 .hero__grid {
   position: absolute;
