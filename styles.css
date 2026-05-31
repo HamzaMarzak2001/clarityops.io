@@ -2687,6 +2687,28 @@ html.lenis, html.lenis body {
 .case-card__result-label { font-size: 0.76rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
 .case-card__tags { display: flex; flex-wrap: wrap; gap: 8px; }
 .case-card__tags span { font-size: 0.72rem; font-weight: 600; color: var(--muted); background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); border-radius: 100px; padding: 4px 12px; }
+.case-studies__grid--four .case-card__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 18px;
+  padding: 11px 20px;
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: var(--text);
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 100px;
+  align-self: flex-start;
+  transition: color var(--transition), background var(--transition), border-color var(--transition);
+}
+.case-studies__grid--four .case-card__link:hover {
+  color: rgb(2,2,4);
+  background: linear-gradient(90deg, var(--yellow), var(--green));
+  border-color: transparent;
+}
+.case-card__link-arrow { transition: transform var(--transition); }
+.case-studies__grid--four .case-card__link:hover .case-card__link-arrow { transform: translateX(4px); }
 
 /* ─── Founder ─── */
 .founder { background: transparent; }
