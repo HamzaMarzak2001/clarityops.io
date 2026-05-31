@@ -1320,22 +1320,43 @@ html.lenis, html.lenis body {
 }
 .notion-mock__body { display: flex; flex: 1; }
 .notion-mock__sidebar {
-  width: 40px;
+  width: 92px;
   flex-shrink: 0;
   border-right: 1px solid rgba(255,255,255,0.06);
-  padding: 14px 8px;
+  padding: 12px 8px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 3px;
 }
-.notion-mock__sidebar span {
-  height: 6px; border-radius: 3px;
-  background: rgba(255,255,255,0.12);
+.notion-nav {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 0.64rem;
+  color: var(--muted);
+  padding: 5px 7px;
+  border-radius: 6px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
-.notion-mock__sidebar span:nth-child(2) { width: 70%; }
-.notion-mock__sidebar span:nth-child(3) { width: 85%; }
+.notion-nav i {
+  width: 8px; height: 8px;
+  border-radius: 2px;
+  flex-shrink: 0;
+  background: rgba(255,255,255,0.18);
+}
+.notion-nav--active {
+  background: rgba(255,255,255,0.06);
+  color: var(--text);
+}
+.notion-nav--active i {
+  background: var(--green);
+  box-shadow: 0 0 6px rgba(110,183,7,0.6);
+}
 .notion-mock__main {
   flex: 1;
+  min-width: 0;
   padding: 14px;
   display: flex;
   flex-direction: column;
@@ -1343,15 +1364,47 @@ html.lenis, html.lenis body {
   position: relative;
   overflow: hidden;
 }
-.notion-row {
+.notion-db__head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.notion-db__icon {
+  width: 14px; height: 14px;
+  border-radius: 4px;
+  flex-shrink: 0;
+  background: linear-gradient(135deg, var(--yellow), var(--green));
+}
+.notion-db__title {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.notion-tasks {
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+}
+.notion-task {
   display: flex;
   align-items: center;
   gap: 10px;
 }
-.notion-row--dim { opacity: 0.45; }
+.notion-task__name {
+  flex: 1;
+  min-width: 0;
+  font-size: 0.74rem;
+  color: rgba(240,242,245,0.82);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 .notion-check {
   position: relative;
-  width: 12px; height: 12px;
+  width: 13px; height: 13px;
   border-radius: 3px;
   border: 1.5px solid rgba(255,255,255,0.25);
   flex-shrink: 0;
@@ -1360,24 +1413,24 @@ html.lenis, html.lenis body {
 .notion-check::after {
   content: '';
   position: absolute;
-  left: 3px; top: 0;
+  left: 3.5px; top: 0.5px;
   width: 3px; height: 7px;
   border: solid #0a0c10;
   border-width: 0 2px 2px 0;
   transform: rotate(45deg) scale(0);
   opacity: 0;
 }
-/* Sequential ticking of each row's checkbox */
-.notion-mock__main .notion-row:nth-child(1) .notion-check { animation: notionCheck 6s ease-in-out infinite 0.4s; }
-.notion-mock__main .notion-row:nth-child(2) .notion-check { animation: notionCheck 6s ease-in-out infinite 1.0s; }
-.notion-mock__main .notion-row:nth-child(3) .notion-check { animation: notionCheck 6s ease-in-out infinite 1.6s; }
-.notion-mock__main .notion-row:nth-child(4) .notion-check { animation: notionCheck 6s ease-in-out infinite 2.2s; }
-.notion-mock__main .notion-row:nth-child(5) .notion-check { animation: notionCheck 6s ease-in-out infinite 2.8s; }
-.notion-mock__main .notion-row:nth-child(1) .notion-check::after { animation: notionTick 6s ease-in-out infinite 0.4s; }
-.notion-mock__main .notion-row:nth-child(2) .notion-check::after { animation: notionTick 6s ease-in-out infinite 1.0s; }
-.notion-mock__main .notion-row:nth-child(3) .notion-check::after { animation: notionTick 6s ease-in-out infinite 1.6s; }
-.notion-mock__main .notion-row:nth-child(4) .notion-check::after { animation: notionTick 6s ease-in-out infinite 2.2s; }
-.notion-mock__main .notion-row:nth-child(5) .notion-check::after { animation: notionTick 6s ease-in-out infinite 2.8s; }
+/* Sequential ticking of each task's checkbox */
+.notion-tasks .notion-task:nth-child(1) .notion-check { animation: notionCheck 6s ease-in-out infinite 0.4s; }
+.notion-tasks .notion-task:nth-child(2) .notion-check { animation: notionCheck 6s ease-in-out infinite 1.0s; }
+.notion-tasks .notion-task:nth-child(3) .notion-check { animation: notionCheck 6s ease-in-out infinite 1.6s; }
+.notion-tasks .notion-task:nth-child(4) .notion-check { animation: notionCheck 6s ease-in-out infinite 2.2s; }
+.notion-tasks .notion-task:nth-child(5) .notion-check { animation: notionCheck 6s ease-in-out infinite 2.8s; }
+.notion-tasks .notion-task:nth-child(1) .notion-check::after { animation: notionTick 6s ease-in-out infinite 0.4s; }
+.notion-tasks .notion-task:nth-child(2) .notion-check::after { animation: notionTick 6s ease-in-out infinite 1.0s; }
+.notion-tasks .notion-task:nth-child(3) .notion-check::after { animation: notionTick 6s ease-in-out infinite 1.6s; }
+.notion-tasks .notion-task:nth-child(4) .notion-check::after { animation: notionTick 6s ease-in-out infinite 2.2s; }
+.notion-tasks .notion-task:nth-child(5) .notion-check::after { animation: notionTick 6s ease-in-out infinite 2.8s; }
 @keyframes notionCheck {
   0%, 6%   { background: transparent; border-color: rgba(255,255,255,0.25); transform: scale(1); }
   10%      { transform: scale(1.28); }
@@ -1389,36 +1442,22 @@ html.lenis, html.lenis body {
   16%, 90% { transform: rotate(45deg) scale(1); opacity: 1; }
   100%     { transform: rotate(45deg) scale(0); opacity: 0; }
 }
-.notion-text {
-  height: 7px;
-  border-radius: 3px;
-  background: linear-gradient(90deg,
-    rgba(255,255,255,0.10) 25%,
-    rgba(255,255,255,0.24) 50%,
-    rgba(255,255,255,0.10) 75%);
-  background-size: 200% 100%;
-  flex: 1;
-  animation: notionShimmer 2.6s linear infinite;
-}
-@keyframes notionShimmer {
-  0%   { background-position: 200% 0; }
-  100% { background-position: -200% 0; }
-}
-.notion-tag {
+.notion-pill {
   font-size: 0.6rem;
   font-weight: 700;
-  padding: 2px 8px;
+  padding: 2px 9px;
   border-radius: 100px;
   flex-shrink: 0;
-  animation: notionTagPulse 3s ease-in-out infinite;
+  white-space: nowrap;
+  letter-spacing: 0.01em;
 }
-.notion-tag--amber { animation-delay: 1.5s; }
-@keyframes notionTagPulse {
-  0%, 100% { opacity: 0.65; transform: scale(1); }
-  50%      { opacity: 1; transform: scale(1.05); }
+.notion-pill--green { color: #8fd14f; background: rgba(110,183,7,0.18); }
+.notion-pill--amber { color: #f5c451; background: rgba(245,196,81,0.16); }
+.notion-pill--gray  { color: #9aa6b8; background: rgba(255,255,255,0.07); }
+@media (prefers-reduced-motion: reduce) {
+  .notion-check { animation: none !important; background: var(--green); border-color: var(--green); }
+  .notion-check::after { animation: none !important; transform: rotate(45deg) scale(1); opacity: 1; }
 }
-.notion-tag--green { color: #8fd14f; background: rgba(110,183,7,0.18); }
-.notion-tag--amber { color: #f5c451; background: rgba(245,196,81,0.16); }
 
 /* ─── Card 2: automation flow ─── */
 .flow-mock { width: 100%; height: auto; max-height: 220px; }
