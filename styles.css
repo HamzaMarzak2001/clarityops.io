@@ -2405,14 +2405,18 @@ html.lenis, html.lenis body {
 }
 
 .client-logos__track img {
-  height: 50px;
-  width: 140px;
+  height: 38px;
+  width: auto;
+  max-width: 170px;
   object-fit: contain;
   opacity: 0.5;
   filter: brightness(0) invert(1);
   transition: opacity var(--transition);
   flex-shrink: 0;
 }
+/* Optical nudge for compact / square badge-style marks so they read
+   at a similar visual weight as the wider wordmarks */
+.client-logos__track img.logo--badge { height: 42px; }
 
 .client-logos__track img:hover {
   opacity: 0.85;
