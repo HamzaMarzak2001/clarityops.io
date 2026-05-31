@@ -1466,6 +1466,122 @@ html.lenis, html.lenis body {
   filter: drop-shadow(0 0 4px rgba(110,183,7,0.8));
 }
 
+/* ─── Card 2 v2: refined automation flow ─── */
+.flow-mock--v2 { width: 100%; height: auto; max-height: 230px; overflow: visible; }
+
+.flow2-glow {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: flow2Glow 3.4s ease-in-out infinite;
+}
+@keyframes flow2Glow {
+  0%, 100% { opacity: 0.5;  transform: scale(0.94); }
+  50%      { opacity: 0.95; transform: scale(1.08); }
+}
+
+.flow2-conn { fill: none; stroke-width: 2; stroke-linecap: round; }
+
+.flow2-dash {
+  fill: none;
+  stroke: rgba(255,255,255,0.32);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-dasharray: 1.5 9;
+  animation: flow2Dash 0.85s linear infinite;
+}
+@keyframes flow2Dash { to { stroke-dashoffset: -10.5; } }
+
+.flow2-node-ring {
+  fill: rgba(255,255,255,0.035);
+  stroke: rgba(255,255,255,0.2);
+  stroke-width: 1.5;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: flow2Ring 2.6s ease-in-out infinite;
+  animation-delay: var(--d, 0s);
+}
+@keyframes flow2Ring {
+  0%, 100% { stroke: rgba(255,255,255,0.2);  transform: scale(1); }
+  50%      { stroke: rgba(110,183,7,0.7);    transform: scale(1.1); }
+}
+.flow2-node-core {
+  fill: var(--green);
+  filter: drop-shadow(0 0 5px rgba(110,183,7,0.85));
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: flow2Core 2.6s ease-in-out infinite;
+  animation-delay: var(--d, 0s);
+}
+@keyframes flow2Core {
+  0%, 100% { transform: scale(0.8); opacity: 0.7; }
+  50%      { transform: scale(1.15); opacity: 1; }
+}
+
+.flow2-orbit {
+  fill: none;
+  stroke: rgba(110,183,7,0.4);
+  stroke-width: 1.5;
+  stroke-dasharray: 3 7;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: flow2Spin 9s linear infinite;
+}
+@keyframes flow2Spin { to { transform: rotate(360deg); } }
+
+.flow2-ping {
+  fill: none;
+  stroke: rgba(110,183,7,0.6);
+  stroke-width: 1.5;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: flow2Ping 2.4s ease-out infinite;
+}
+@keyframes flow2Ping {
+  0%   { transform: scale(0.75); opacity: 0.75; }
+  100% { transform: scale(2.3);  opacity: 0; }
+}
+
+.flow2-hub {
+  stroke-width: 1.5;
+  animation: flow2Hub 2s ease-in-out infinite;
+}
+@keyframes flow2Hub {
+  0%, 100% { fill: rgba(110,183,7,0.14); stroke: rgba(110,183,7,0.5); }
+  50%      { fill: rgba(110,183,7,0.32); stroke: rgba(110,183,7,0.98); }
+}
+.flow2-hub-core {
+  fill: #d6f29a;
+  filter: drop-shadow(0 0 9px rgba(110,183,7,0.95));
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: flow2Core 2s ease-in-out infinite;
+}
+
+.flow2-packet {
+  fill: #eaffb0;
+  filter: drop-shadow(0 0 6px rgba(110,183,7,1));
+}
+.flow2-trail {
+  fill: rgba(110,183,7,0.35);
+  filter: blur(2px);
+}
+.flow2-particle {
+  fill: rgba(255,255,255,0.4);
+  animation: flow2Twinkle 3s ease-in-out infinite;
+  animation-delay: var(--d, 0s);
+}
+@keyframes flow2Twinkle {
+  0%, 100% { opacity: 0.1; }
+  50%      { opacity: 0.6; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .flow2-glow, .flow2-dash, .flow2-node-ring, .flow2-node-core,
+  .flow2-orbit, .flow2-ping, .flow2-hub, .flow2-hub-core,
+  .flow2-particle { animation: none; }
+  .flow2-packet, .flow2-trail { display: none; }
+}
+
 /* ─── Card 3: terminal ─── */
 .term-mock {
   width: 100%;
