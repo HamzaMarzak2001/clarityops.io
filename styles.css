@@ -2322,6 +2322,109 @@ html.lenis, html.lenis body {
   box-shadow: 0 0 24px rgba(252,255,2,0.2);
 }
 
+/* ─── Process (4-step) premium reveal ─── */
+/* Card: rise + scale + un-blur with a gentle overshoot */
+.process__steps--four .process__step[data-animate] {
+  opacity: 0;
+  transform: translateY(64px) scale(0.93);
+  filter: blur(14px);
+  transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.95s cubic-bezier(0.33, 1.25, 0.4, 1),
+              filter 0.7s ease,
+              border-color 0.4s ease,
+              box-shadow 0.5s ease;
+  transition-delay: var(--delay, 0s);
+}
+.process__steps--four .process__step.animated {
+  opacity: 1;
+  transform: none;
+  filter: blur(0);
+}
+.process__steps--four .process__step:hover {
+  border-color: rgba(110,183,7,0.28);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.4), 0 0 40px rgba(110,183,7,0.05);
+}
+
+/* Number: pop in with a spin, then a one-shot ring ping */
+.process__steps--four .step__number {
+  position: relative;
+  opacity: 0;
+  z-index: 1;
+}
+.process__steps--four .process__step.animated .step__number {
+  opacity: 1;
+  transform: none;
+  animation: stepNumPop 0.75s cubic-bezier(0.34, 1.56, 0.64, 1) 0.12s backwards;
+}
+@keyframes stepNumPop {
+  0%   { opacity: 0; transform: scale(0.2) rotate(-140deg); }
+  55%  { opacity: 1; transform: scale(1.14) rotate(8deg); }
+  100% { opacity: 1; transform: scale(1) rotate(0); }
+}
+.process__steps--four .step__number::after {
+  content: '';
+  position: absolute;
+  inset: -5px;
+  border-radius: 50%;
+  border: 2px solid rgba(252,255,2,0.55);
+  opacity: 0;
+  pointer-events: none;
+}
+.process__steps--four .process__step.animated .step__number::after {
+  animation: stepRingPing 0.95s ease-out 0.5s backwards;
+}
+@keyframes stepRingPing {
+  0%   { opacity: 0.85; transform: scale(0.85); }
+  100% { opacity: 0;    transform: scale(2);   }
+}
+
+/* Inner content: staggered cascade after the card lands */
+.process__steps--four .step__week,
+.process__steps--four .step__content h3,
+.process__steps--four .step__content p,
+.process__steps--four .step__deliverable {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.55s ease, transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.process__steps--four .process__step.animated .step__week,
+.process__steps--four .process__step.animated .step__content h3,
+.process__steps--four .process__step.animated .step__content p,
+.process__steps--four .process__step.animated .step__deliverable {
+  opacity: 1;
+  transform: none;
+}
+.process__steps--four .process__step.animated .step__week        { transition-delay: 0.26s; }
+.process__steps--four .process__step.animated .step__content h3   { transition-delay: 0.36s; }
+.process__steps--four .process__step.animated .step__content p    { transition-delay: 0.48s; }
+.process__steps--four .process__step.animated .step__deliverable  { transition-delay: 0.60s; }
+
+/* Deliverable divider sweeps in */
+.process__steps--four .step__deliverable {
+  border-top-color: transparent;
+  transition: opacity 0.55s ease, transform 0.6s cubic-bezier(0.22, 1, 0.36, 1), border-top-color 0.5s ease;
+}
+.process__steps--four .process__step.animated .step__deliverable {
+  border-top-color: rgba(255,255,255,0.08);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .process__steps--four .process__step[data-animate],
+  .process__steps--four .step__week,
+  .process__steps--four .step__content h3,
+  .process__steps--four .step__content p,
+  .process__steps--four .step__deliverable {
+    transition: opacity 0.3s ease;
+    transform: none;
+    filter: none;
+  }
+  .process__steps--four .step__number { opacity: 1; }
+  .process__steps--four .process__step.animated .step__number,
+  .process__steps--four .process__step.animated .step__number::after {
+    animation: none;
+  }
+}
+
 .process__connector::after {
   background: linear-gradient(90deg, rgba(252,255,2,0.3), rgba(110,183,7,0.3));
   position: relative;
