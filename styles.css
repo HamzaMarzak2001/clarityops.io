@@ -2399,24 +2399,32 @@ html.lenis, html.lenis body {
 .client-logos__track {
   display: flex;
   align-items: center;
-  gap: 56px;
   width: max-content;
-  animation: scroll-logos 40s linear infinite;
+  animation: scroll-logos 48s linear infinite;
+  will-change: transform;
 }
 
 .client-logos__track img {
   height: 38px;
   width: auto;
-  max-width: 170px;
+  max-width: 180px;
+  /* Each logo owns its trailing gap so the -50% loop lands seamlessly
+     (flex `gap` would leave an extra half-gap seam at the wrap point) */
+  margin-right: 64px;
   object-fit: contain;
   opacity: 0.5;
   filter: brightness(0) invert(1);
   transition: opacity var(--transition);
   flex-shrink: 0;
 }
-/* Optical nudge for compact / square badge-style marks so they read
-   at a similar visual weight as the wider wordmarks */
-.client-logos__track img.logo--badge { height: 42px; }
+/* Optical balancing: logos are sized so their INK height (not box height)
+   reads at a uniform ~31-34px. Square/compact marks fill their box, so they
+   need a SMALLER box; long thin wordmarks under-fill, so they need a taller
+   box (and more max-width) to lift their ink height into the same band. */
+.client-logos__track img.logo--badge { height: 32px; }              /* SLE, 360captures — square, read tallest */
+.client-logos__track img.logo--wide  { height: 40px; }              /* bigthinkers, experts, Rettain, Summit */
+.client-logos__track img.logo--lift  { height: 42px; }              /* FryAway — short wordmark */
+.client-logos__track img.logo--xwide { height: 41px; max-width: 220px; } /* BlackRidge — very long, thin */
 
 .client-logos__track img:hover {
   opacity: 0.85;
