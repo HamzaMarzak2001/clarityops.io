@@ -1609,8 +1609,10 @@ html.lenis, html.lenis body {
   gap: 6px;
   padding: 10px 14px;
   border-bottom: 1px solid rgba(255,255,255,0.06);
+  overflow: hidden;
 }
-.term-mock__bar span {
+.term-mock__bar .term-dot {
+  flex: 0 0 auto;
   width: 9px; height: 9px; border-radius: 50%;
   background: rgba(255,255,255,0.18);
 }
@@ -1619,6 +1621,11 @@ html.lenis, html.lenis body {
 .term-dot--g { background: rgba(40,200,64,0.7) !important; }
 .term-mock__title {
   margin-left: 8px;
+  flex: 0 1 auto;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   font-family: 'SF Mono', ui-monospace, Menlo, monospace;
   font-size: 0.68rem;
   letter-spacing: 0.04em;
@@ -1626,9 +1633,12 @@ html.lenis, html.lenis body {
 }
 .term-mock__live {
   margin-left: auto;
+  flex: 0 0 auto;
+  padding-left: 8px;
   display: inline-flex;
   align-items: center;
   gap: 5px;
+  white-space: nowrap;
   font-size: 0.6rem;
   font-weight: 700;
   text-transform: uppercase;
