@@ -2426,10 +2426,14 @@ html.lenis, html.lenis body {
    reads at a uniform ~31-34px. Square/compact marks fill their box, so they
    need a SMALLER box; long thin wordmarks under-fill, so they need a taller
    box (and more max-width) to lift their ink height into the same band. */
-.client-logos__track img.logo--badge { height: 32px; }              /* SLE, 360captures — square, read tallest */
 .client-logos__track img.logo--wide  { height: 40px; }              /* bigthinkers, experts, Rettain, Summit */
-.client-logos__track img.logo--lift  { height: 42px; }              /* FryAway — short wordmark */
 .client-logos__track img.logo--xwide { height: 41px; max-width: 220px; } /* BlackRidge — very long, thin */
+/* Stacked / monogram / badge marks split their glyphs across an icon + a
+   wordmark line, so at the base height each element reads much smaller than
+   a single-line wordmark. Give them taller boxes to match the visual weight. */
+.client-logos__track img.logo--badge { height: 50px; }              /* SLE, 360captures — square stacked badges */
+.client-logos__track img.logo--big   { height: 46px; }              /* LTC, Mercy Elroi, Client Success — monogram + caption */
+.client-logos__track img.logo--lift  { height: 47px; }              /* FryAway — icon + wordmark + tagline */
 
 .client-logos__track img:hover {
   opacity: 0.85;
