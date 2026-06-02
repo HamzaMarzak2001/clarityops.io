@@ -156,6 +156,7 @@ body.is-loading {
 
 /* Delay hero animations until preloader is done */
 body.is-loading .hero-anim,
+body.is-loading .hero__title--mask .hw__i,
 body.is-loading .hero__orbital,
 body.is-loading .hero__visual,
 body.is-loading .float-badge--1,
@@ -163,6 +164,10 @@ body.is-loading .float-badge--2,
 body.is-loading .float-badge--3,
 body.is-loading .dc__row {
   animation-play-state: paused !important;
+}
+/* hero-anim elements also start fully transparent during preload */
+body.is-loading .hero-anim,
+body.is-loading .hero__orbital {
   opacity: 0;
 }
 
@@ -501,13 +506,6 @@ html.lenis, html.lenis body {
   display: inline-block;
 }
 
-/* The two title lines get a slightly deeper, slower rise so the headline
-   "settles" last — the most cinematic moment of the entrance. */
-.hero__title .title-word {
-  transform: translateY(46px) scale(0.96);
-  animation-duration: 1.25s;
-}
-
 @keyframes heroReveal {
   60% {
     filter: blur(0);
@@ -519,10 +517,43 @@ html.lenis, html.lenis body {
   }
 }
 
-/* Motion-sensitive visitors: skip the blur/scale/rise, just show the hero */
+/* ─── Headline: staggered masked word reveal (the wow moment) ─────
+   Each word sits inside an overflow-hidden mask and slides up into place
+   from below, one after another, so the headline "builds" itself. */
+.hero__title--mask .hw {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+  /* breathing room so the italic accent + descenders aren't clipped by the mask */
+  padding: 0.06em 0.08em 0.16em;
+  margin: -0.06em -0.08em -0.16em;
+}
+.hero__title--mask .hw__i {
+  display: inline-block;
+  transform: translateY(118%);
+  opacity: 0;
+  animation: hwReveal 0.92s cubic-bezier(0.2, 1, 0.28, 1) forwards;
+  animation-delay: calc(var(--i) * 0.075s + 0.45s);
+  will-change: transform;
+}
+@keyframes hwReveal {
+  to { transform: translateY(0); opacity: 1; }
+}
+/* The italic accent words land, then bloom with a one-time glow */
+.hero__title--mask .hw__i.hero__title-accent {
+  animation: hwReveal 0.92s cubic-bezier(0.2, 1, 0.28, 1) calc(var(--i) * 0.075s + 0.45s) forwards,
+             accentGlow 1.7s ease-out 1.5s 1;
+}
+@keyframes accentGlow {
+  0%   { text-shadow: 0 0 0 rgba(140, 220, 60, 0); }
+  45%  { text-shadow: 0 0 26px rgba(150, 230, 70, 0.6); }
+  100% { text-shadow: 0 0 0 rgba(140, 220, 60, 0); }
+}
+
+/* Motion-sensitive visitors: skip the blur/scale/rise + word slide, just show it */
 @media (prefers-reduced-motion: reduce) {
   .hero-anim,
-  .hero__title .title-word,
+  .hero__title--mask .hw__i,
   .hero__orbital {
     animation: none !important;
     opacity: 1 !important;
