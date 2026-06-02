@@ -227,7 +227,10 @@ window.addEventListener('scroll', () => {
   const ctx = canvas.getContext('2d');
 
   let w, h;
-  let starMouseX = 0, starMouseY = 0;
+  // Actual cursor pixel position (off-screen until the mouse moves)
+  let pointerX = -9999, pointerY = -9999;
+  const INFLUENCE = 150;  // px radius around the cursor that affects stars
+  const PUSH = 34;        // max px a star is nudged aside near the cursor
 
   function resize() {
     w = canvas.width = window.innerWidth;
@@ -255,8 +258,11 @@ window.addEventListener('scroll', () => {
       alpha: Math.random() * 0.5 + 0.2,
       twinkleSpeed: Math.random() * 0.02 + 0.005,
       twinkleOffset: Math.random() * Math.PI * 2,
-      // Cursor parallax strength
-      parallaxFactor: Math.random() * 0.3 + 0.05,
+      // Per-star reactivity to the cursor (organic variation)
+      reactivity: Math.random() * 0.5 + 0.5,
+      // Current eased cursor displacement (so it springs in/out fluidly)
+      dispX: 0,
+      dispY: 0,
       // Constant drift velocity
       driftVX: Math.cos(angle) * speed,
       driftVY: Math.sin(angle) * speed
@@ -268,8 +274,13 @@ window.addEventListener('scroll', () => {
   window.addEventListener('resize', resize);
 
   document.addEventListener('mousemove', (e) => {
-    starMouseX = (e.clientX / w - 0.5) * 2; // -1 to 1
-    starMouseY = (e.clientY / h - 0.5) * 2; // -1 to 1
+    pointerX = e.clientX;
+    pointerY = e.clientY;
+  });
+  // When the cursor leaves the window, let every star settle back to its drift
+  document.addEventListener('mouseleave', () => {
+    pointerX = -9999;
+    pointerY = -9999;
   });
 
   let frame = 0;
@@ -290,12 +301,26 @@ window.addEventListener('scroll', () => {
       if (s.baseY < 0) s.baseY += h;
       if (s.baseY > h) s.baseY -= h;
 
-      // Cursor parallax offset layered on top of drift
-      const offsetX = starMouseX * s.parallaxFactor * 40;
-      const offsetY = starMouseY * s.parallaxFactor * 40;
+      // Local cursor influence: only stars within INFLUENCE of the cursor
+      // get nudged aside. Everything else keeps drifting untouched.
+      let targetX = 0, targetY = 0;
+      const dx = s.baseX - pointerX;
+      const dy = s.baseY - pointerY;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist < INFLUENCE && dist > 0.0001) {
+        // Falloff: full strength at the cursor, zero at the edge of the radius
+        const falloff = 1 - dist / INFLUENCE;
+        const force = falloff * falloff * PUSH * s.reactivity;
+        targetX = (dx / dist) * force; // push away from the cursor
+        targetY = (dy / dist) * force;
+      }
 
-      s.x = s.baseX + offsetX;
-      s.y = s.baseY + offsetY;
+      // Ease the displacement so it springs in and out fluidly
+      s.dispX += (targetX - s.dispX) * 0.1;
+      s.dispY += (targetY - s.dispY) * 0.1;
+
+      s.x = s.baseX + s.dispX;
+      s.y = s.baseY + s.dispY;
 
       // Wrap final position
       if (s.x < 0) s.x += w;
