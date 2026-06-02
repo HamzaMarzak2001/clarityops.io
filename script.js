@@ -1,3 +1,11 @@
+/* ─── Always start at the hero ───────────────────────────────────
+   Disable the browser's automatic scroll restoration so reloads/revisits
+   never land mid-page (which also desyncs Lenis, since it assumes the page
+   starts at scroll 0). Force the top before and after load. */
+if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+window.scrollTo(0, 0);
+window.addEventListener('load', () => window.scrollTo(0, 0));
+
 /* ─── Preloader ──────────────────────────────────────────────── */
 (function() {
   document.body.classList.add('is-loading');
@@ -33,6 +41,7 @@
       setTimeout(() => {
         preloader.classList.add('done');
         document.body.classList.remove('is-loading');
+        window.scrollTo(0, 0);
 
         // Restart hero animations by re-triggering them
         document.querySelectorAll('.hero-anim, .hero__visual, .float-badge--1, .float-badge--2, .float-badge--3').forEach(el => {
