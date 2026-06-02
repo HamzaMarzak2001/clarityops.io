@@ -943,6 +943,11 @@ html.lenis, html.lenis body {
 .orbital-node--2 { top: 20%; right: 9%; }
 .orbital-node--3 { bottom: 28%; left: 12%; }
 .orbital-node--4 { bottom: 22%; right: 11%; }
+/* Upper / lower edge gaps — kept high or low so they clear the centered title */
+.orbital-node--5 { top: 9%; left: 21%; }
+.orbital-node--6 { top: 7%; right: 19%; }
+.orbital-node--7 { bottom: 10%; left: 23%; }
+.orbital-node--8 { bottom: 8%; right: 21%; }
 
 @keyframes orbitalFloat {
   0%, 100% { transform: translateY(0); }
