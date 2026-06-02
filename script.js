@@ -44,7 +44,7 @@ window.addEventListener('load', () => window.scrollTo(0, 0));
         window.scrollTo(0, 0);
 
         // Restart hero animations by re-triggering them
-        document.querySelectorAll('.hero-anim, .hero__visual, .float-badge--1, .float-badge--2, .float-badge--3').forEach(el => {
+        document.querySelectorAll('.hero-anim, .hero__orbital, .hero__visual, .float-badge--1, .float-badge--2, .float-badge--3').forEach(el => {
           el.style.animationPlayState = 'running';
         });
         document.querySelectorAll('.dc__row').forEach(el => {

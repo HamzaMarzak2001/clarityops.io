@@ -156,6 +156,7 @@ body.is-loading {
 
 /* Delay hero animations until preloader is done */
 body.is-loading .hero-anim,
+body.is-loading .hero__orbital,
 body.is-loading .hero__visual,
 body.is-loading .float-badge--1,
 body.is-loading .float-badge--2,
@@ -489,19 +490,44 @@ html.lenis, html.lenis body {
 /* ─── Hero Staggered Entrance Animations ─── */
 .hero-anim {
   opacity: 0;
-  transform: translateY(30px);
-  animation: heroReveal 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-  animation-delay: calc(var(--anim-order, 1) * 0.12s + 0.2s);
+  transform: translateY(34px) scale(0.97);
+  filter: blur(12px);
+  animation: heroReveal 1.05s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: calc(var(--anim-order, 1) * 0.13s + 0.15s);
+  will-change: opacity, transform, filter;
 }
 
 .title-word {
   display: inline-block;
 }
 
+/* The two title lines get a slightly deeper, slower rise so the headline
+   "settles" last — the most cinematic moment of the entrance. */
+.hero__title .title-word {
+  transform: translateY(46px) scale(0.96);
+  animation-duration: 1.25s;
+}
+
 @keyframes heroReveal {
-  to {
+  60% {
+    filter: blur(0);
+  }
+  100% {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+/* Motion-sensitive visitors: skip the blur/scale/rise, just show the hero */
+@media (prefers-reduced-motion: reduce) {
+  .hero-anim,
+  .hero__title .title-word,
+  .hero__orbital {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
   }
 }
 
@@ -880,6 +906,12 @@ html.lenis, html.lenis body {
   inset: 0;
   z-index: 1;
   pointer-events: none;
+  opacity: 0;
+  animation: orbitalIntro 1.6s cubic-bezier(0.16, 1, 0.3, 1) 0.55s forwards;
+}
+@keyframes orbitalIntro {
+  from { opacity: 0; transform: scale(1.05); }
+  to   { opacity: 1; transform: scale(1); }
 }
 .hero__orbital-paths {
   position: absolute;
