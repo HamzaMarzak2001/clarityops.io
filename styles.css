@@ -3165,6 +3165,11 @@ body.cs-modal-open { overflow: hidden; }
   overflow-y: auto;
   overscroll-behavior: contain;
   -webkit-overflow-scrolling: touch;
+  /* allow this flex child to shrink below content height so its own
+     scrollbar activates instead of overflowing (and being clipped by)
+     the dialog */
+  min-height: 0;
+  flex: 1 1 auto;
 }
 .cs-modal__header {
   padding: 48px 48px 32px;
