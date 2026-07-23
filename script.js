@@ -671,3 +671,144 @@ updateGlow();
   checkMobile();
   window.addEventListener('resize', checkMobile);
 })();
+
+/* ─── Case studies: render grid + detail modal ─────────────────── */
+(function () {
+  var grid = document.getElementById('caseStudiesGrid');
+  var modal = document.getElementById('csModal');
+  if (!grid || !modal || typeof CASE_STUDIES === 'undefined') return;
+
+  var scrollEl = document.getElementById('csModalScroll');
+  var lastFocused = null;
+
+  function imgSrc(cs, img) {
+    return CS_IMG_BASE + '/' + cs.slug + '/' + img.name + '.' + CS_IMG_EXT;
+  }
+
+  // ── Build the grid cards ──────────────────────────────────────
+  CASE_STUDIES.forEach(function (cs, i) {
+    var card = document.createElement('article');
+    card.className = 'case-card case-card--study';
+    card.setAttribute('role', 'button');
+    card.setAttribute('tabindex', '0');
+    card.setAttribute('aria-haspopup', 'dialog');
+    card.setAttribute('aria-label', 'Open case study: ' + cs.title);
+    card.dataset.slug = cs.slug;
+    card.setAttribute('data-animate', 'fade-up');
+    card.setAttribute('data-delay', String(i * 100));
+
+    var hero = cs.images[0];
+    card.innerHTML =
+      '<div class="case-card__img">' +
+        '<img loading="lazy" decoding="async" alt="' + cs.title + ' — ' + hero.label + '" />' +
+      '</div>' +
+      '<div class="case-card__body">' +
+        '<span class="case-card__tag"></span>' +
+        '<h3 class="case-card__title"></h3>' +
+        '<p class="case-card__summary"></p>' +
+        '<span class="case-card__open">View case study' +
+          '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>' +
+        '</span>' +
+      '</div>';
+
+    // Set text via textContent (safe) and the hero image src
+    card.querySelector('.case-card__tag').textContent = cs.industry;
+    card.querySelector('.case-card__title').textContent = cs.title;
+    card.querySelector('.case-card__summary').textContent = cs.summary;
+    var heroImg = card.querySelector('.case-card__img img');
+    heroImg.src = imgSrc(cs, hero);
+    heroImg.onerror = function () { heroImg.style.display = 'none'; }; // fall back to gradient bg
+
+    card.addEventListener('click', function () { openModal(cs); });
+    card.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar') {
+        e.preventDefault();
+        openModal(cs);
+      }
+    });
+
+    grid.appendChild(card);
+    if (typeof animateObserver !== 'undefined') animateObserver.observe(card);
+  });
+
+  // ── Modal content ─────────────────────────────────────────────
+  function buildModal(cs) {
+    scrollEl.innerHTML = '';
+
+    var header = document.createElement('div');
+    header.className = 'cs-modal__header';
+    header.innerHTML =
+      '<span class="cs-modal__kicker"></span>' +
+      '<h2 class="cs-modal__title" id="csModalTitle"></h2>' +
+      '<p class="cs-modal__industry"></p>' +
+      '<p class="cs-modal__detail"></p>';
+    header.querySelector('.cs-modal__kicker').textContent = cs.kicker;
+    header.querySelector('.cs-modal__title').textContent = cs.title;
+    header.querySelector('.cs-modal__industry').textContent = cs.industry;
+    header.querySelector('.cs-modal__detail').textContent = cs.detail;
+    scrollEl.appendChild(header);
+
+    var gallery = document.createElement('div');
+    gallery.className = 'cs-modal__gallery';
+    cs.images.forEach(function (img) {
+      var fig = document.createElement('figure');
+      fig.className = 'cs-modal__figure';
+      var cap = document.createElement('figcaption');
+      cap.className = 'cs-modal__figcap';
+      cap.textContent = img.label;
+      var image = document.createElement('img');
+      image.className = 'cs-modal__img';
+      image.loading = 'lazy';
+      image.decoding = 'async';
+      image.alt = cs.title + ' — ' + img.label;
+      image.src = imgSrc(cs, img);
+      image.onerror = function () { fig.remove(); }; // drop missing images cleanly
+      fig.appendChild(cap);
+      fig.appendChild(image);
+      gallery.appendChild(fig);
+    });
+    scrollEl.appendChild(gallery);
+  }
+
+  // ── Open / close ──────────────────────────────────────────────
+  function openModal(cs) {
+    buildModal(cs);
+    modal.style.setProperty('--cs-accent', cs.accent || 'var(--yellow)');
+    lastFocused = document.activeElement;
+    modal.classList.add('open');
+    modal.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('cs-modal-open');
+    if (typeof lenis !== 'undefined' && lenis.stop) lenis.stop();
+    scrollEl.scrollTop = 0;
+    var closeBtn = modal.querySelector('.cs-modal__close');
+    if (closeBtn) closeBtn.focus();
+  }
+
+  function closeModal() {
+    if (!modal.classList.contains('open')) return;
+    modal.classList.remove('open');
+    modal.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('cs-modal-open');
+    if (typeof lenis !== 'undefined' && lenis.start) lenis.start();
+    if (lastFocused && lastFocused.focus) lastFocused.focus();
+  }
+
+  // Close via backdrop / close button
+  modal.querySelectorAll('[data-cs-close]').forEach(function (el) {
+    el.addEventListener('click', closeModal);
+  });
+
+  // Escape to close + lightweight focus trap while open
+  document.addEventListener('keydown', function (e) {
+    if (!modal.classList.contains('open')) return;
+    if (e.key === 'Escape') { closeModal(); return; }
+    if (e.key === 'Tab') {
+      var focusable = modal.querySelectorAll('button, [href], [tabindex]:not([tabindex="-1"])');
+      if (!focusable.length) return;
+      var first = focusable[0];
+      var last = focusable[focusable.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    }
+  });
+})();

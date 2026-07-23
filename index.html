@@ -759,54 +759,8 @@
         <span class="section__tag">Case Studies</span>
         <h2 class="section__title">Real projects, <span class="serif-accent">real results</span></h2>
       </div>
-      <!-- TODO: REPLACE notion.so WITH EACH PROJECT'S REAL NOTION PAGE URL -->
-      <div class="case-studies__grid case-studies__grid--four">
-
-        <article class="case-card" data-animate="fade-up" data-delay="0">
-          <div class="case-card__body">
-            <span class="case-card__tag">Construction / UK</span>
-            <h3 class="case-card__title">Cullen Build</h3>
-            <p class="case-card__desc">Built a unified project management system in Notion: task management, compliance tracking, tender management, risk registers, and site reports. Replaced 4 disconnected tools.</p>
-            <div class="case-card__result"><span class="case-card__result-num">-70%</span><span class="case-card__result-label">management overhead</span></div>
-            <div class="case-card__tags"><span>Notion</span><span>Automations</span></div>
-            <a class="case-card__link" href="https://notion.so" target="_blank" rel="noopener">View case study<span class="case-card__link-arrow">&rarr;</span></a>
-          </div>
-        </article>
-
-        <article class="case-card" data-animate="fade-up" data-delay="100">
-          <div class="case-card__body">
-            <span class="case-card__tag">Creative Agency</span>
-            <h3 class="case-card__title">Cheeky Creative</h3>
-            <p class="case-card__desc">Replaced 5 disconnected tools with one Notion workspace. Built a content agency OS with Make.com Slack notification automations and team-wide user guide.</p>
-            <div class="case-card__result"><span class="case-card__result-num">3-day → 20 min</span><span class="case-card__result-label">onboarding time</span></div>
-            <div class="case-card__tags"><span>Notion</span><span>Automations</span><span>AI</span></div>
-            <a class="case-card__link" href="https://notion.so" target="_blank" rel="noopener">View case study<span class="case-card__link-arrow">&rarr;</span></a>
-          </div>
-        </article>
-
-        <article class="case-card" data-animate="fade-up" data-delay="200">
-          <div class="case-card__body">
-            <span class="case-card__tag">Media / Marketing</span>
-            <h3 class="case-card__title">MAE Media</h3>
-            <p class="case-card__desc">Built a Notion HQ with 6+ Make.com automations: Meta Ads daily sync, content status workflows, Facebook lead intake, QuickBooks integration, and weekly scorecard automation.</p>
-            <div class="case-card__result"><span class="case-card__result-num">6 automations</span><span class="case-card__result-label">running daily</span></div>
-            <div class="case-card__tags"><span>Notion</span><span>Make.com</span><span>Meta Ads</span></div>
-            <a class="case-card__link" href="https://notion.so" target="_blank" rel="noopener">View case study<span class="case-card__link-arrow">&rarr;</span></a>
-          </div>
-        </article>
-
-        <article class="case-card" data-animate="fade-up" data-delay="300">
-          <div class="case-card__body">
-            <span class="case-card__tag">Real Estate</span>
-            <h3 class="case-card__title">Bourbon Holdings</h3>
-            <p class="case-card__desc">Built a real estate CRM in Notion with 6 live Make.com automations connecting InvestorFuse, Google Drive, Gmail, and Smrtphone. Automated deal folder creation, MLS report processing, and refund tracking.</p>
-            <div class="case-card__result"><span class="case-card__result-num">4 tools → 1</span><span class="case-card__result-label">unified system</span></div>
-            <div class="case-card__tags"><span>Notion</span><span>Make.com</span><span>CRM</span></div>
-            <a class="case-card__link" href="https://notion.so" target="_blank" rel="noopener">View case study<span class="case-card__link-arrow">&rarr;</span></a>
-          </div>
-        </article>
-
-      </div>
+      <!-- Cards are rendered from case-studies.data.js -->
+      <div class="case-studies__grid case-studies__grid--four" id="caseStudiesGrid"></div>
     </div>
   </section>
 
@@ -1146,6 +1100,18 @@
     </div>
   </footer>
 
+  <!-- ─────────────────────────── CASE STUDY MODAL ──────────────────────────── -->
+  <div class="cs-modal" id="csModal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="csModalTitle">
+    <div class="cs-modal__backdrop" data-cs-close></div>
+    <div class="cs-modal__dialog" role="document">
+      <button class="cs-modal__close" type="button" data-cs-close aria-label="Close case study">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+      <div class="cs-modal__scroll" id="csModalScroll"><!-- filled by JS --></div>
+    </div>
+  </div>
+
+  <script src="case-studies.data.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
