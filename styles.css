@@ -16,7 +16,12 @@
   --transition: 0.3s cubic-bezier(0.4,0,0.2,1);
 }
 
-html { scroll-behavior: smooth; }
+html {
+  scroll-behavior: smooth;
+  /* Scale the whole (rem-based) type system down a notch so the site
+     reads less "zoomed in" on desktop. 93.75% = 15px base. */
+  font-size: 93.75%;
+}
 
 /* ─── Preloader ──────────────────────────────────────────────── */
 .preloader {
