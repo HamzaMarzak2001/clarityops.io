@@ -15,7 +15,7 @@
 ─────────────────────────────────────────────────────────────────── */
 
 const CS_IMG_BASE = 'assets/images/case-studies';
-const CS_IMG_EXT  = 'jpg'; // ← change to 'png' if your files are .png
+const CS_IMG_EXT  = 'png'; // ← change to 'png' if your files are .png
 
 const CASE_STUDIES = [
   {
