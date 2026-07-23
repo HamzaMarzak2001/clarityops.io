@@ -998,10 +998,6 @@ html.lenis, html.lenis body {
   color: var(--text);
   font-weight: 600;
 }
-.orbital-node__num {
-  color: var(--muted);
-  font-variant-numeric: tabular-nums;
-}
 .orbital-node--1 { top: 26%; left: 8%; }
 .orbital-node--2 { top: 20%; right: 9%; }
 .orbital-node--3 { bottom: 28%; left: 12%; }
