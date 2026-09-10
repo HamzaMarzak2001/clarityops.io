@@ -13,6 +13,18 @@
 </head>
 <body>
 
+<script type="importmap">
+{"imports":{
+  "three": "/vendor/three-0.186.0.esm.min.js",
+  "three/addons/": "/vendor/three-addons/"
+}}
+</script>
+
+<!-- One canvas, four acts. Fixed, behind everything, pointer-transparent. -->
+<canvas id="gl" class="gl" aria-hidden="true"></canvas>
+<div class="gl-scrim" aria-hidden="true"></div>
+
+
 <!-- ══ NAV ══ -->
 <nav class="nav" id="nav">
   <div class="shell nav__bar">
@@ -78,14 +90,12 @@
       </div>
 
       <div class="hero__col-art" data-r style="--d:.18s">
-        <figure class="plate">
-          <img src="assets/images/case-studies/fryaway/hero.png"
-               alt="FryAway HQ — the daily performance dashboard ClarityOps built" />
-          <figcaption class="plate__cap">
-            <span>FryAway HQ &middot; delivered build</span>
-            <span>Sheet 01</span>
-          </figcaption>
-        </figure>
+        <div class="gl-legend">
+          <div class="gl-legend__row"><span class="gl-legend__k">01</span><span>Notion &mdash; the driver</span></div>
+          <div class="gl-legend__row"><span class="gl-legend__k">02</span><span>Automations &mdash; the idlers</span></div>
+          <div class="gl-legend__row"><span class="gl-legend__k">03</span><span>AI agents &mdash; the output</span></div>
+          <p class="gl-legend__note">Nothing in a drive line turns until every part is linked and tensioned.</p>
+        </div>
       </div>
 
     </div>
@@ -457,6 +467,15 @@
   </div>
 </footer>
 
+<script type="module">
+  import { boot } from './gl/main.js';
+  const c = document.getElementById('gl');
+  try {
+    // ONE documented seam, instead of accidental globals scattered around.
+    window.__clarity = boot(c);
+  }
+  catch (e) { console.warn('[gl] disabled:', e); c.remove(); document.documentElement.dataset.gl = 'E'; }
+</script>
 <script src="script-v2.js"></script>
 </body>
 </html>
