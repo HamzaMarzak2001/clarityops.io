@@ -87,3 +87,90 @@ const LOGOS = [
 
   measure(); frame();
 })();
+
+/* ── THE BENCH ───────────────────────────────────────────────────
+   One pinned frame; its contents transform as you scroll. The object is
+   the subject and the copy moves around it — never over it, so no scrim
+   is needed. Chapters, a readout, and a document.title that narrates. */
+(function bench() {
+  const wrap = document.getElementById('bench');
+  const screens = document.getElementById('devScreens');
+  const copy = document.getElementById('benchCopy');
+  const ro = document.getElementById('benchRo');
+  if (!wrap || !screens || !copy) return;
+
+  const CH = [
+    { slug:'labinno', short:'Labinno', url:'clarityopsio.notion.site',
+      metric:'7 connected databases · 6 live projects · delivered natively in French',
+      title:'Construction Operations OS', loc:'Labinno · Geneva',
+      d:'Projects, tasks, meeting minutes, clients, partners, team roles and documents in one place, with separate views for the team, the client and outside partners. Every project runs from tender submission to handover.' },
+    { slug:'bourbon-holdings', short:'Bourbon Holdings', url:'bourbonholdings.notion.site',
+      metric:'629 heir records migrated · 6 automations across 5 platforms',
+      title:'Deal Flow & Automation OS', loc:'Bourbon Holdings · Los Angeles',
+      d:'A new lead becomes a deal with the contact matched automatically. Every deal gets its own Drive folder and a generated property summary doc. AI parses the MLS report into it. Calls log themselves. Refund windows are watched daily.' },
+    { slug:'fryaway', short:'FryAway', url:'clarityopsio.notion.site',
+      metric:'4 reporting surfaces collapsed into 1 daily page · ROAS computed automatically',
+      title:'Marketing Performance OS', loc:'FryAway · DTC',
+      d:'Six databases on a shared date axis, so paid, owned and organic finally line up. One snapshot each morning: revenue by channel, ad spend by platform, ROAS calculated, and a rolling 30-day trend.' },
+    { slug:'mae-media', short:'MAE Media', url:'maemedia.notion.site',
+      metric:'10+ automations across 8 platforms · 1 weekly scorecard',
+      title:'Agency Operations & Automation OS', loc:'MAE Media · Media & marketing',
+      d:'Seven databases spanning clients, projects, campaigns, invoices, tasks and team, plus a weekly scorecard layer. Drive folders on project creation. Daily Meta Ads sync across two ad accounts. QuickBooks feeding a live scorecard.' },
+  ];
+
+  // build layers + chapters
+  CH.forEach((c, i) => {
+    const img = document.createElement('img');
+    img.src = `assets/images/case-studies/${c.slug}/hero.png`;
+    img.alt = `${c.title} — ${c.loc}`;
+    img.loading = i === 0 ? 'eager' : 'lazy';
+    img.decoding = 'async';
+    screens.appendChild(img);
+
+    const ch = document.createElement('div');
+    ch.className = 'bench__ch';
+    ch.innerHTML = `<div class="bench__kicker"></div>
+      <h3 class="bench__t"></h3><div class="bench__loc"></div><p class="bench__d"></p>`;
+    ch.querySelector('.bench__kicker').textContent = c.metric;
+    ch.querySelector('.bench__t').textContent = c.title;
+    ch.querySelector('.bench__loc').textContent = c.loc;
+    ch.querySelector('.bench__d').textContent = c.d;
+    copy.appendChild(ch);
+  });
+
+  const imgs = [...screens.children];
+  const chs  = [...copy.children];
+  const roLabel = document.getElementById('roLabel');
+  const roBar   = document.getElementById('roBar');
+  const roCt    = document.getElementById('roCt');
+  const devUrl  = document.getElementById('devUrl');
+
+  // runway: one viewport of dwell per chapter, plus one to enter
+  wrap.style.minHeight = (CH.length + 1) * 100 + 'svh';
+
+  let cur = -1, ticking = false;
+  function apply() {
+    const r = wrap.getBoundingClientRect();
+    const span = Math.max(1, wrap.offsetHeight - innerHeight);
+    const p = Math.min(1, Math.max(0, -r.top / span));
+    const active = r.top <= 0 && r.bottom >= innerHeight;
+
+    ro.classList.toggle('on', active);
+    roBar.style.width = (p * 100).toFixed(1) + '%';
+    roCt.textContent = String(Math.round(p * 100)).padStart(3, '0');
+
+    const i = Math.min(CH.length - 1, Math.floor(p * CH.length));
+    if (i !== cur) {
+      cur = i;
+      imgs.forEach((el, n) => el.classList.toggle('on', n === i));
+      chs.forEach((el, n) => el.classList.toggle('on', n === i));
+      roLabel.textContent = CH[i].short;
+      devUrl.textContent = CH[i].url;
+      if (active) document.title = `ClarityOps | ${CH[i].short}`;
+    }
+    ticking = false;
+  }
+  addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(apply); } }, { passive: true });
+  addEventListener('resize', apply);
+  apply();
+})();
