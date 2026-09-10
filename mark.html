@@ -1,0 +1,90 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
+<title>MARK — look dev</title>
+<style>
+ html,body{margin:0;height:100%;background:#060607;overflow:hidden}
+ #gl{position:fixed;inset:0;width:100%;height:100%}
+ #ui{position:fixed;left:0;bottom:0;z-index:9;padding:12px 16px;
+   font:12px ui-monospace,Menlo,monospace;color:#8b8f96;
+   background:rgba(6,6,7,.85);border-top:1px solid rgba(255,255,255,.12);
+   border-right:1px solid rgba(255,255,255,.12);display:flex;gap:16px;align-items:center}
+ input{width:280px}
+ b{color:#fcff02}
+</style></head><body>
+<canvas id="gl"></canvas>
+<div id="ui">
+  <span>t <b id="tv">0.00</b></span>
+  <input id="t" type="range" min="0" max="1" step="0.001" value="0">
+  <span id="fps">–</span>
+</div>
+<script type="importmap">
+{"imports":{"three":"/vendor/three-0.186.0.esm.min.js","three/addons/":"/vendor/three-addons/"}}
+</script>
+<script type="module">
+import * as THREE from 'three';
+import { makeEnv }   from './gl/env.js';
+import { makeMark }  from './gl/mark.js';
+
+const canvas=document.getElementById('gl');
+const renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:true});
+renderer.setPixelRatio(Math.min(devicePixelRatio,1.8));
+renderer.setSize(innerWidth,innerHeight,false);
+renderer.toneMapping=THREE.AgXToneMapping;
+renderer.toneMappingExposure=1.0;
+renderer.shadowMap.enabled=true; renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+
+const scene=new THREE.Scene();
+scene.environment=makeEnv(renderer);
+scene.fog=new THREE.Fog(0x14181e,7,22);
+
+const key=new THREE.DirectionalLight('#ffffff',1.6);
+key.position.set(-3.4,5.2,3.0); key.castShadow=true;
+key.shadow.mapSize.set(1024,1024);
+Object.assign(key.shadow.camera,{left:-6,right:6,top:6,bottom:-6});
+key.shadow.bias=-0.0008; key.shadow.normalBias=0.02; key.shadow.radius=4;
+scene.add(key, new THREE.HemisphereLight('#e9ecef','#0a0b0d',0.35));
+
+const cam=new THREE.PerspectiveCamera(32,innerWidth/innerHeight,0.1,120);
+const mark=await makeMark();
+scene.add(mark.group);
+
+// camera narrative: impossibly close and abstract -> pull back -> reveal -> run
+const RIG=[
+  {p:[ 0.42, 0.06, 0.95], l:[0.30,0.04,0], fov:24},   // macro: inside the bevel
+  {p:[ 1.10, 0.42, 2.05], l:[0.08,0.04,0], fov:28},
+  {p:[ 0.22, 0.52, 3.35], l:[0,   0.02,0], fov:32},   // it resolves
+  {p:[ 0.00, 0.10, 4.15], l:[0,   0.00,0], fov:34},   // dead on — the reveal
+];
+const _v=new THREE.Vector3(), _l=new THREE.Vector3();
+const railP=new THREE.CatmullRomCurve3(RIG.map(s=>new THREE.Vector3(...s.p)),false,'catmullrom',0.35);
+const railL=new THREE.CatmullRomCurve3(RIG.map(s=>new THREE.Vector3(...s.l)),false,'catmullrom',0.35);
+
+function applyCam(t){
+  railP.getPoint(t,_v); railL.getPoint(t,_l);
+  cam.position.copy(_v); cam.lookAt(_l);
+  const seg=t*(RIG.length-1), i=Math.min(RIG.length-2,Math.floor(seg)), f=seg-i;
+  cam.fov=RIG[i].fov+(RIG[i+1].fov-RIG[i].fov)*f;
+  cam.updateProjectionMatrix();
+}
+
+const slider=document.getElementById('t'), tv=document.getElementById('tv'), fpsEl=document.getElementById('fps');
+let auto=true;
+slider.addEventListener('input',()=>{auto=false;});
+let n=0,last=performance.now();
+function frame(ms){
+  let t = auto ? (ms*0.00006)%1 : +slider.value;
+  if(auto) slider.value=t;
+  tv.textContent=t.toFixed(2);
+  applyCam(t);
+  mark.apply(t,ms);
+  // the mark turns — the arrow implies it
+  mark.group.rotation.y = -0.55 + t*1.25 + Math.sin(ms*0.0002)*0.05;
+  mark.group.rotation.x = 0.10 - t*0.10;
+  mark.group.position.y = 0.15;
+  renderer.render(scene,cam);
+  if(++n%30===0){const now=performance.now();fpsEl.textContent=Math.round(30000/(now-last))+' fps';last=now;}
+  requestAnimationFrame(frame);
+}
+addEventListener('resize',()=>{renderer.setSize(innerWidth,innerHeight,false);cam.aspect=innerWidth/innerHeight;cam.updateProjectionMatrix();});
+requestAnimationFrame(frame);
+window.__m={scene,mark,cam,renderer};
+</script></body></html>
