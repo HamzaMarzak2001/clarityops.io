@@ -8,12 +8,12 @@ import * as THREE from 'three';
  * Scrubbing back up the page reproduces the same frames exactly, in reverse.
  */
 
-const LINKS  = 48;
+const LINKS  = 64;
 const POINTS = LINKS + 1;
 const REF    = new THREE.Vector3(0, 0, 1); // ONE fixed reference axis.
 
-const STEEL  = new THREE.Color('#9aa2ad');
-const TORQUE = new THREE.Color('#fcff02');
+const DARK   = new THREE.Color('#000000');   // unengaged: emits nothing
+const TORQUE = new THREE.Color('#fdff5c');   // engaged: emits, and blooms
 
 /* deterministic per-index noise — never Math.random(), so every reload
    and every scrub reproduces identical geometry */
@@ -87,13 +87,24 @@ function buildPoses() {
 export function makeDriveLine() {
   const poses = buildPoses();
 
-  const geo = new THREE.TorusGeometry(0.185, 0.045, 6, 18);
+  const geo = new THREE.TorusGeometry(0.128, 0.031, 8, 20);
   const mat = new THREE.MeshPhysicalMaterial({
-    color: '#b9c0c9',
-    metalness: 0.72,
-    roughness: 0.34,
-    envMapIntensity: 2.6,
+    color: '#cfd6de',
+    metalness: 0.88,
+    roughness: 0.22,
+    envMapIntensity: 3.2,
+    vertexColors: true,          // gives us vColor from instanceColor
   });
+  mat.onBeforeCompile = (sh) => {
+    sh.uniforms.uEmit = { value: 4.2 };
+    sh.fragmentShader = sh.fragmentShader
+      .replace('#include <color_fragment>', '')          // never tint the metal
+      .replace('#include <emissivemap_fragment>',
+               '#include <emissivemap_fragment>\n\ttotalEmissiveRadiance = vColor.rgb * uEmit;')
+      .replace('void main() {', 'uniform float uEmit;\nvoid main() {');
+  };
+  mat.customProgramCacheKey = () => 'driveline-emissive-v2';
+  mat.needsUpdate = true;
 
   const mesh = new THREE.InstancedMesh(geo, mat, LINKS);
   mesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
@@ -157,8 +168,8 @@ export function makeDriveLine() {
       mesh.setMatrixAt(i, _m);
 
       // engagement: torque travels through the line as u advances
-      const e = smoothstep(seed[i] - 0.14, seed[i] + 0.14, u);
-      _c.copy(STEEL).lerp(TORQUE, e * 0.92);
+      const e = smoothstep(seed[i] - 0.12, seed[i] + 0.12, u);
+      _c.copy(DARK).lerp(TORQUE, e);
       _c.toArray(colors, i * 3);
     }
 
