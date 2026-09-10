@@ -1,0 +1,426 @@
+/* ═══════════════════════════════════════════════════════════════
+   ClarityOps — DRIVE LINE
+   Design system. Engineering-drawing register.
+
+   RULES (from the audit — these are constraints, not suggestions):
+   1. Two surfaces only: the ground, and the modal. Nothing else floats.
+      Separation is done with hairlines, whitespace and weight.
+   2. Radii are 0 or 4px. Never 100px. No pills.
+   3. No translucent cards, no backdrop-filter, no drop shadows on content.
+   4. No gradient-clipped text. No glow. No decorative infinite animation.
+   5. Type weight caps at 600. Nothing sits between 1.15rem and 2.3rem —
+      the gap IS the hierarchy.
+   6. Exactly one centred composition on the page (the final CTA).
+   7. Yellow = torque. It marks where energy enters. Never decoration.
+   ═══════════════════════════════════════════════════════════════ */
+
+:root {
+  /* ground */
+  --ink:        #060607;
+  --ink-raise:  #0b0b0d;   /* modal only */
+  --paper:      #f2f3f4;
+  --muted:      #8b8f96;
+  --faint:      #5a5e65;
+
+  /* the only two accents */
+  --torque:     #fcff02;   /* energy in. used once per viewport. */
+  --drive:      #8acf14;   /* legible green, for type */
+
+  /* structure */
+  --rule:       rgba(242, 243, 244, 0.09);
+  --rule-hard:  rgba(242, 243, 244, 0.18);
+
+  /* grid */
+  --max:        1440px;
+  --gutter:     80px;
+  --rail:       64px;      /* left rail for mono indices */
+  --gap:        24px;
+
+  --mono: 'SF Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
+
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--sans);
+  font-size: 1rem;
+  line-height: 1.55;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+img { display: block; max-width: 100%; }
+a { color: inherit; text-decoration: none; }
+ul, ol { list-style: none; margin: 0; padding: 0; }
+h1, h2, h3, h4, p { margin: 0; }
+
+::selection { background: var(--torque); color: #000; }
+
+/* ─── Grid ──────────────────────────────────────────────────────
+   12 columns. Content is deliberately asymmetric: headings start at
+   column 1, body copy sits in 5–9. Nothing is centred by default. */
+.shell {
+  width: 100%;
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: var(--gap);
+}
+
+/* ─── Typography ────────────────────────────────────────────────
+   Two registers only: a tight grotesk for statements, and mono for
+   metadata. The jump between them is the hierarchy. */
+
+.display {
+  font-size: clamp(2.4rem, 5.6vw, 4.6rem);
+  line-height: 1.02;
+  letter-spacing: -0.035em;
+  font-weight: 600;
+  text-wrap: balance;
+}
+
+.statement {
+  font-size: clamp(2.3rem, 4vw, 3.2rem);
+  line-height: 1.06;
+  letter-spacing: -0.03em;
+  font-weight: 600;
+  text-wrap: balance;
+}
+
+.lede {
+  font-size: 1.15rem;
+  line-height: 1.5;
+  color: var(--muted);
+  max-width: 54ch;
+}
+
+.body { font-size: 1rem; color: var(--muted); max-width: 62ch; }
+.body strong { color: var(--paper); font-weight: 500; }
+
+/* mono metadata — the drafting register */
+.meta {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+.meta--torque { color: var(--torque); }
+
+/* Section index: a number in the left rail, a hairline, a label.
+   This replaces the gradient pill that opened 10 of 13 sections. */
+.sheet {
+  display: grid;
+  grid-template-columns: var(--rail) 1fr;
+  gap: var(--gap);
+  align-items: baseline;
+  padding-top: 28px;
+  border-top: 1px solid var(--rule);
+}
+.sheet__no {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  color: var(--torque);
+}
+.sheet__label {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+
+section { padding: 132px 0; }
+
+/* ─── Nav ───────────────────────────────────────────────────────
+   A rule, not a floating capsule. Its bottom border doubles as the
+   scroll progress indicator — the only moving thing above the fold. */
+.nav {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 100;
+  background: rgba(6, 6, 7, 0.78);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--rule);
+}
+.nav__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 62px;
+  gap: 32px;
+}
+.nav__mark { display: flex; align-items: center; gap: 10px; }
+.nav__mark img { height: 22px; width: auto; }
+.nav__wordmark {
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.nav__links { display: flex; align-items: center; gap: 30px; }
+.nav__links a {
+  font-size: 0.83rem;
+  color: var(--muted);
+  transition: color 0.18s var(--ease);
+}
+.nav__links a:hover { color: var(--paper); }
+
+.nav__sheet {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--faint);
+  font-variant-numeric: tabular-nums;
+}
+
+/* progress rule */
+.nav__progress {
+  position: absolute;
+  left: 0; bottom: -1px;
+  height: 1px;
+  background: var(--torque);
+  width: 0%;
+}
+
+/* ─── Buttons — square, no glow, no gradient ────────────────── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 22px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  border-radius: 4px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: background 0.18s var(--ease), color 0.18s var(--ease),
+              border-color 0.18s var(--ease), transform 0.18s var(--ease);
+}
+.btn--primary {
+  background: var(--torque);
+  color: #000;
+  font-weight: 600;
+}
+.btn--primary:hover { transform: translateY(-1px); background: #e8eb00; }
+
+.btn--ghost {
+  border-color: var(--rule-hard);
+  color: var(--paper);
+  background: transparent;
+}
+.btn--ghost:hover { border-color: var(--paper); }
+
+.btn__arrow { transition: transform 0.18s var(--ease); }
+.btn:hover .btn__arrow { transform: translateX(3px); }
+
+/* ─── HERO ──────────────────────────────────────────────────── */
+.hero {
+  padding: 168px 0 96px;
+  position: relative;
+}
+.hero__grid { align-items: start; }
+
+.hero__col-text { grid-column: 1 / span 7; }
+.hero__col-art  { grid-column: 8 / span 5; }
+
+.hero__eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 34px;
+}
+.hero__eyebrow::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--rule);
+}
+
+.hero__title { margin-bottom: 26px; }
+/* the second sentence drops to muted — the offer, not the promise */
+.hero__title em {
+  font-style: normal;
+  color: var(--muted);
+}
+
+.hero__sub { margin-bottom: 34px; }
+
+/* spec row — mono facts divided by hairlines. NOT pills. */
+.spec {
+  display: flex;
+  flex-wrap: wrap;
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  margin-bottom: 34px;
+}
+.spec__item {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+  padding: 14px 22px 14px 0;
+  margin-right: 22px;
+  border-right: 1px solid var(--rule);
+}
+.spec__item:last-child { border-right: 0; margin-right: 0; padding-right: 0; }
+.spec__item b { color: var(--paper); font-weight: 500; }
+
+.hero__actions { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+.hero__note {
+  margin-top: 18px;
+  font-size: 0.86rem;
+  color: var(--faint);
+  max-width: 46ch;
+}
+
+.hero__capacity {
+  margin-top: 40px;
+  padding-top: 18px;
+  border-top: 1px solid var(--rule);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.hero__capacity i {
+  width: 5px; height: 5px; border-radius: 50%;
+  background: var(--drive);
+  flex: 0 0 auto;
+}
+
+/* hero artwork — a real delivered build, framed as a drawing plate */
+.plate {
+  border: 1px solid var(--rule-hard);
+  border-radius: 4px;
+  overflow: hidden;
+  background: #0a0a0c;
+}
+.plate img { width: 100%; height: auto; }
+.plate__cap {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 14px;
+  border-top: 1px solid var(--rule);
+  font-family: var(--mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+
+/* ─── Title block — bottom-left, like a real drawing ─────────── */
+.titleblock {
+  display: flex;
+  gap: 0;
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  width: fit-content;
+  margin-top: 72px;
+}
+.titleblock div {
+  padding: 10px 16px;
+  border-right: 1px solid var(--rule);
+  font-family: var(--mono);
+  font-size: 0.64rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+.titleblock div:last-child { border-right: 0; }
+.titleblock b { color: var(--muted); font-weight: 400; }
+
+/* ─── Trust strip ───────────────────────────────────────────── */
+.trust { padding: 0 0 96px; }
+.logos { overflow: hidden; border-block: 1px solid var(--rule); padding: 26px 0; }
+.logos__track {
+  display: flex;
+  align-items: center;
+  width: max-content;
+  animation: marquee 48s linear infinite;
+}
+.logos__track img {
+  height: 26px;
+  width: auto;
+  margin-right: 62px;
+  object-fit: contain;
+  opacity: 0.42;
+  filter: brightness(0) invert(1);
+  transition: opacity 0.2s var(--ease);
+}
+.logos__track img:hover { opacity: 0.9; }
+.logos:hover .logos__track { animation-play-state: paused; }
+@keyframes marquee { to { transform: translateX(-50%); } }
+
+/* the four proof lines — real numbers, in the open */
+.proof { margin-top: 44px; }
+.proof__row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--gap);
+}
+.proof__item { border-top: 1px solid var(--rule); padding-top: 16px; }
+.proof__client {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--torque);
+  margin-bottom: 8px;
+}
+.proof__fact { font-size: 0.95rem; color: var(--muted); }
+.proof__fact b { color: var(--paper); font-weight: 500; }
+
+/* ─── Reveal ────────────────────────────────────────────────────
+   One transform, one opacity, 520ms. No stagger theatre. */
+[data-r] {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 0.52s var(--ease), transform 0.52s var(--ease);
+  transition-delay: var(--d, 0s);
+}
+[data-r].in { opacity: 1; transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  [data-r] { opacity: 1 !important; transform: none !important; }
+  .logos__track { animation: none; }
+  * { scroll-behavior: auto !important; }
+}
+
+/* ─── Responsive ────────────────────────────────────────────── */
+@media (max-width: 1080px) {
+  :root { --gutter: 44px; --rail: 44px; }
+  .hero__col-text { grid-column: 1 / span 12; }
+  .hero__col-art  { grid-column: 1 / span 12; margin-top: 48px; }
+  .proof__row { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 720px) {
+  :root { --gutter: 20px; --rail: 0px; --gap: 16px; }
+  section { padding: 84px 0; }
+  .hero { padding: 124px 0 64px; }
+  .nav__links, .nav__sheet { display: none; }
+  .sheet { grid-template-columns: 1fr; gap: 6px; }
+  .proof__row { grid-template-columns: 1fr; }
+  .spec__item { border-right: 0; padding: 10px 0; margin-right: 0; width: 100%;
+                border-bottom: 1px solid var(--rule); }
+  .spec__item:last-child { border-bottom: 0; }
+  .titleblock { flex-wrap: wrap; }
+}
