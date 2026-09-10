@@ -6,21 +6,21 @@ import * as THREE from 'three';
    Using ONE scalar (fov) instead of translating the camera per act
    deletes an entire class of desync bugs. */
 const STATIONS = [
-  new THREE.Vector3( 2.6, 1.2, 28.5),   // fov 14 - plan view, far back
-  new THREE.Vector3( 1.8, 0.6, 18.0),   // fov 22
-  new THREE.Vector3( 0.8,-0.2, 12.2),   // fov 34
-  new THREE.Vector3(-0.4, 0.4,  9.1),   // fov 42 - inside the machine
+  new THREE.Vector3( 0.5, 2.9, 8.6),
+  new THREE.Vector3( 0.3, 2.1, 7.0),
+  new THREE.Vector3(-0.2, 1.4, 5.8),
+  new THREE.Vector3(-0.5, 0.9, 4.9),
 ];
 const LOOK = [
-  new THREE.Vector3(0.6, 0.0, 0),
-  new THREE.Vector3(0.2, 0.0, 0),
-  new THREE.Vector3(0.0,-0.1, 0),
-  new THREE.Vector3(0.0, 0.0, 0),
+  new THREE.Vector3(0.0,-0.45, 0),
+  new THREE.Vector3(0.0,-0.35, 0),
+  new THREE.Vector3(0.0,-0.25, 0),
+  new THREE.Vector3(0.0,-0.15, 0),
 ];
-const FOV = [14, 22, 34, 42];
+const FOV = [26, 30, 36, 42];
 
 export function makeCamera(aspect) {
-  const cam = new THREE.PerspectiveCamera(14, aspect, 0.1, 100);
+  const cam = new THREE.PerspectiveCamera(26, aspect, 0.1, 100);
   const rail = new THREE.CatmullRomCurve3(STATIONS, false, 'catmullrom', 0.4);
   const lookRail = new THREE.CatmullRomCurve3(LOOK, false, 'catmullrom', 0.4);
   const _p = new THREE.Vector3(), _l = new THREE.Vector3();

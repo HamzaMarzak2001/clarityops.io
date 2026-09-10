@@ -644,10 +644,9 @@ section { padding: 132px 0; }
   background:
     linear-gradient(90deg,
       var(--ink) 0%,
-      rgba(6,6,7,0.92) 26%,
-      rgba(6,6,7,0.55) 44%,
-      rgba(6,6,7,0.18) 62%,
-      rgba(6,6,7,0.00) 82%);
+      rgba(6,6,7,0.94) 30%,
+      rgba(6,6,7,0.62) 42%,
+      rgba(6,6,7,0.00) 54%);
 }
 /* below the hero the page is dense with copy — mute the scene further */
 .gl-scrim::after {

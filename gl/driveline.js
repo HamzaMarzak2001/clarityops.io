@@ -8,7 +8,7 @@ import * as THREE from 'three';
  * Scrubbing back up the page reproduces the same frames exactly, in reverse.
  */
 
-const LINKS  = 64;
+const LINKS  = 48;   // pitch math below is written for 48. Do not change one without the other.
 const POINTS = LINKS + 1;
 const REF    = new THREE.Vector3(0, 0, 1); // ONE fixed reference axis.
 
@@ -75,10 +75,12 @@ function buildPoses() {
     poses[1].push(gathered);
 
     // 0 SCATTERED — the same loop, pulled apart in every axis
-    const scattered = ring(t, RX * 1.15, RY * 1.4, new THREE.Vector3());
-    scattered.x += (h(i, 1) - 0.5) * 2.3;
-    scattered.y += (h(i, 2) - 0.5) * 2.6;
-    scattered.z += (h(i, 5) - 0.5) * 2.8;
+    // parts are strewn, but they stay ON THE BENCH — a part that flies off
+    // the plate loses the contrast the plate exists to provide
+    const scattered = ring(t, RX * 1.02, RY * 1.15, new THREE.Vector3());
+    scattered.x += (h(i, 1) - 0.5) * 1.15;
+    scattered.y += (h(i, 2) - 0.5) * 0.85 - 0.35;
+    scattered.z += (h(i, 5) - 0.5) * 1.6;
     poses[0].push(scattered);
   }
   return poses;
@@ -87,16 +89,17 @@ function buildPoses() {
 export function makeDriveLine() {
   const poses = buildPoses();
 
-  const geo = new THREE.TorusGeometry(0.128, 0.031, 8, 20);
+  const geo = new THREE.TorusGeometry(0.168, 0.044, 10, 26);
   const mat = new THREE.MeshPhysicalMaterial({
-    color: '#cfd6de',
-    metalness: 0.88,
-    roughness: 0.22,
-    envMapIntensity: 3.2,
+    color: '#23272d',        // genuinely dark: contrast comes from the PLATE
+    metalness: 0.92,
+    roughness: 0.24,
+    envMapIntensity: 1.15,   // the env carries the range now, not this
+
     vertexColors: true,          // gives us vColor from instanceColor
   });
   mat.onBeforeCompile = (sh) => {
-    sh.uniforms.uEmit = { value: 4.2 };
+    sh.uniforms.uEmit = { value: 2.4 };
     sh.fragmentShader = sh.fragmentShader
       .replace('#include <color_fragment>', '')          // never tint the metal
       .replace('#include <emissivemap_fragment>',

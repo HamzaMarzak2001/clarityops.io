@@ -1,40 +1,54 @@
 import * as THREE from 'three';
 
-/* A two-band vertical gradient painted into a canvas, then PMREM'd.
-   Deliberately NOT RoomEnvironment: that file is the default grey photo
-   studio and is the most recognisable "I used the three.js example"
-   signature in the ecosystem. Zero downloaded textures. */
+/* The environment IS the surface appearance of a metal at metalness ~0.9.
+ *
+ * The previous version painted a 64x256 purely VERTICAL gradient: it varied
+ * only in latitude, so every azimuth was identical and a link could rotate a
+ * full 360 degrees while reflecting exactly the same grey ramp. That is the
+ * literal cause of "dead metal" — there was no highlight to travel.
+ *
+ * Replaced with a lightformer studio: hard-edged, over-bright emissive quads
+ * PMREM'd into an env map. The KICKER is a tall narrow strip rather than a
+ * DirectionalLight specifically because a directional light on metal makes a
+ * DOT, while a tall bright strip makes a highlight that TRAVELS along the
+ * link as it turns.
+ *
+ * ACCEPTANCE TEST: rotate one link 360 on debug.html. If no highlight
+ * travels across its surface, the environment is still wrong and nothing
+ * downstream will fix it.
+ */
+
+function quad(w, h, colour, mult, pos, aim, rotX) {
+  const m = new THREE.Mesh(
+    new THREE.PlaneGeometry(w, h),
+    new THREE.MeshBasicMaterial({
+      color: new THREE.Color(colour).multiplyScalar(mult),
+      side: THREE.DoubleSide,
+      toneMapped: false,
+    })
+  );
+  m.position.set(...pos);
+  if (rotX !== undefined) m.rotation.x = rotX;
+  else m.lookAt(aim ? new THREE.Vector3(...aim) : new THREE.Vector3(0, 0, 0));
+  return m;
+}
+
 export function makeEnv(renderer) {
-  const c = document.createElement('canvas');
-  c.width = 64; c.height = 256;
-  const g = c.getContext('2d');
+  const s = new THREE.Scene();
 
-  const grad = g.createLinearGradient(0, 0, 0, 256);
-  grad.addColorStop(0.00, '#c8d2de');  // cool sky band — this IS the light
-  grad.addColorStop(0.34, '#78838f');
-  grad.addColorStop(0.50, '#343b44');  // horizon
-  grad.addColorStop(0.62, '#0d0f13');
-  grad.addColorStop(1.00, '#060708');  // floor
-  g.fillStyle = grad;
-  g.fillRect(0, 0, 64, 256);
-
-  // one warm highlight band — gives the metal something to catch
-  const hl = g.createLinearGradient(0, 40, 0, 96);
-  hl.addColorStop(0, 'rgba(252,255,2,0)');
-  hl.addColorStop(0.5, 'rgba(252,255,2,0.30)');
-  hl.addColorStop(1, 'rgba(252,255,2,0)');
-  g.fillStyle = hl;
-  g.fillRect(0, 40, 64, 56);
-
-  const tex = new THREE.CanvasTexture(c);
-  tex.mapping = THREE.EquirectangularReflectionMapping;
-  tex.colorSpace = THREE.SRGBColorSpace;
+  //                w    h    colour     mult   position             aim
+  s.add(quad(7.0, 4.0, '#ffffff', 9.0,  [-3.2, 3.4,  2.6]));           // KEY
+  s.add(quad(0.9, 7.0, '#eef4ff', 26.0, [ 2.4, 1.6, -4.2]));           // KICKER — the travelling highlight
+  s.add(quad(6.0, 6.0, '#7f93b4', 2.4,  [ 4.6,-0.4,  3.0]));           // FILL
+  s.add(quad(10.0,6.0, '#e9ecef', 3.0,  [ 0.0,-2.6,  0.0], null, -Math.PI / 2)); // BOUNCE — the plate seen in the metal
+  s.add(quad(0.35,0.35,'#ffffff', 60.0, [-1.1, 2.2,  3.4]));           // HOT PIN — the pinpoint
+  s.add(quad(0.5, 3.2, '#fcff02', 14.0, [-4.4, 0.4, -1.0]));           // TORQUE — brand arrives as a reflection first
 
   const pmrem = new THREE.PMREMGenerator(renderer);
   pmrem.compileEquirectangularShader();
-  const env = pmrem.fromEquirectangular(tex).texture;
+  const env = pmrem.fromScene(s, 0.02).texture;
 
-  tex.dispose();
+  s.traverse(o => { if (o.isMesh) { o.geometry.dispose(); o.material.dispose(); } });
   pmrem.dispose();
   return env;
 }

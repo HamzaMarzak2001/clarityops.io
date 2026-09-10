@@ -4,6 +4,7 @@ import { RenderPass }     from 'three/addons/postprocessing/RenderPass.js';
 import { UnrealBloomPass} from 'three/addons/postprocessing/UnrealBloomPass.js';
 import { OutputPass }     from 'three/addons/postprocessing/OutputPass.js';
 import { makeEnv } from './env.js';
+import { makeStage } from './stage.js';
 import { makeCamera } from './camera.js';
 import { makeDriveLine } from './driveline.js';
 import { makeSprockets } from './sprockets.js';
@@ -31,45 +32,60 @@ export function boot(canvas) {
   if (T === 'E') return { tier: T, enabled: false };
 
   const renderer = new THREE.WebGLRenderer({
-    canvas, antialias: T === 'A', alpha: true, powerPreference: 'high-performance',
+    // NOTE: antialias is IGNORED once we render through EffectComposer.
+    canvas, alpha: true, powerPreference: 'high-performance',
   });
   const DPR_CAP = T === 'A' ? 1.85 : 1.4;
   renderer.setPixelRatio(Math.min(devicePixelRatio, DPR_CAP));
   renderer.setSize(innerWidth, innerHeight, false);
-  renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 1.25;
+  // AgX holds the accent's hue at intensity; ACES drags #fcff02 toward white.
+  renderer.toneMapping = THREE.AgXToneMapping;
+  renderer.toneMappingExposure = 1.0;
+  if (T === 'A') { renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap; }
 
   const scene = new THREE.Scene();
   scene.environment = makeEnv(renderer);
-  // depth: far links recede into the page ground instead of floating flat
-  scene.fog = new THREE.FogExp2(0x060607, 0.035);
+  // Fog must be LIGHTER than the page ground. FogExp2(0x060607) was
+  // byte-identical to the ground and therefore DELETED distant parts
+  // instead of shading them.
+  scene.fog = new THREE.Fog(0x232830, 6, 20);
 
-  const key = new THREE.DirectionalLight('#eaf2ff', 3.4);
-  key.position.set(3.0, 4.0, 3.5);
+  // Two lights, not three. The yellow rim made the accent read as a wash;
+  // torque now arrives as a REFLECTION from the env's TORQUE quad.
+  const key = new THREE.DirectionalLight('#ffffff', 1.6);
+  key.position.set(-3.4, 5.2, 3.0);
+  if (T === 'A') {
+    key.castShadow = true;
+    key.shadow.mapSize.set(1024, 1024);
+    Object.assign(key.shadow.camera, { left: -6, right: 6, top: 6, bottom: -6 });
+    key.shadow.bias = -0.0008; key.shadow.normalBias = 0.02; key.shadow.radius = 4;
+  }
   scene.add(key);
-  const fill = new THREE.DirectionalLight('#5f6a7a', 1.2);
-  fill.position.set(-4.0, -1.5, 2.0);
-  scene.add(fill);
-  const rim = new THREE.DirectionalLight('#fcff02', 1.4);
-  rim.position.set(-2.0, 1.0, -4.0);
-  scene.add(rim);
+  scene.add(new THREE.HemisphereLight('#e9ecef', '#0a0b0d', 0.35));
+
+  const stage = makeStage();
+  scene.add(stage.plate);
+  stage.plate.position.x += 1.9;
 
   const { cam, apply: applyCam, resize: resizeCam } = makeCamera(innerWidth / innerHeight);
   const line = makeDriveLine();
   const spr  = makeSprockets();
   const rig  = new THREE.Group();
   rig.add(line.mesh, spr.group);
+  line.mesh.castShadow = true;
   scene.add(rig);
 
   // ── postprocessing: bloom is what makes engaged metal read as ENERGISED.
   //    Threshold is high so only the emissive links bloom — the steel never does.
   const composer = new EffectComposer(renderer);
   composer.addPass(new RenderPass(scene, cam));
+  // threshold 0.72 / strength 1.15 bloomed the steel's own speculars —
+  // the exact recipe for demo haze. Only the emissive torque should bloom.
   const bloom = new UnrealBloomPass(
     new THREE.Vector2(innerWidth, innerHeight),
-    T === 'A' ? 1.15 : 0.95,   // strength
-    0.62,                      // radius
-    0.72                       // threshold
+    T === 'A' ? 0.55 : 0.42,   // strength
+    0.30,                      // radius
+    0.90                       // threshold
   );
   composer.addPass(bloom);
   composer.addPass(new OutputPass());
@@ -108,11 +124,13 @@ export function boot(canvas) {
     // secondary motion — the rig is never perfectly still, so the scene reads
     // as running machinery rather than a frozen render
     const t = now * 0.001;
+    rig.position.x = 1.9;   // clear of the copy column; the bench restructure replaces this
     rig.rotation.y = Math.sin(t * 0.22) * 0.10 + progress * 0.30;
     rig.rotation.x = Math.sin(t * 0.17) * 0.045 - 0.06;
     rig.position.y = Math.sin(t * 0.31) * 0.045;
 
     applyCam(progress);
+    stage.apply(progress);
     line.apply(progress);
     spr.apply(progress);
     composer.render();
