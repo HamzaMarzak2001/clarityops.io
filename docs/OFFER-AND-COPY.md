@@ -1,3 +1,18 @@
+> **OWNER DECISION (supersedes the pricing sections below):** published pricing is
+> **not** being used. All dollar figures in this document — $14,000 / $6,500 / $1,500 /
+> $1,800-per-month / $150-per-hour — were competitor-anchored recommendations and have
+> been **removed from the live page**.
+>
+> The certainty mechanic is preserved without a number: **fixed scope** and **fixed date**
+> still stand, and the **Ops Blueprint is the pricing gate** — the client sees one fixed
+> quote there, before committing to the build. The "What does this cost?" FAQ answers the
+> *mechanism* (what drives the number, and that a real range is given on the 30-minute
+> call) rather than dodging, which was the original conversion leak.
+>
+> Everything else in this document stands.
+
+---
+
 # ClarityOps — Final Offer, Positioning & Page Copy
 **Prepared for: the owner. Status: ready to ship, pending the four confirmations in §7.**
 
