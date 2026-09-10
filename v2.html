@@ -13,6 +13,17 @@
 </head>
 <body>
 
+<script type="importmap">
+{"imports":{
+  "three": "/vendor/three-0.186.0.esm.min.js",
+  "three/addons/": "/vendor/three-addons/",
+  "gsap": "/vendor/gsap-3.13.0.esm.js",
+  "gsap/ScrollTrigger": "/vendor/gsap-scrolltrigger-3.13.0.esm.js",
+  "lenis": "/vendor/lenis-1.3.11.esm.js"
+}}
+</script>
+
+
 
 
 
@@ -34,71 +45,57 @@
   </div>
 </nav>
 
-<!-- ══ HERO ══ -->
-<header class="hero" data-sheet="01" data-label="System">
-  <div class="shell">
-    <div class="grid hero__grid">
+<!-- ══ SEQUENCE — sticky pin, copy scrolls past, 3D scrubs ══ -->
+<section id="seq" class="seq">
+  <div class="seq__pin" id="seqPin">
+    <canvas id="gl" class="seq__gl" aria-hidden="true"></canvas>
+  </div>
 
-      <div class="hero__col-text">
-        <div class="hero__eyebrow" data-r>
-          <span class="meta meta--torque">Notion · Automation · AI</span>
-        </div>
-
-        <h1 class="display hero__title" data-r style="--d:.05s">
-          One system that runs your operations.
-          <em>Built in five weeks, at a fixed price.</em>
-        </h1>
-
-        <p class="lede hero__sub" data-r style="--d:.1s">
-          For 5&ndash;50 person teams running on spreadsheets, Slack and six tools that
-          don&rsquo;t talk. Seven connected databases, ten automations, one AI agent,
-          one daily page.
-        </p>
-
-        <div class="spec" data-r style="--d:.15s">
-          <div class="spec__item"><b>5 weeks</b> kickoff to handover</div>
-          <div class="spec__item"><b>Fixed price</b> agreed before we build</div>
-          <div class="spec__item">You own all of it &mdash; <b>no lock-in</b></div>
-        </div>
-
-        <div class="hero__actions" data-r style="--d:.2s">
-          <a href="https://cal.com/clarityops.io/discovery" target="_blank" rel="noopener" class="btn btn--primary">
-            Book a 30-minute ops call <span class="btn__arrow">&rarr;</span>
-          </a>
-          <a href="#proof" class="btn btn--ghost">
-            See the four builds, in full <span class="btn__arrow">&rarr;</span>
-          </a>
-        </div>
-        <p class="hero__note" data-r style="--d:.25s">
-          You leave with a map of how your company runs today and where it breaks.
-          Yours to keep either way.
-        </p>
-
-        <div class="hero__capacity" data-r style="--d:.3s">
-          <i></i>
-          <span class="meta">2 Sprint slots open this month &middot; next opening October</span>
-        </div>
+  <div class="seq__copy" id="seqCopy">
+    <div class="seq__ch on" data-ch="00">
+      <span class="meta meta--torque">Notion &middot; Automation &middot; AI</span>
+      <h1 class="display seq__h">One system that runs your operations.</h1>
+      <p class="lede">For 5&ndash;50 person teams running on spreadsheets, Slack and six tools that don&rsquo;t talk.</p>
+      <div class="hero__actions" style="margin-top:30px">
+        <a href="https://cal.com/clarityops.io/discovery" target="_blank" rel="noopener" class="btn btn--primary">Book a 30-minute ops call <span class="btn__arrow">&rarr;</span></a>
       </div>
-
-      <div class="hero__col-art" data-r style="--d:.18s">
-        <div class="gl-legend">
-          <div class="gl-legend__row"><span class="gl-legend__k">01</span><span>Notion &mdash; the driver</span></div>
-          <div class="gl-legend__row"><span class="gl-legend__k">02</span><span>Automations &mdash; the idlers</span></div>
-          <div class="gl-legend__row"><span class="gl-legend__k">03</span><span>AI agents &mdash; the output</span></div>
-          <p class="gl-legend__note">Nothing in a drive line turns until every part is linked and tensioned.</p>
-        </div>
-      </div>
-
     </div>
 
-    <div class="titleblock" data-r style="--d:.35s">
-      <div><b>ClarityOps</b></div>
-      <div>Drive line</div>
-      <div>Sheet 01 of 09</div>
-      <div>Scale 1:1</div>
+    <div class="seq__ch" data-ch="01">
+      <span class="meta">01 &mdash; Today</span>
+      <h2 class="statement seq__h">Your operations are in pieces.</h2>
+      <p class="lede">The project lives in a spreadsheet. The status lives in Slack. The numbers live in four dashboards that disagree. The only thing connecting it is you, remembering.</p>
+    </div>
+
+    <div class="seq__ch" data-ch="02">
+      <span class="meta">02 &mdash; The build</span>
+      <h2 class="statement seq__h">Seven databases. Ten automations. One agent.</h2>
+      <p class="lede">Connected, wired into the tools you already pay for, with AI doing real work inside the system &mdash; not a chatbot beside it.</p>
+    </div>
+
+    <div class="seq__ch" data-ch="03">
+      <span class="meta">03 &mdash; The result</span>
+      <h2 class="statement seq__h">One machine.</h2>
+      <p class="lede">Fixed scope. Fixed price agreed before we build. Live by day 35, documented, migrated, your team trained on it.</p>
+    </div>
+
+    <div class="seq__ch" data-ch="04">
+      <span class="meta">04 &mdash; And it runs</span>
+      <h2 class="statement seq__h">It keeps running without you.</h2>
+      <p class="lede">You own every database, every automation and every agent. No licence, no lock-in.</p>
+      <div class="hero__actions" style="margin-top:30px">
+        <a href="https://cal.com/clarityops.io/discovery" target="_blank" rel="noopener" class="btn btn--primary">Book a 30-minute ops call <span class="btn__arrow">&rarr;</span></a>
+        <a href="#proof" class="btn btn--ghost">See the four builds <span class="btn__arrow">&rarr;</span></a>
+      </div>
     </div>
   </div>
-</header>
+</section>
+
+<div class="seq__ro" id="seqRo">
+  <span class="ro__label" id="seqLabel">Intake</span>
+  <span class="ro__bar"><i id="seqBar"></i></span>
+  <span class="ro__ct" id="seqCt">000</span>
+</div>
 
 <!-- ══ TRUST ══ -->
 <section class="trust" id="trust" data-sheet="01" data-label="Proof">
@@ -439,6 +436,38 @@
   </div>
 </footer>
 
+<script type="module">
+  import * as _three from 'three';
+  const gsapMod = await import('gsap');
+  const gsap = gsapMod.gsap || gsapMod.default;
+  window.gsap = gsap;                                  // ScrollTrigger resolves it here
+  const stMod = await import('gsap/ScrollTrigger');
+  const ScrollTrigger = stMod.ScrollTrigger || stMod.default;
+  gsap.registerPlugin(ScrollTrigger);
+
+  const LenisMod = await import('lenis');
+  const Lenis = LenisMod.default || LenisMod.Lenis;
+  const lenis = new Lenis({ autoRaf:false, duration:1.5, lerp:0.075,
+    smoothWheel:true, wheelMultiplier:0.8, touchMultiplier:0.9 });
+  gsap.ticker.add(t => lenis.raf(t * 1000));           // ONE clock for everything
+  gsap.ticker.lagSmoothing(0);
+  lenis.on('scroll', ScrollTrigger.update);
+  window.__lenis = lenis;
+
+  try {
+    const { bootSequence } = await import('./gl/sequence.js');
+    window.__seq = await bootSequence({
+      gsap, ScrollTrigger,
+      canvas:  document.getElementById('gl'),
+      wrapper: document.getElementById('seq'),
+      pin:     document.getElementById('seqPin'),
+      copy:    document.getElementById('seqCopy'),
+    });
+  } catch (e) {
+    console.warn('[seq] disabled:', e);
+    document.documentElement.dataset.gl = 'E';
+  }
+</script>
 <script src="script-v2.js"></script>
 </body>
 </html>

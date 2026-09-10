@@ -783,3 +783,69 @@ html[data-gl="E"] .gl, html[data-gl="E"] .gl-scrim { display: none; }
   .bench__ro { left: var(--gutter); bottom: 20px; }
 }
 @media (max-width: 720px) { .bench__ro { display: none; } .dev { aspect-ratio: 3/2; } }
+
+/* ═══ THE SEQUENCE ═══════════════════════════════════════════════
+   Palmo's structure: a CSS-sticky pin holds the canvas for the whole
+   runway while absolutely-positioned copy scrolls past it. The wrapper's
+   height is written in px by a ResizeObserver measuring the copy, so the
+   scroll length is always exactly as long as the content. */
+.seq { position: relative; z-index: 2; }
+
+.seq__pin {
+  position: sticky; top: 0;
+  height: 100svh;
+  z-index: 1;
+  pointer-events: none;
+}
+.seq__gl {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  opacity: 0; transition: opacity 1s var(--ease);
+}
+.seq__gl.is-live { opacity: 1; }
+
+.seq__copy {
+  position: absolute; inset: 0 auto auto 0;
+  width: 100%;
+  z-index: 2;
+  pointer-events: none;
+}
+.seq__copy a, .seq__copy button { pointer-events: auto; }
+
+/* one viewport per chapter; copy sits left, mechanism right — they never
+   overlap, so nothing needs a scrim over it */
+.seq__ch {
+  height: 100svh;
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+  display: flex; flex-direction: column; justify-content: center;
+  opacity: 0; transform: translateY(14px);
+  transition: opacity .6s var(--ease), transform .6s var(--ease);
+}
+.seq__ch.on { opacity: 1; transform: none; }
+.seq__ch > * { max-width: 40ch; }
+.seq__ch .meta { margin-bottom: 22px; }
+.seq__h { margin-bottom: 20px; }
+
+/* readout — label, progress rule, zero-padded counter */
+.seq__ro {
+  position: fixed; left: var(--gutter); bottom: 34px; z-index: 6;
+  display: flex; align-items: center; gap: 14px;
+  font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--muted);
+  opacity: 0; transition: opacity .4s var(--ease);
+  pointer-events: none;
+}
+.seq__ro.on { opacity: 1; }
+
+html[data-gl="E"] .seq__gl { display: none; }
+html[data-gl="E"] .seq__ch { opacity: 1; transform: none; }
+
+@media (max-width: 1080px) { .seq__ch > * { max-width: 34ch; } }
+@media (max-width: 720px) {
+  .seq__ro { display: none; }
+  .seq__ch { height: auto; padding-block: 84px; }
+  .seq__copy { position: relative; }
+  .seq__pin { display: none; }
+}
