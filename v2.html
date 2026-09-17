@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>ClarityOps. One system that runs your operations</title>
 <meta name="description" content="Notion, automations and one AI agent, wired together in five weeks. Seven connected databases, ten automations, one reporting surface. Fixed scope, fixed price, you own everything." />
-<meta name="theme-color" content="#d3d9d0" />
+<meta name="theme-color" content="#0a0c0e" />
 <link rel="icon" type="image/svg+xml" href="assets/logos/favicon.svg" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -427,8 +427,8 @@
   const ui = bootUI({ gsap, ScrollTrigger, lenis, reduce });
 
   try {
-    const { bootPanel } = await import('./gl/panel.js');
-    window.__panel = await bootPanel({
+    const { bootLight } = await import('./gl/light.js');
+    window.__panel = await bootLight({
       gsap, ScrollTrigger, reduce,
       canvas: document.getElementById('gl'),
       wrapper: document.getElementById('top'),

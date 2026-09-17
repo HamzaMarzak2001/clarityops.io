@@ -10,17 +10,17 @@
 }
 
 :root {
-  --enamel: #d3d9d0;      /* page ground: pale grey-green enamel */
-  --enamel-2: #c5ccc2;    /* recessed field */
-  --plate: #e4e8e1;       /* lifted plate */
-  --graphite: #1a1e21;    /* the one dark band */
-  --ink: #14171a;
-  --ink-2: #3a4047;
-  --ink-3: #565c63;       /* muted, still 4.6:1 on enamel */
-  --steel: #8f979d;       /* rules, hairlines */
-  --steel-2: #aab1b6;
-  --run: #6eb707;         /* the accent: lamps, primary action. Never text. */
-  --run-ink: #14171a;     /* text on the accent */
+  --enamel: #0a0c0e;      /* page ground: the night canvas */
+  --enamel-2: #0e1113;    /* the lifted band */
+  --plate: #14181b;       /* lifted plate */
+  --graphite: #111517;    /* the as-built wall */
+  --ink: #eef1ec;
+  --ink-2: #b9c0c4;
+  --ink-3: #8a9196;       /* muted, 6:1 on the canvas */
+  --steel: #3b4247;       /* rules, hairlines */
+  --steel-2: #262c30;
+  --run: #6eb707;         /* the accent: light, primary action. Never text. */
+  --run-ink: #0a0c0e;     /* text on the accent */
   --pending: #b4462a;     /* the only other chroma: "attribution pending", for the owner's eyes */
 
   --sans: 'Archivo', 'Archivo Fallback', 'Helvetica Neue', Arial, sans-serif;
@@ -180,7 +180,7 @@ h1, h2, h3, h4 { margin: 0; font-weight: 600; text-wrap: balance; }
 /* ── Logo wall: directly under the hero, logos only, the one marquee ── */
 .wall { padding: 34px 0 30px; border-top: 1px solid var(--steel-2); border-bottom: 1px solid var(--steel-2); background: var(--enamel-2); overflow: hidden; }
 .wall__track { display: flex; align-items: center; width: max-content; animation: wall 64s linear infinite; }
-.wall__track img { height: 26px; width: auto; max-width: 150px; margin-right: 72px; object-fit: contain; filter: brightness(0) saturate(100%); opacity: .62; transition: opacity .3s; }
+.wall__track img { height: 26px; width: auto; max-width: 150px; margin-right: 72px; object-fit: contain; filter: brightness(0) invert(1); opacity: .55; transition: opacity .3s; }
 .wall__track img:hover { opacity: 1; }
 @keyframes wall { to { transform: translateX(-50%); } }
 
@@ -241,7 +241,7 @@ h1, h2, h3, h4 { margin: 0; font-weight: 600; text-wrap: balance; }
 .plateobj {                       /* the engraved rating plate: a real object */
   position: sticky; top: 96px;
   background: var(--plate); border: 1px solid var(--steel-2); border-radius: var(--plate-r);
-  padding: 26px 26px 22px; box-shadow: 0 1px 0 rgba(255,255,255,.6) inset, 0 2px 2px rgba(0,0,0,.04), 0 12px 24px -16px rgba(0,0,0,.25);
+  padding: 26px 26px 22px; box-shadow: 0 1px 0 rgba(255,255,255,.05) inset, 0 12px 24px -16px rgba(0,0,0,.6);
 }
 .plateobj::before, .plateobj::after { content: ''; position: absolute; width: 8px; height: 8px; border-radius: 50%; background: var(--enamel-2); box-shadow: inset 0 1px 1px rgba(0,0,0,.35); top: 10px; }
 .plateobj::before { left: 10px; } .plateobj::after { right: 10px; }
@@ -376,20 +376,19 @@ h1, h2, h3, h4 { margin: 0; font-weight: 600; text-wrap: balance; }
 }
 
 /* ── Night: the hero is the one dark band; the reading sections are enamel ── */
-.seq { background: #090b0d; color: var(--plate); }
-.seq .lede { color: #b9c0c4; }
+.seq { background: var(--enamel); color: var(--ink); }
 .seq__pin::after {                 /* light falls off toward the copy; keeps the type legible */
   content: ''; position: absolute; inset: 0; pointer-events: none;
-  background: linear-gradient(90deg, rgba(9,11,13,.80) 0%, rgba(9,11,13,.46) 34%, rgba(9,11,13,0) 58%);
+  background: linear-gradient(90deg, rgba(10,12,14,.55) 0%, rgba(10,12,14,.25) 30%, rgba(10,12,14,0) 50%);
 }
-.seq .btn--line { border-color: var(--plate); color: var(--plate); }
+.seq .btn--line { border-color: var(--ink); color: var(--ink); }
 .seq .btn--line:hover { background: rgba(228,232,225,.08); }
 .seq__legend .label { color: #c9cfd3; }
 .seq__legend i { background: #2c3236; }
 .seq__legend .num { color: #9ea6ab; }
-.nav.is-dark { color: var(--plate); }
+.nav.is-dark { color: var(--ink); }
 .nav.is-dark .nav__links a { color: #b9c0c4; }
-.nav.is-dark .nav__links a:hover { background: rgba(228,232,225,.08); color: var(--plate); }
+.nav.is-dark .nav__links a:hover { background: rgba(228,232,225,.08); color: var(--ink); }
 .nav.is-dark::before { background: rgba(9,11,13,.72); border-color: #22282c; }
 @media (max-width: 899px) {
   .seq__pin::after { background: linear-gradient(180deg, rgba(9,11,13,0) 28%, rgba(9,11,13,.78) 50%, rgba(9,11,13,.97) 66%); }
@@ -398,3 +397,17 @@ h1, h2, h3, h4 { margin: 0; font-weight: 600; text-wrap: balance; }
 /* ── Line masks: headlines arrive and leave as lines, not as a fade ── */
 .ln { display: block; overflow: hidden; padding-bottom: .1em; margin-bottom: -.1em; }
 .ln__i { display: block; will-change: transform; }
+
+/* ── Night, throughout ── */
+.nav::before { background: color-mix(in srgb, var(--enamel) 82%, transparent); }
+.btn--run:hover { background: #82d40f; }
+.mon { background: #050708; border-color: #2b3236; }
+.plateobj::before, .plateobj::after { background: #090b0d; box-shadow: inset 0 1px 1px rgba(255,255,255,.08); }
+.layer__lamp { background: #22282c; }
+.lock__sw { background: #22282c; }
+.lock__sw::after { background: #dfe4de; }
+.tools span { border-color: #2b3236; }
+.fig .nd { fill: #14181b; }
+.fig .lamp--off { fill: #2b3236; }
+.rule { background: #22282c; }
+.band--graphite .rule { background: #2b3236; }
