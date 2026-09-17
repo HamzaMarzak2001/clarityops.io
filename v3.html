@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>ClarityOps: one system that runs your operations</title>
+<meta name="description" content="ClarityOps builds the operating system your business runs on, in Notion: seven connected databases, ten automations across the tools you already pay for, and an AI agent doing real work inside it. Live in five weeks." />
+<meta name="theme-color" content="#f5f5f7" />
+<link rel="icon" type="image/svg+xml" href="assets/logos/favicon.svg" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@1&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles-v3.css" />
+<script type="importmap">
+{"imports":{ "gsap": "/vendor/gsap-3.13.0.esm.js", "gsap/ScrollTrigger": "/vendor/gsap-scrolltrigger-3.13.0.esm.js" }}
+</script>
+</head>
+<body>
+
+<nav class="nav" id="nav" aria-label="Primary">
+  <a href="#top" class="nav__brand"><img src="assets/logos/logo-icon-white.svg" alt="" width="20" height="20" /> ClarityOps</a>
+  <ul class="nav__links">
+    <li><a href="#system">The system</a></li>
+    <li><a href="#builds">Four builds</a></li>
+    <li><a href="#promises">Promises</a></li>
+    <li><a href="#faq">FAQ</a></li>
+  </ul>
+  <a href="https://cal.com/clarityops.io/discovery" target="_blank" rel="noopener" class="btn btn--white">Book a call</a>
+</nav>
+
+<main id="top">
+<!-- hero -->
+<section class="hero">
+  <div class="shell">
+    <span class="eyebrow eyebrow--pill reveal"><i></i> Notion, automation and AI</span>
+    <h1 class="h1 reveal" style="--d:.05s">Your operations,<span class="serif">finally one system.</span></h1>
+    <p class="lede reveal" style="--d:.1s">ClarityOps builds the <b>operating system your business runs on</b>, in Notion: seven connected databases, ten automations across the tools you already pay for, and an AI agent doing real work inside it. <b>Live in five weeks, at a fixed price.</b></p>
+    <div class="hero__actions reveal" style="--d:.15s">
+      <a href="https://cal.com/clarityops.io/discovery" target="_blank" rel="noopener" class="btn btn--primary">Book a 30-minute ops call</a>
+      <a href="#builds" class="btn btn--soft">See the four builds</a>
+    </div>
+    <p class="small hero__note reveal" style="--d:.2s">For teams of 5 to 50. You own everything we build.</p>
+  </div>
+</section>
+
+<!-- the product, in a MacBook, running -->
+<div class="mbp-track" id="mbpTrack">
+  <div class="mbp-stage">
+    <div class="mbp" id="mbp">
+      <div class="mbp__lid">
+        <div class="mbp__notch"><span class="mbp__cam"></span></div>
+        <div class="mbp__screen" id="screen">
+          <div class="hq" id="hq" aria-label="A ClarityOps operating system in Notion, with automations running">
+            <div class="hq__top">
+              <div class="hq__crumb"><i></i> ClarityOps HQ <span>/</span> <b>Deals</b></div>
+              <div class="hq__topr"><span>Edited just now</span><span>Share</span><div class="hq__avatars"><span></span><span></span><span></span></div></div>
+            </div>
+            <aside class="hq__side">
+              <div class="hq__ws"><i></i> ClarityOps HQ</div>
+              <div class="hq__search">Search</div>
+              <div class="hq__item"><i></i> Daily page <span class="dot"></span></div>
+              <div class="hq__item"><i></i> Weekly scorecard</div>
+              <div class="hq__group">Databases</div>
+              <div class="hq__item"><i></i> Projects</div>
+              <div class="hq__item"><i></i> Clients</div>
+              <div class="hq__item is-on"><i></i> Deals</div>
+              <div class="hq__item"><i></i> Tasks</div>
+              <div class="hq__item"><i></i> Documents</div>
+              <div class="hq__item"><i></i> Invoices</div>
+              <div class="hq__item"><i></i> Team</div>
+              <div class="hq__group">System</div>
+              <div class="hq__item"><i></i> Automations <span class="dot"></span></div>
+              <div class="hq__item"><i></i> Agent</div>
+              <div class="hq__item"><i></i> SOP library</div>
+            </aside>
+            <section class="hq__main">
+              <div class="hq__title"><i></i> Deals</div>
+              <div class="hq__views"><span class="is-on">Table</span><span>Board</span><span>Calendar</span><span>Timeline</span></div>
+              <table class="hq__table">
+                <thead><tr><th>Deal</th><th>Stage</th><th>Value</th><th>Contact</th><th>Next step</th><th>Owner</th></tr></thead>
+                <tbody>
+                  <tr id="hqNewRow" class="hq__row--new" hidden><td>Hilltop Duplex</td><td><span class="pill pill--lead" id="hqStage">Lead</span></td><td>$640,000</td><td>J. Alvarez</td><td>Review summary</td><td>Sam</td></tr>
+                  <tr><td>Riverside Lot 14</td><td><span class="pill pill--offer">Offer</span></td><td>$412,000</td><td>M. Chen</td><td>Counter by Fri</td><td>Sam</td></tr>
+                  <tr><td>Maple Street Triplex</td><td><span class="pill pill--qual">Qualified</span></td><td>$885,000</td><td>R. Okafor</td><td>Site visit Tue</td><td>Lena</td></tr>
+                  <tr><td>Oakridge Warehouse</td><td><span class="pill pill--close">Closing</span></td><td>$1,260,000</td><td>D. Park</td><td>Wire on the 24th</td><td>Lena</td></tr>
+                  <tr><td>Bayview Cottage</td><td><span class="pill pill--qual">Qualified</span></td><td>$338,000</td><td>A. Rossi</td><td>Send comps</td><td>Sam</td></tr>
+                  <tr><td>Kingsway Retail Unit</td><td><span class="pill pill--lead">Lead</span></td><td>$520,000</td><td>T. Nguyen</td><td>First call</td><td>Lena</td></tr>
+                  <tr><td>Harbor Point Condo</td><td><span class="pill pill--offer">Offer</span></td><td>$296,000</td><td>K. Weber</td><td>Inspection</td><td>Sam</td></tr>
+                </tbody>
+              </table>
+            </section>
+            <aside class="hq__panel">
+              <div class="hq__ptitle">Automations <span class="live">Running</span></div>
+              <div class="hq__feed">
+                <div class="hq__ev"><i></i><span><b>New lead captured</b>Facebook Lead Ads, Hilltop Duplex</span><small>14:02</small></div>
+                <div class="hq__ev"><i></i><span><b>Deal created, contact matched</b>J. Alvarez, existing client</span><small>14:02</small></div>
+                <div class="hq__ev"><i></i><span><b>Drive folder created</b>Deals / Hilltop Duplex</span><small>14:02</small></div>
+                <div class="hq__ev"><i></i><span><b>Stage moved to Qualified</b>Budget and timeline confirmed</span><small>14:03</small></div>
+                <div class="hq__ev"><i></i><span><b>Agent parsing MLS report</b>Property summary doc</span><small>14:03</small></div>
+                <div class="hq__ev"><i></i><span><b>Scorecard updated</b>Pipeline value, this quarter</span><small>14:03</small></div>
+              </div>
+              <div class="hq__agent">
+                <div class="who"><i></i> Agent, property summary</div>
+                <p id="hqAgent" data-text="Hilltop Duplex: 2 units, 3 bed and 2 bed, 2,140 sqft total, built 1988. Listed 14 days at $640k, comps average $612k. Roof replaced 2021. Recommend offer at $598k, subject to inspection."></p>
+              </div>
+              <div class="hq__scorecard">
+                <div class="hq__kpi" id="hqKpi"><small>Pipeline</small><b>$2.77M</b><em>this quarter</em></div>
+                <div class="hq__kpi"><small>Manual steps left</small><b>0</b><em>of 31 on the ledger</em></div>
+              </div>
+            </aside>
+          </div>
+        </div>
+      </div>
+      <div class="mbp__base"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ticker -->
+<div class="ticker" aria-hidden="true">
+  <div class="ticker__track" id="ticker"></div>
+</div>
+
+<!-- logos -->
+<section class="logos">
+  <div class="shell">
+    <p class="small center reveal">Trusted by 300+ businesses, with 1,200+ automations running right now</p>
+    <div class="logos__grid reveal" id="logoGrid"></div>
+  </div>
+</section>
+
+<!-- the system: one big card, four tabs -->
+<section class="sec" id="system">
+  <div class="feat-hold" id="featHold">
+    <div class="feat-pin">
+      <div class="shell">
+        <div class="sec__head">
+          <span class="eyebrow reveal">One system, four layers</span>
+          <h2 class="h2 reveal" style="--d:.05s">Everything your company runs on.<span class="serif">Finally in one place.</span></h2>
+        </div>
+        <div class="tabs reveal" style="--d:.1s" role="tablist">
+          <button role="tab">Records</button><button role="tab">Wiring</button><button role="tab">Agent</button><button role="tab">Reporting</button>
+        </div>
+        <div class="feat-card card reveal" style="--d:.15s">
+          <div class="feat-card__shot">
+            <img src="assets/images/case-studies/labinno/architecture.png" alt="Labinno system architecture: seven connected databases" loading="lazy" />
+            <img src="assets/images/case-studies/mae-media/integration.png" alt="MAE Media integration stack: ten automations across eight platforms" loading="lazy" />
+            <img src="assets/images/case-studies/bourbon-holdings/workflow.png" alt="Bourbon Holdings workflow: AI parsing MLS reports into deal docs" loading="lazy" />
+            <img src="assets/images/case-studies/fryaway/results.png" alt="FryAway daily reporting page" loading="lazy" />
+          </div>
+          <div class="feat-card__copy">
+            <div data-feat><span class="eyebrow">Records</span><h3 class="h3">One system of record</h3><p class="lede">Connected databases where the work actually lives: projects, clients, deals, tasks, invoices, documents, team. Role-filtered views, so your team, your clients and your partners each see only their slice.</p><p class="feat-card__ev">Labinno, Geneva: 7 connected databases running every project from tender to handover.</p></div>
+            <div data-feat hidden><span class="eyebrow">Wiring</span><h3 class="h3">The wiring between your tools</h3><p class="lede">Automations that move data so nobody has to remember to. Drive folders the moment a project exists. QuickBooks landing in a live scorecard. A daily Meta Ads sync. Leads captured and routed without a human touching them.</p><p class="feat-card__ev">MAE Media: 10+ automations across 8 platforms. Bourbon Holdings: 6 across 5.</p></div>
+            <div data-feat hidden><span class="eyebrow">Agent</span><h3 class="h3">AI doing real work inside it</h3><p class="lede">An agent with write access into your databases: parsing documents into records, drafting, and keeping reporting current without anyone opening a spreadsheet. Not a chatbot beside the system.</p><p class="feat-card__ev">Bourbon Holdings: MLS reports parsed into the property summary doc, automatically.</p></div>
+            <div data-feat hidden><span class="eyebrow">Reporting</span><h3 class="h3">One page every morning</h3><p class="lede">The daily dashboard or weekly scorecard that replaces the spreadsheet somebody rebuilds by hand every Monday. Revenue by channel, spend by platform, the numbers that used to disagree, agreeing.</p><p class="feat-card__ev">FryAway: 4 reporting surfaces collapsed into 1 daily page, ROAS computed automatically.</p></div>
+          </div>
+        </div>
+        <div class="bento reveal" style="--d:.2s">
+          <div class="b-dark"><b>0</b><h4>Templates. Licences. Lock-in.</h4><p>Built custom, in your Notion and your automation accounts. No recurring fee unless you choose the retainer.</p></div>
+          <div class="b-white"><b>35</b><h4>Days to live</h4><p>Blueprint signed in week one, first automation live by day 10, the whole system by day 35.</p></div>
+          <div class="b-green"><b>4h</b><h4>Of your time, total</h4><p>One 90-minute session, two 45-minute reviews, one training. We do the migration and write the documentation.</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- the numbers, on dark, pinned -->
+<section class="sec sec--dark" style="padding:0">
+  <div class="num-track">
+    <div class="num-pin">
+      <div class="shell numbers">
+        <div>
+          <span class="eyebrow reveal">What disappears</span>
+          <h2 class="h2 reveal" style="--d:.05s">Every manual step, on a ledger.<span class="serif">Then gone.</span></h2>
+          <p class="lede reveal" style="--d:.1s">In week one we write down every recurring manual step in your company: who does it, how often, how many minutes. You sign it. At handover we re-score it, and you see exactly what disappeared.</p>
+          <div class="numgrid reveal" style="--d:.15s">
+            <div><b data-count="300" data-suffix="+">300+</b><h4>Businesses served</h4><p>Construction, agencies, real estate investment, DTC.</p></div>
+            <div><b data-count="1200" data-suffix="+">1,200+</b><h4>Automations running</h4><p>On Make.com, n8n and Zapier, inside the tools you already pay for.</p></div>
+            <div><b data-count="629">629</b><h4>Records migrated</h4><p>For one client. Migration up to 650 records is included.</p></div>
+            <div><b data-count="30">30</b><h4>Days of support</h4><p>After handover, with a Loom for every part of the system.</p></div>
+          </div>
+        </div>
+        <div class="ledger reveal" style="--d:.2s" aria-label="Manual-Step Ledger, illustrative">
+          <div class="ledger__head"><b>Manual-Step Ledger</b><span>Re-scored at handover</span></div>
+          <table>
+            <thead><tr><th>Step</th><th>Who</th><th>Min / week</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td class="gone">Copy new leads into the spreadsheet</td><td>Ops</td><td>90</td><td><span class="tag tag--elim">Eliminated</span></td></tr>
+              <tr><td class="gone">Create a Drive folder per project</td><td>PM</td><td>40</td><td><span class="tag tag--elim">Eliminated</span></td></tr>
+              <tr><td class="gone">Rebuild the Monday scorecard</td><td>Founder</td><td>120</td><td><span class="tag tag--elim">Eliminated</span></td></tr>
+              <tr><td class="gone">Chase status updates in Slack</td><td>PM</td><td>75</td><td><span class="tag tag--elim">Eliminated</span></td></tr>
+              <tr><td>Approve invoices over $5k</td><td>Founder</td><td>20</td><td><span class="tag tag--red">Reduced</span></td></tr>
+              <tr><td>Client kickoff call</td><td>Founder</td><td>60</td><td><span class="tag tag--keep">Kept</span></td></tr>
+            </tbody>
+          </table>
+          <div class="ledger__foot"><span>31 steps scored</span><b>325 minutes a week, gone</b></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- the four builds: an accordion -->
+<section class="sec sec--dark" id="builds" style="padding-top:0">
+  <div class="acc-track" id="accTrack">
+    <div class="acc-pin">
+      <div class="shell">
+        <div class="sec__head" style="display:flex;justify-content:space-between;align-items:flex-end;gap:24px;max-width:none">
+          <div><span class="eyebrow reveal">Four builds, in full</span><h2 class="h2 reveal" style="--d:.05s">Real systems.<span class="serif">Real screens.</span></h2></div>
+          <div class="acc__nav reveal" style="--d:.1s"><button>Labinno</button><button>Bourbon Holdings</button><button>FryAway</button><button>MAE Media</button></div>
+        </div>
+      </div>
+      <div class="shell">
+        <div class="acc" style="margin-top:26px">
+          <div class="acc__p"><img src="assets/images/case-studies/labinno/hero.png" alt="Labinno HQ overview" loading="lazy" /><span class="acc__label">Labinno</span><div class="acc__body"><span class="eyebrow">Construction, Geneva</span><h3 class="h3">Every project, tender to handover.<span class="serif">In French.</span></h3><p>Seven connected databases with projects at the centre. Role-filtered views for the team, the client and outside partners. Meeting minutes feed action items straight into tasks.</p><span class="acc__metric">7 databases, 6 live projects</span></div></div>
+          <div class="acc__p"><img src="assets/images/case-studies/bourbon-holdings/hero.png" alt="Bourbon Holdings HQ overview" loading="lazy" /><span class="acc__label">Bourbon Holdings</span><div class="acc__body"><span class="eyebrow">Real estate investment, Los Angeles</span><h3 class="h3">A deal desk that runs itself.</h3><p>A new lead becomes a deal with the contact matched. Every deal gets a Drive folder and a generated property summary. AI parses the MLS report into it. Calls log themselves. Refund windows are watched daily.</p><span class="acc__metric">629 records migrated, 6 automations across 5 platforms</span></div></div>
+          <div class="acc__p"><img src="assets/images/case-studies/fryaway/hero.png" alt="FryAway HQ overview" loading="lazy" /><span class="acc__label">FryAway</span><div class="acc__body"><span class="eyebrow">DTC consumer brand</span><h3 class="h3">One page every morning.</h3><p>Six databases on a shared date axis, so paid, owned and organic finally line up. Revenue by channel, ad spend by platform, ROAS computed automatically, a rolling 30-day trend.</p><span class="acc__metric">4 reporting surfaces collapsed into 1</span></div></div>
+          <div class="acc__p"><img src="assets/images/case-studies/mae-media/hero.png" alt="MAE Media HQ overview" loading="lazy" /><span class="acc__label">MAE Media</span><div class="acc__body"><span class="eyebrow">Media and marketing agency</span><h3 class="h3">A full agency OS.<span class="serif">Automated.</span></h3><p>Clients, projects, campaigns, invoices, tasks and team, plus a weekly scorecard. Drive folders on project creation. Daily Meta Ads sync across two ad accounts. QuickBooks feeding a live scorecard.</p><span class="acc__metric">10+ automations across 8 platforms</span></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- the five promises -->
+<section class="sec" id="promises">
+  <div class="shell steps">
+    <div class="steps__head">
+      <span class="eyebrow reveal">In writing, before you pay</span>
+      <h2 class="h2 reveal" style="--d:.05s">Five things we promise.<span class="serif">On paper.</span></h2>
+      <p class="lede reveal" style="--d:.1s">We can write these down because we have run this process 300+ times. They were always how we build. We just never put our name on them.</p>
+    </div>
+    <div>
+      <div class="step reveal"><span class="step__n">01.</span><div><h4>Blueprint Commitment</h4><p>You approve the architecture in Miro before we touch Notion. If the blueprint is not right, you do not pay for the build. You keep the blueprint and walk.</p></div></div>
+      <div class="step reveal"><span class="step__n">02.</span><div><h4>Fixed-Price Commitment</h4><p>The price quoted in your Blueprint is the price you pay. No hourly meter. Add scope and you see the cost in writing, and approve it, before we build it.</p></div></div>
+      <div class="step reveal"><span class="step__n">03.</span><div><h4>Day-10 Commitment</h4><p>At least one working automation is live and in use by day 10, before we build the rest. If it is not, that week is free.<em>Conditional on tool access by day 2 and feedback inside 48 hours.</em></p></div></div>
+      <div class="step reveal"><span class="step__n">04.</span><div><h4>Day-35 Commitment</h4><p>Live by day 35 from kickoff. If we run over for a reason that is ours, every additional week is free.<em>Same condition.</em></p></div></div>
+      <div class="step reveal"><span class="step__n">05.</span><div><h4>Manual-Step Commitment</h4><p>Every manual step marked "eliminate" on your signed Ledger is gone at handover, or we keep building at no extra charge until it is, for up to four more weeks.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- how it works -->
+<section class="sec" style="padding-top:0">
+  <div class="shell">
+    <div class="sec__head">
+      <span class="eyebrow reveal">Five weeks</span>
+      <h2 class="h2 reveal" style="--d:.05s">Map. Architect. Build.<span class="serif">Then embed.</span></h2>
+    </div>
+    <div class="proc">
+      <div class="reveal"><small>Week 1</small><h4>Map</h4><p>A 90-minute session on how your company actually runs. Every recurring manual step, written down and signed.</p><b>You get: the Ledger, the system map, the scope.</b></div>
+      <div class="reveal" style="--d:.06s"><small>Weeks 1 to 2</small><h4>Architect</h4><p>The full architecture in Miro: every database, view, automation and integration. You approve it before we build. First automation live on day 10.</p><b>You get: signed architecture, a fixed quote, one automation running.</b></div>
+      <div class="reveal" style="--d:.12s"><small>Weeks 2 to 4</small><h4>Build</h4><p>Databases, role-filtered views, automations, the agent, the reporting layer. A Loom at every milestone. You use parts of it from week 2.</p><b>You get: a live workspace and working automations.</b></div>
+      <div class="reveal" style="--d:.18s"><small>Weeks 4 to 5</small><h4>Embed</h4><p>Data migration, video documentation, the SOP library, one live training with your whole team, handover. Then 30 days of support.</p><b>You get: a trained team and the list of what disappeared.</b></div>
+    </div>
+  </div>
+</section>
+
+<!-- faq -->
+<section class="sec" id="faq" style="padding-top:0">
+  <div class="shell">
+    <div class="sec__head center" style="margin-inline:auto">
+      <span class="eyebrow reveal">FAQ</span>
+      <h2 class="h2 reveal" style="--d:.05s">Asked, answered.</h2>
+    </div>
+    <div class="faq reveal" style="--d:.1s">
+      <details open><summary>What does this cost?</summary><div>Every build is quoted as one fixed price, and you see that number in your Blueprint before you commit to the build, not as an hourly meter that moves. What drives it: how many databases, automations and platforms, how many people we train, how many records we migrate. We give you a real range on the 30-minute call.</div></details>
+      <details><summary>What if my team does not actually use it?</summary><div>That is the real risk in this kind of work, and it is why the last phase is called Embed rather than Handover. You get video documentation, a written SOP library and a live training session. Then: every manual step marked "eliminate" on your signed ledger is gone at handover, or we keep building, training and simplifying at no extra charge until it is, for up to four more weeks.</div></details>
+      <details><summary>Is this just a Notion setup?</summary><div>No. Notion is where the work lives. The automations are what make it move, and the AI agent is what does work inside it. For MAE Media that meant 10+ automations across 8 platforms, including QuickBooks feeding a live scorecard and a daily Meta Ads sync across two ad accounts. That is an operating layer, not a workspace.</div></details>
+      <details><summary>What happens to all our existing data?</summary><div>It moves. Migration is included, up to 650 records. We migrated 629 heir records into Bourbon Holdings' deal desk. You do not do the copying and you do not pay extra for it.</div></details>
+      <details><summary>I already have a Notion workspace. Is that wasted?</summary><div>No. The Blueprint audits what you already have, keeps what works, and the architecture you approve shows exactly what gets rebuilt versus retained.</div></details>
+      <details><summary>How much of my own time does this take?</summary><div>About 4 hours across five weeks: one 90-minute session, two 45-minute reviews, one 60-minute training. Plus feedback inside 48 hours at each milestone. We do the migration and write the documentation.</div></details>
+      <details><summary>What if the price moves or the timeline slips?</summary><div>The price quoted in your Blueprint is the price you pay; scope additions are quoted in writing and approved by you before they are built. Live by day 35, or any additional week that is our fault is free, provided we had tool access by day 2 and feedback inside 48 hours.</div></details>
+      <details><summary>Why not just buy a template, or hire someone in-house?</summary><div>A template gives you someone else's structure and the job of filling it in. An in-house hire gets you all three layers eventually, if they stay, and costs more than this in the first quarter. If a template genuinely is the right answer for you, we will say so.</div></details>
+      <details><summary>Do I need to be technical?</summary><div>No. You need to know how your business works. We handle everything else, and your team gets trained on the finished system with a Loom for each part of it.</div></details>
+      <details><summary>What happens after the 30 days?</summary><div>Nothing, unless you want it to. You own every database, every automation and every agent: no licence, no lock-in, no recurring fee. If you want us to keep building, there is an optional monthly retainer you can cancel any time, and everything keeps running when you do.</div></details>
+    </div>
+  </div>
+</section>
+
+<!-- the sprint -->
+<section class="sec" style="padding-top:0">
+  <div class="shell">
+    <div class="sec__head center" style="margin-inline:auto">
+      <span class="eyebrow reveal">The Ops OS Sprint</span>
+      <h2 class="h2 reveal" style="--d:.05s">One scope. One price.<span class="serif">Yours to keep.</span></h2>
+    </div>
+    <div class="sprint card reveal" style="--d:.1s">
+      <div class="sprint__top">
+        <span class="eyebrow">Five weeks, fixed</span>
+        <h3 class="h3">Quoted in your Blueprint.<span class="serif">Before you commit.</span></h3>
+        <p>One fixed price for the whole build, agreed in writing in week one. No hourly meter, nothing invoiced after the fact.</p>
+        <a href="https://cal.com/clarityops.io/discovery" target="_blank" rel="noopener" class="btn btn--primary">Book a 30-minute ops call</a>
+      </div>
+      <ul>
+        <li>The Ops Blueprint: ledger, system map, signed architecture</li>
+        <li>7 connected Notion databases with role-filtered views</li>
+        <li>10 automations across up to 8 platforms</li>
+        <li>One AI agent with write access into your system</li>
+        <li>One reporting surface: daily page or weekly scorecard</li>
+        <li>Data migration, up to 650 records</li>
+        <li>Video documentation, SOP library, one live training</li>
+        <li>30 days of post-launch support</li>
+        <li>Full ownership. No licence, no lock-in</li>
+      </ul>
+      <p class="sprint__fine">Not for teams under five, pre-revenue, or anyone who really wants a template. We will say so on the call rather than waste your five weeks.</p>
+    </div>
+  </div>
+</section>
+
+<!-- close -->
+<section class="final">
+  <div class="shell">
+    <h2 class="h1 reveal">Five weeks.<span class="serif">Then it just runs.</span></h2>
+    <a href="https://cal.com/clarityops.io/discovery" target="_blank" rel="noopener" class="btn btn--primary reveal" style="--d:.1s">Book a 30-minute ops call</a>
+    <p class="small reveal" style="--d:.15s">You leave with a map of how your company runs today and where it breaks. Yours to keep either way.</p>
+  </div>
+</section>
+</main>
+
+<footer class="foot">
+  <div class="shell">
+    <div class="foot__grid">
+      <div><h5>Talk to us</h5><a href="mailto:hamza@clarityops.io" class="foot__mail">hamza@clarityops.io</a><p class="small" style="margin-top:12px;max-width:34ch">Builds delivered in Geneva, Los Angeles, London and across the US, in English and in French.</p></div>
+      <div><h5>Product</h5><a href="#system">The system</a><a href="#builds">Four builds</a><a href="#promises">Promises</a><a href="#faq">FAQ</a></div>
+      <div><h5>Company</h5><a href="https://cal.com/clarityops.io/discovery" target="_blank" rel="noopener">Book a call</a><a href="mailto:hamza@clarityops.io">Email</a></div>
+      <div><h5>Stack</h5><a>Notion</a><a>Make.com, n8n, Zapier</a><a>Claude</a></div>
+    </div>
+    <div class="foot__base"><span>&copy; 2026 ClarityOps</span><span>You own everything we build.</span></div>
+    <div class="foot__mark" aria-hidden="true">ClarityOps</div>
+  </div>
+</footer>
+
+<script type="module">
+  const LOGOS = ['bigthinkers.svg','blackridge_co.svg','btrustbuilders.svg','Client_success_solutions.svg','expertsagency.svg','FryAway.png','LTC.svg','Mercy_Elroi.svg','Pet_Friends.svg','Printsbymilly.svg','Rettain.svg','Riwaya_Travel.svg','SLE.svg','Summit_Acquisition.svg','trendify.svg','Xsama.svg','360captures.svg'];
+  const grid = document.getElementById('logoGrid');
+  LOGOS.forEach(f => { const img = document.createElement('img'); img.src = 'assets/images/clients/' + f; img.alt = f.replace(/\.(svg|png)$/, '').replace(/_/g, ' '); img.loading = 'lazy'; img.onerror = () => img.remove(); grid.appendChild(img); });
+  const WORDS = ['No templates', 'Fixed price', 'Live by day 35', 'You own everything', '7 databases', '10 automations', '1 AI agent', 'First automation by day 10', '30 days of support'];
+  const t = document.getElementById('ticker'); [...WORDS, ...WORDS].forEach(w => { const s = document.createElement('span'); s.textContent = w; t.appendChild(s); });
+  import('./app-v3.js');
+</script>
+</body>
+</html>
