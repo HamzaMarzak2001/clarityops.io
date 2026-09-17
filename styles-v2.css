@@ -60,7 +60,7 @@ h1, h2, h3, h4 { margin: 0; font-weight: 600; text-wrap: balance; }
 
 /* ── Type roles ──────────────────────────────────────────────── */
 .display {
-  font-size: clamp(2.5rem, 0.9rem + 3.3vw, 4.5rem);
+  font-size: clamp(2.4rem, 0.8rem + 3.0vw, 4.2rem);
   font-stretch: 104%;
   letter-spacing: -0.035em;
   line-height: 0.96;
@@ -149,11 +149,11 @@ h1, h2, h3, h4 { margin: 0; font-weight: 600; text-wrap: balance; }
 .seq__ch {
   position: relative; height: 100svh; display: flex; flex-direction: column; justify-content: center;
   width: min(var(--max), 100% - 2 * var(--gutter)); margin-inline: auto; padding-top: 32px;
-  opacity: 0; transform: translateY(18px); transition: opacity .7s var(--ease), transform .9s var(--ease);
+  opacity: 0; transition: opacity .35s;
   pointer-events: none;
 }
-.seq__ch.on { opacity: 1; transform: none; pointer-events: auto; }
-.seq__ch > * { max-width: 640px; }
+.seq__ch.on { opacity: 1; pointer-events: auto; }
+.seq__ch > * { max-width: 600px; }
 .seq__ch .display { max-width: 21ch; }
 .seq__ch .statement { max-width: 15ch; }
 .seq__ch .lede { margin-top: 22px; }
@@ -374,3 +374,27 @@ h1, h2, h3, h4 { margin: 0; font-weight: 600; text-wrap: balance; }
   .wall__track { animation: none; }
   .seq__ch { opacity: 1; transform: none; }
 }
+
+/* ── Night: the hero is the one dark band; the reading sections are enamel ── */
+.seq { background: #090b0d; color: var(--plate); }
+.seq .lede { color: #b9c0c4; }
+.seq__pin::after {                 /* light falls off toward the copy; keeps the type legible */
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(90deg, rgba(9,11,13,.80) 0%, rgba(9,11,13,.46) 34%, rgba(9,11,13,0) 58%);
+}
+.seq .btn--line { border-color: var(--plate); color: var(--plate); }
+.seq .btn--line:hover { background: rgba(228,232,225,.08); }
+.seq__legend .label { color: #c9cfd3; }
+.seq__legend i { background: #2c3236; }
+.seq__legend .num { color: #9ea6ab; }
+.nav.is-dark { color: var(--plate); }
+.nav.is-dark .nav__links a { color: #b9c0c4; }
+.nav.is-dark .nav__links a:hover { background: rgba(228,232,225,.08); color: var(--plate); }
+.nav.is-dark::before { background: rgba(9,11,13,.72); border-color: #22282c; }
+@media (max-width: 899px) {
+  .seq__pin::after { background: linear-gradient(180deg, rgba(9,11,13,0) 30%, rgba(9,11,13,.6) 52%, rgba(9,11,13,.94) 72%); }
+}
+
+/* ── Line masks: headlines arrive and leave as lines, not as a fade ── */
+.ln { display: block; overflow: hidden; padding-bottom: .1em; margin-bottom: -.1em; }
+.ln__i { display: block; will-change: transform; }

@@ -23,7 +23,7 @@
 </head>
 <body>
 
-<nav class="nav" id="nav" aria-label="Primary">
+<nav class="nav is-dark" id="nav" aria-label="Primary">
   <div class="shell nav__bar">
     <a href="#top" class="nav__mark">
       <img src="assets/logos/logo-icon.svg" alt="" width="26" height="26" />
@@ -424,7 +424,7 @@
   }
 
   const { bootUI } = await import('./ui-v2.js');
-  bootUI({ gsap, ScrollTrigger, lenis, reduce });
+  const ui = bootUI({ gsap, ScrollTrigger, lenis, reduce });
 
   try {
     const { bootPanel } = await import('./gl/panel.js');
@@ -433,6 +433,7 @@
       canvas: document.getElementById('gl'),
       wrapper: document.getElementById('top'),
       copy: document.getElementById('seqCopy'),
+      onChapter: ui.chapterShow,
     });
   } catch (e) {
     console.warn('[panel] disabled:', e);

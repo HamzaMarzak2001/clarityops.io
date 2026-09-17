@@ -37,6 +37,7 @@ const pad3 = p => String(Math.round(p * 100)).padStart(3, '0');
 export function bootUI({ gsap, ScrollTrigger, lenis, reduce }) {
   history.scrollRestoration = 'manual';
   logos();
+  statements(gsap, ScrollTrigger, reduce);
   reveal(reduce);
   rules(ScrollTrigger);
   nav(gsap, ScrollTrigger);
@@ -45,7 +46,9 @@ export function bootUI({ gsap, ScrollTrigger, lenis, reduce }) {
   locks(ScrollTrigger);
   wall(ScrollTrigger, reduce);
   anchors(lenis);
+  navDark(ScrollTrigger);
   document.fonts?.ready.then(() => ScrollTrigger.refresh());
+  return { chapterShow: chapterChoreo(gsap, [...document.querySelectorAll('.seq__ch')], reduce) };
 }
 
 /* Logo wall: each logo owns its trailing margin so translateX(-50%) lands on the duplicate. */
@@ -183,4 +186,56 @@ function anchors(lenis) {
       if (!el) return; e.preventDefault(); lenis.scrollTo(el, { offset: -64, duration: 1.4 });
     });
   });
+}
+
+/* ── Lines: wrap words, group them by baseline, mask each line. ── */
+export function splitLines(el) {
+  const text = el.dataset.text || (el.dataset.text = el.textContent.trim());
+  el.innerHTML = text.split(/\s+/).map(w => `<span class="w">${w}</span>`).join(' ');
+  const lines = []; let cur = null, top = null;
+  el.querySelectorAll('.w').forEach(w => { const t = w.offsetTop; if (t !== top) { top = t; cur = []; lines.push(cur); } cur.push(w.textContent); });
+  el.innerHTML = '';
+  lines.forEach(ws => {
+    const ln = document.createElement('span'); ln.className = 'ln';
+    const i = document.createElement('span'); i.className = 'ln__i'; i.textContent = ws.join(' ');
+    ln.appendChild(i); el.appendChild(ln);
+  });
+  return [...el.querySelectorAll('.ln__i')];
+}
+
+/* The hero chapters: the headline leaves upward as lines, the next one rises
+   from its masks; the lede and the actions follow. */
+function chapterChoreo(gsap, chapters, reduce) {
+  if (reduce || !chapters.length) return () => {};
+  const H = chapters.map(el => ({ el, head: el.querySelector('h1, h2'), rest: [...el.querySelectorAll('.lede, .seq__actions')], lines: [] }));
+  let cur = 0;
+  const build = () => H.forEach((h, i) => { h.lines = splitLines(h.head); gsap.set(h.lines, { yPercent: i === cur ? 0 : 110 }); });
+  build();
+  H.forEach((h, i) => gsap.set(h.rest, { opacity: i === cur ? 1 : 0, y: i === cur ? 0 : 16 }));
+  let rt; addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(build, 200); });
+  return function show(i) {
+    if (i === cur) return;
+    const prev = H[cur], next = H[i]; cur = i;
+    gsap.to(prev.lines, { yPercent: -110, duration: .45, stagger: .04, ease: 'power3.in', overwrite: true, onComplete: () => prev.el.classList.remove('on') });
+    gsap.to(prev.rest, { opacity: 0, y: -10, duration: .35, overwrite: true });
+    next.el.classList.add('on');
+    gsap.fromTo(next.lines, { yPercent: 110 }, { yPercent: 0, duration: .95, stagger: .08, ease: 'expo.out', overwrite: true, delay: .2 });
+    gsap.fromTo(next.rest, { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: .8, ease: 'expo.out', stagger: .08, overwrite: true, delay: .45 });
+  };
+}
+
+/* Section headlines use the same grammar: lines rise once, when the section arrives. */
+function statements(gsap, ST, reduce) {
+  const els = [...document.querySelectorAll('.statement')].filter(e => !e.closest('.seq'));
+  if (reduce) return;
+  els.forEach(el => {
+    el.removeAttribute('data-r');
+    let lines = splitLines(el), shown = false; gsap.set(lines, { yPercent: 110 });
+    let rt; addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(() => { lines = splitLines(el); gsap.set(lines, { yPercent: shown ? 0 : 110 }); }, 200); });
+    ST.create({ trigger: el, start: 'top 85%', once: true, onEnter: () => { shown = true; gsap.to(lines, { yPercent: 0, duration: 1, stagger: .09, ease: 'expo.out' }); } });
+  });
+}
+
+function navDark(ST) {
+  ST.create({ trigger: '#top', start: 'top bottom', end: 'bottom 64px', toggleClass: { targets: '#nav', className: 'is-dark' } });
 }
