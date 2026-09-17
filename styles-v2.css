@@ -357,7 +357,8 @@ h1, h2, h3, h4 { margin: 0; font-weight: 600; text-wrap: balance; }
   .tally { grid-template-columns: 1fr; }
   .tally__i + .tally__i { border-left: 0; padding-left: 0; border-top: 1px solid var(--steel-2); }
   .wallpin__stage { align-content: center; gap: 20px; }
-  .wallcopy { min-height: 240px; }
+  .wallcopy { min-height: 380px; }
+  .wallch { justify-content: flex-start; padding-top: 8px; }
   .wallro { display: none; }
   .stages { grid-template-columns: 1fr; }
 }
