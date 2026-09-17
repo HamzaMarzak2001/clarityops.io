@@ -392,7 +392,7 @@ h1, h2, h3, h4 { margin: 0; font-weight: 600; text-wrap: balance; }
 .nav.is-dark .nav__links a:hover { background: rgba(228,232,225,.08); color: var(--plate); }
 .nav.is-dark::before { background: rgba(9,11,13,.72); border-color: #22282c; }
 @media (max-width: 899px) {
-  .seq__pin::after { background: linear-gradient(180deg, rgba(9,11,13,0) 30%, rgba(9,11,13,.6) 52%, rgba(9,11,13,.94) 72%); }
+  .seq__pin::after { background: linear-gradient(180deg, rgba(9,11,13,0) 28%, rgba(9,11,13,.78) 50%, rgba(9,11,13,.97) 66%); }
 }
 
 /* ── Line masks: headlines arrive and leave as lines, not as a fade ── */
