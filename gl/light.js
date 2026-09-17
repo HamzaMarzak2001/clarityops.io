@@ -234,7 +234,7 @@ export async function bootLight({ gsap, ScrollTrigger, reduce, canvas: cv, wrapp
 
   /* the glass mark */
   const glass = new THREE.MeshPhysicalMaterial({ color: 0xffffff, metalness: 0, roughness: 0.2, transmission: 1, ior: 1.6, thickness: 0.18, dispersion: 1.2, clearcoat: 0.6, clearcoatRoughness: 0.06, specularIntensity: 1, attenuationColor: new THREE.Color(0xc4ec6e), attenuationDistance: 0.9, transparent: true, opacity: 0 });
-  const gm = await glassMark(glass); gm.visible = false; gm.scale.setScalar(0.94); rig.add(gm);
+  const gm = await glassMark(glass); gm.visible = false; gm.scale.setScalar(0.84); rig.add(gm);
 
   /* the real systems, floating in as glass cards */
   const loader = new THREE.TextureLoader();
@@ -339,12 +339,13 @@ export async function bootLight({ gsap, ScrollTrigger, reduce, canvas: cv, wrapp
   const camLook = new THREE.Vector3();
 
   function frame(now) {
-    const dt = last ? Math.min((now - last) / 1000, 1 / 30) : 0; last = now;
+    const real = last ? (now - last) / 1000 : 0, dt = Math.min(real, 1 / 30); last = now;
+    if (real > 0.25) { for (let i = 0; i < N * 3; i++) { pos[i] += (homes[i] - pos[i]) * 0.85; vel[i] = 0; } }   /* after a stall, the cloud catches up instead of lagging */
     const t = state.t; elapsed += dt * 1.6;
     /* layout: right of the copy, or above it */
-    const visH = 2 * CAM_Z * Math.tan(camera.fov * Math.PI / 360), visW = visH * camera.aspect;
+    const cz = CAM_Z - 0.45 * inout(win(t, 0.3, 0.56)) + 1.3 * out3(win(t, 0.78, 1));
+    const visH = 2 * cz * Math.tan(camera.fov * Math.PI / 360), visW = visH * camera.aspect;
     const copyRight = (copyRightPx / vw - 0.5) * visW;
-    const cz = CAM_Z - 0.45 * inout(win(t, 0.3, 0.56)) + 0.75 * out3(win(t, 0.78, 1));
     world.position.set(k * (copyRight + 1.55 + 0.35 * win(t, 0.32, 0.5) * (1 - win(t, 0.6, 0.78))), (1 - k) * 0.55, 0);
     rig.scale.setScalar(S * (k + (1 - k) * 0.6));
     tilt.lerp(mouse, 0.05);
