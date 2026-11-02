@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact | ClarityOps</title>
+  <meta name="description" content="Tell us about your business and what you need help with. Hamza reads every message and replies directly." />
+  <link rel="icon" type="image/svg+xml" href="assets/logos/favicon.svg" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+</head>
+<body class="contact-page">
+
+  <main class="contact section">
+    <div class="container contact__container">
+      <a class="contact__back" href="/">&larr; Back to clarityops.io</a>
+
+      <span class="section__tag">Contact</span>
+      <h1 class="section__title">Tell us about <span class="serif-accent">your business</span></h1>
+      <p class="contact__sub">We take on a limited number of clients each month. These answers tell us if we're a fit before we take up your time on a call. Hamza reads every application himself.</p>
+
+      <form id="contactForm" class="contact__form" novalidate>
+        <div class="cf__row">
+          <div class="cf__field">
+            <label for="cfName">Your name<span aria-hidden="true"> *</span></label>
+            <input id="cfName" name="name" type="text" required maxlength="120" autocomplete="name" />
+          </div>
+          <div class="cf__field">
+            <label for="cfBusiness">Business name<span aria-hidden="true"> *</span></label>
+            <input id="cfBusiness" name="business" type="text" required maxlength="120" autocomplete="organization" />
+          </div>
+        </div>
+
+        <div class="cf__field">
+          <label for="cfWebsite">Company website</label>
+          <input id="cfWebsite" name="website" type="url" maxlength="200" autocomplete="url" placeholder="https://" />
+          <p class="cf__hint">We look at it before we reply, so the reply is specific. No website yet? Leave it empty.</p>
+        </div>
+
+        <div class="cf__row">
+          <div class="cf__field">
+            <label for="cfEmail">Work email<span aria-hidden="true"> *</span></label>
+            <input id="cfEmail" name="email" type="email" required maxlength="160" autocomplete="email" />
+          </div>
+          <div class="cf__field">
+            <label for="cfPhone">Phone</label>
+            <input id="cfPhone" name="phone" type="tel" maxlength="40" autocomplete="tel" inputmode="tel" />
+          </div>
+        </div>
+
+        <div class="cf__field">
+          <label for="cfRole">Your role<span aria-hidden="true"> *</span></label>
+          <select id="cfRole" name="role" required>
+            <option value="">Select one</option>
+            <option>Owner / Founder</option>
+            <option>I run this with a partner</option>
+            <option>Operations lead</option>
+            <option>Other</option>
+          </select>
+          <p class="cf__hint">If a partner decides with you, we'll ask that you both join the call.</p>
+        </div>
+
+        <div class="cf__field">
+          <label for="cfRevenue">Annual revenue</label>
+          <select id="cfRevenue" name="revenue">
+            <option value="">Prefer not to say</option>
+            <option>Under $100K</option>
+            <option>$100K to $250K</option>
+            <option>$250K to $1M</option>
+            <option>$1M to $5M</option>
+            <option>$5M+</option>
+          </select>
+          <p class="cf__hint">So we can tell you honestly if we're a fit. Never shared.</p>
+        </div>
+
+        <fieldset class="cf__field cf__chips-wrap">
+          <legend>What do you need help with?<span aria-hidden="true"> *</span></legend>
+          <div class="cf__chips" id="cfNeeds">
+            <button type="button" class="cf__chip" data-value="Notion system" aria-pressed="false">Notion system</button>
+            <button type="button" class="cf__chip" data-value="Automations" aria-pressed="false">Automations</button>
+            <button type="button" class="cf__chip" data-value="AI agents" aria-pressed="false">AI agents</button>
+            <button type="button" class="cf__chip" data-value="Ongoing support" aria-pressed="false">Ongoing support</button>
+            <button type="button" class="cf__chip" data-value="Not sure yet" aria-pressed="false">Not sure yet</button>
+          </div>
+        </fieldset>
+
+        <div class="cf__field">
+          <label for="cfTimeline">How soon do you want this handled?<span aria-hidden="true"> *</span></label>
+          <select id="cfTimeline" name="timeline" required>
+            <option value="">Select one</option>
+            <option>ASAP, within 30 days</option>
+            <option>1 to 3 months</option>
+            <option>3 to 6 months</option>
+            <option>Just exploring</option>
+          </select>
+        </div>
+
+        <div class="cf__field">
+          <label for="cfDetails">What's the biggest bottleneck in your business right now?<span aria-hidden="true"> *</span></label>
+          <textarea id="cfDetails" name="details" rows="4" required maxlength="2000" placeholder="Example: project updates live in WhatsApp and nobody knows what's late until the client calls."></textarea>
+          <p class="cf__hint">A few honest sentences are plenty. We use this to prepare a real plan before we talk.</p>
+        </div>
+
+        <!-- Spam traps: humans never see or fill these -->
+        <input type="text" name="company_fax" id="cfFax" tabindex="-1" autocomplete="off" aria-hidden="true" class="cf__hp" />
+
+        <p class="cf__error" id="cfError" role="alert" hidden></p>
+
+        <button type="submit" class="btn btn--accent cf__submit" id="cfSubmit">See if we're a fit</button>
+        <p class="cf__hint">We read every application ourselves and reply within one business day. Prefer email? Write to hamza@clarityops.io. No newsletter, no sequence.</p>
+      </form>
+
+      <div class="contact__done" id="cfDone" hidden>
+        <h2 class="section__title">Got it.<span class="serif-accent"> Talk soon.</span></h2>
+        <p class="contact__sub">Your message is on its way to Hamza. You will hear back at the email you gave, usually within one business day.</p>
+        <a class="btn btn--accent" href="/">Back to the site</a>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    (function () {
+      var startedAt = Date.now();
+      var form = document.getElementById('contactForm');
+      var chips = document.querySelectorAll('.cf__chip');
+      var errorEl = document.getElementById('cfError');
+      var submitBtn = document.getElementById('cfSubmit');
+
+      chips.forEach(function (chip) {
+        chip.addEventListener('click', function () {
+          var pressed = chip.getAttribute('aria-pressed') === 'true';
+          chip.setAttribute('aria-pressed', String(!pressed));
+        });
+      });
+
+      function fail(msg) {
+        errorEl.textContent = msg;
+        errorEl.hidden = false;
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'See if we\'re a fit';
+      }
+
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        errorEl.hidden = true;
+
+        var needs = Array.prototype.filter.call(chips, function (c) {
+          return c.getAttribute('aria-pressed') === 'true';
+        }).map(function (c) { return c.getAttribute('data-value'); });
+
+        var data = {
+          business: form.business.value.trim(),
+          name: form.name.value.trim(),
+          website: form.website.value.trim(),
+          email: form.email.value.trim(),
+          phone: form.phone.value.trim(),
+          role: form.role.value,
+          timeline: form.timeline.value,
+          revenue: form.revenue.value,
+          needs: needs,
+          details: form.details.value.trim(),
+          company_fax: form.company_fax.value,
+          elapsed_ms: Date.now() - startedAt,
+          page: location.href
+        };
+
+        if (!data.business || !data.name) return fail('Please add your business name and your name.');
+        if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(data.email)) return fail('Please check the email address.');
+        if (needs.length === 0) return fail('Pick at least one option under "What do you need help with?"');
+        if (!data.role) return fail('Please select your role.');
+        if (!data.timeline) return fail('Please select a timeline.');
+        if (data.details.length < 20) return fail('Give us a sentence or two about the bottleneck. It genuinely shapes the reply you get.');
+
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Sending…';
+
+        fetch('/api/contact', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        }).then(function (r) { return r.json().catch(function () { return {}; }); })
+          .then(function (res) {
+            if (res && res.ok) {
+              form.hidden = true;
+              document.querySelector('.contact__sub').hidden = true;
+              document.querySelector('.section__title').hidden = true;
+              document.querySelector('.section__tag').hidden = true;
+              document.getElementById('cfDone').hidden = false;
+              window.scrollTo(0, 0);
+            } else {
+              fail('Sending is not available right now. Email us directly at hamza@clarityops.io and we will reply within one business day.');
+            }
+          })
+          .catch(function () {
+            fail('Something went wrong on the network. Email us directly at hamza@clarityops.io.');
+          });
+      });
+    })();
+  </script>
+</body>
+</html>
