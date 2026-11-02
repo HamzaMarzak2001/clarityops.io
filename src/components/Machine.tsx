@@ -46,7 +46,7 @@ export function Machine() {
         const around = (x: number, y: number, z: number): [number, number, number] => { const k = wide ? 1 : 1.5; return [x * k, y * k, -82 + z * k]; };
         stops = [
           /* The drive, clear of the words. It's the one place the machine stays at full strength. */
-          { y: 0, pos: wide ? [30.5, 25, 54] : [10, 9, 36], look: wide ? [10.5, -1, 1] : [3, 0, 2], dim: 1.3, rest: wide ? 1.3 : 0.3, veil: 1, fog: 130 },
+          { y: 0, pos: wide ? [31.6, 26.4, 57] : [10, 9, 36], look: wide ? [10.5, -1, 1] : [3, 0, 2], dim: 1.3, rest: wide ? 1.3 : 0.3, veil: 1, fog: 130 },
           { y: vh * 0.45, pos: [8, 6, 26], look: [2, 0.5, 2], dim: 1.1, rest: wide ? 1 : 0.3, veil: 0.8, fog: 90 },
           /* Straight at the big gear, then in through its centre. */
           { y: thT, pos: [0, 0, 11], look: [0, 0, -12], dim: 1, rest: 0.14, fog: 50 },
@@ -169,7 +169,7 @@ export function Machine() {
         const inT = sstep(th.y - innerHeight * 0.3, th.y + th.S * 0.1, y);
         m.draw({
           clipZ: -8 + inT * -200, navFade: 1 - inT, edge: [0.46 + (0.12 - 0.46) * inT, 0.56 + (0.72 - 0.56) * inT],
-          shift: [(cx - innerWidth / 2) * pw + (1 - inT) * (wide ? innerWidth * 0.315 : 0) + wwdIn * (wide ? innerWidth * 0.2 : 0), (cy - innerHeight / 2) * pw + (1 - inT) * (wide ? innerHeight * 0.155 : innerHeight * 0.36) + wwdIn * (wide ? 0 : -innerHeight * 0.2)], 
+          shift: [(cx - innerWidth / 2) * pw + (1 - inT) * (wide ? innerWidth * 0.325 : 0) + wwdIn * (wide ? innerWidth * 0.2 : 0), (cy - innerHeight / 2) * pw + (1 - inT) * (wide ? innerHeight * 0.105 : innerHeight * 0.36) + wwdIn * (wide ? 0 : -innerHeight * 0.2)], 
           chain: { y: scrollY, turn: y, move, t },
           t, pos: P, look: L, roll: Math.sin(u * 14) * 0.06 * (1 - pw),
           tidy: sstep(0.72, 0.95, (y - th.y) / th.S),
