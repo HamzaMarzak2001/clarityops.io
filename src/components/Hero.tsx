@@ -1,6 +1,5 @@
 import Image from "next/image";
 
-const footnote = "Based in Casablanca. Working with companies across Europe, the US and the Middle East.";
 const Line = ({ children }: { children: string }) => <span className="line"><span>{children}</span></span>;
 
 export function Hero() {
@@ -20,13 +19,11 @@ export function Hero() {
             <a href="#contact" className="btn btn-p"><span>Start a conversation</span></a>
             <a href="#work" className="tlink">See selected work</a>
           </div>
-          <p className="fine mt-6 hidden max-w-[38ch] md:block">{footnote}</p>
         </div>
         {/* A still of the machine: shown until the live one fades in, and for good with reduced motion or no WebGL. */}
         <div aria-hidden className="hero-object">
           <Image src="/object/machine.webp" alt="" width={1100} height={1100} priority sizes="(min-width: 1024px) 720px, 100vw" className="hero-still" />
         </div>
-        <p className="fine relative z-[2] pr-[var(--m)] md:hidden">{footnote}</p>
       </div>
     </section>
   );
