@@ -1,0 +1,6 @@
+.env*
+captures
+checkpoints
+direction
+video
+*.tsbuildinfo

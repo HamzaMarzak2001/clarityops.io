@@ -1,0 +1,14 @@
+node_modules
+.next
+out
+*.tsbuildinfo
+next-env.d.ts
+.env*
+.DS_Store
+.vercel
+captures
+checkpoints
+direction
+video
+scripts/lab-*
+DECISIONS.md
