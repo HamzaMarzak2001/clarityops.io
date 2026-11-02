@@ -1,3 +1,7 @@
+"use client";
+import { useEffect, useRef } from "react";
+import { motionOn } from "@/lib/ease";
+
 /* Latest first. The logos are single-colour files, sized so that each carries about the same visual weight. */
 const companies = [
   { name: "LULUORANGE", src: "/clients/luluorange.webp", w: 59, h: 50 },
@@ -32,21 +36,36 @@ function Set({ copy = false }: { copy?: boolean }) {
       {companies.map((c) => (
         <li key={c.src}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={c.src} alt={copy ? "" : c.name} width={c.w} height={c.h} decoding="async" />
+          <img src={c.src} alt={copy ? "" : c.name} width={Math.round(c.w * 0.85)} height={Math.round(c.h * 0.85)} decoding="async" />
         </li>
       ))}
     </ul>
   );
 }
 
-/* One straight line of the companies we've worked with, running under the hero. With reduced motion it is a still, wrapped list. */
+/* The companies we've worked with, running under the hero's buttons. It fades before the gears, and away as you start to scroll. With reduced motion it is a still, wrapped list. */
 export function Clients() {
+  const track = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!motionOn()) return;
+    const el = track.current!;
+    const fade = () => {
+      const x = Math.max(0, 1 - scrollY / (innerHeight * 0.3));
+      el.style.opacity = String(x * x * (3 - 2 * x));
+    };
+    fade();
+    addEventListener("scroll", fade, { passive: true });
+    addEventListener("resize", fade);
+    return () => { removeEventListener("scroll", fade); removeEventListener("resize", fade); };
+  }, []);
+
   return (
-    <section aria-label="Companies we've worked with" className="clients">
-      <div className="clients-track">
+    <div role="group" aria-label="Companies we've worked with" className="clients">
+      <div ref={track} className="clients-track">
         <Set />
         <Set copy />
       </div>
-    </section>
+    </div>
   );
 }

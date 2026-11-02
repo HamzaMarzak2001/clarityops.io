@@ -103,10 +103,9 @@
   @media (min-width: 768px) {
     .hero-low { grid-template-columns: calc(var(--col) * 5 + var(--gap) * 4) minmax(0, 1fr); column-gap: var(--gap); margin-top: 48px; row-gap: 0; }
     .hero-copy { padding-right: 0; }
-    /* The hero fills the first screen, leaving just enough room for the line of companies at its foot. */
-    .hero { min-height: calc(100svh - var(--clients-h)); }
+    .hero { min-height: 100svh; }
     .hero-object { position: static; height: 0; aspect-ratio: auto; }
-    .hero-still { left: 78vw; top: 50svh; width: min(80svh, 50vw); }
+    .hero-still { left: 78vw; top: 57svh; width: min(80svh, 50vw); }
     .work-frame { margin-inline: 0; border-radius: var(--r-l); box-shadow: 0 0 0 1px var(--paper-rule); }
   }
   @media (min-width: 1200px) {
@@ -114,22 +113,23 @@
     .hero-sub { font-size: 20px; line-height: 1.6; }
   }
 
-  /* The line of companies. Without motion it is a wrapped list. */
-  :root { --clients-h: 112px; }
-  .clients { position: relative; z-index: 2; display: flex; align-items: center; min-height: var(--clients-h); padding-block: 24px; overflow: hidden; }
+  /* The line of companies. It starts at the text margin and fades out before the gears. Without motion it is a wrapped list. */
+  .clients { width: calc(100vw - var(--gx)); margin-top: 36px; overflow: hidden; }
   .clients-track { display: flex; }
-  .clients-set { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 24px 48px; padding-inline: var(--m); }
+  .clients-set { display: flex; flex-wrap: wrap; align-items: center; gap: 20px 40px; padding-right: var(--m); }
   .clients-set[aria-hidden] { display: none; }
   .clients img { display: block; max-width: none; opacity: 0.7; transition: opacity 200ms var(--ease-out); }
   .clients img:hover { opacity: 1; }
-  .mo .clients { -webkit-mask-image: linear-gradient(90deg, transparent, #000 9%, #000 91%, transparent); mask-image: linear-gradient(90deg, transparent, #000 9%, #000 91%, transparent); }
+  .mo .clients { -webkit-mask-image: linear-gradient(90deg, transparent, #000 44px, #000 58%, transparent 96%); mask-image: linear-gradient(90deg, transparent, #000 44px, #000 58%, transparent 96%); }
   .mo .clients-track { width: max-content; animation: clients 80s linear infinite; }
-  .mo .clients-set { flex-wrap: nowrap; gap: 0; padding-inline: 0; }
+  .mo .clients-set { flex-wrap: nowrap; gap: 0; padding-right: 0; }
   .mo .clients-set[aria-hidden] { display: flex; }
   /* Each logo owns its gap, so the loop lands exactly where it started. */
-  .mo .clients-set li { flex: none; margin-right: 72px; }
-  .mo.enter .clients { animation: show 900ms var(--ease-out) 1100ms both; }
+  .mo .clients-set li { flex: none; margin-right: 56px; }
   @keyframes clients { to { transform: translate3d(-50%, 0, 0); } }
+  @media (min-width: 768px) {
+    .clients { width: calc(64vw - var(--gx)); }
+  }
 
   /* What we do: pinned, and told by the loop itself. Static list without motion. */
   .wwd { padding-top: var(--sec); }

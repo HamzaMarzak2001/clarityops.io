@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { Clients } from "./Clients";
 
 const Line = ({ children }: { children: string }) => <span className="line"><span>{children}</span></span>;
 
@@ -19,6 +20,7 @@ export function Hero() {
             <a href="#contact" className="btn btn-p"><span>Start a conversation</span></a>
             <a href="#work" className="tlink">See selected work</a>
           </div>
+          <Clients />
         </div>
         {/* A still of the machine: shown until the live one fades in, and for good with reduced motion or no WebGL. */}
         <div aria-hidden className="hero-object">

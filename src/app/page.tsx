@@ -1,5 +1,4 @@
 import { Approach } from "@/components/Approach";
-import { Clients } from "@/components/Clients";
 import { ClientWords } from "@/components/ClientWords";
 import { Contact } from "@/components/Contact";
 import { Fit } from "@/components/Fit";
@@ -22,7 +21,6 @@ export default function Home() {
       <Nav />
       <main>
         <Hero />
-        <Clients />
         <Thesis />
         <Work />
         <WhatWeDo />
