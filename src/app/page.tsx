@@ -4,6 +4,7 @@ import { Contact } from "@/components/Contact";
 import { Fit } from "@/components/Fit";
 import { Footer } from "@/components/Footer";
 import { Hero } from "@/components/Hero";
+import { Loader } from "@/components/Loader";
 import { Machine } from "@/components/Machine";
 import { Nav } from "@/components/Nav";
 import { Principles } from "@/components/Principles";
@@ -15,6 +16,7 @@ import { Work } from "@/components/Work";
 export default function Home() {
   return (
     <>
+      <Loader />
       <Machine />
       <Nav />
       <main>

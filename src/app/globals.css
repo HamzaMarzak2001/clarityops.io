@@ -170,13 +170,13 @@
 
   /* The loop draws itself once: two covers rotate out of two half-clips along the logo's arrow. Transform only. */
   .rig { display: none; }
-  .mo .rig { display: block; position: absolute; inset: -22%; transform: rotate(90deg) scaleX(-1); pointer-events: none; }
+  .mo.enter .rig { display: block; position: absolute; inset: -22%; transform: rotate(90deg) scaleX(-1); pointer-events: none; }
   .rig-r, .rig-l { position: absolute; top: 0; width: 50%; height: 100%; overflow: hidden; }
   .rig-r { left: 50%; } .rig-l { left: 0; }
   .rig i { display: block; width: 100%; height: 100%; background: var(--black); outline: 1px solid var(--black); }
-  .rig-r i { transform-origin: left center; animation: loop-spin 450ms cubic-bezier(0.65, 0, 0.825, 0.5) 150ms both; }
-  .rig-l i { transform-origin: right center; animation: loop-spin 450ms cubic-bezier(0.175, 0.5, 0.35, 1) 600ms both; }
-  .mo .logo-word-draw { animation: show 400ms var(--ease-out) 950ms both; }
+  .rig-r i { transform-origin: left center; animation: loop-spin 450ms cubic-bezier(0.65, 0, 0.825, 0.5) 450ms both; }
+  .rig-l i { transform-origin: right center; animation: loop-spin 450ms cubic-bezier(0.175, 0.5, 0.35, 1) 900ms both; }
+  .mo.enter .logo-word-draw { animation: show 400ms var(--ease-out) 1250ms both; }
   @keyframes loop-spin { from { transform: rotate(0deg); } to { transform: rotate(180deg); } }
   @keyframes show { from { opacity: 0; } to { opacity: 1; } }
   @keyframes rise { from { transform: translate3d(0, 112%, 0); } to { transform: none; } }
@@ -198,20 +198,42 @@
   [data-surface="paper"] .nav-cta:hover { background: rgba(0, 0, 0, 0.05); }
   [data-surface="paper"] :focus-visible { outline-color: var(--ink); }
 
-  /* Hero entrance: CSS only, so the headline never waits for JS */
+  /* The loader: a curtain over the finished page. The hero sits at rest under it, then makes its entrance as it lifts. */
+  .loader { display: none; }
+  .mo .loader { position: fixed; inset: 0; z-index: 100; display: flex; align-items: center; justify-content: center; background: var(--black); animation: loader-bail 900ms var(--ease-io) 9s forwards; }
+  .mo .loader.out { animation: none; pointer-events: none; transform: translate3d(0, -100%, 0); transition: transform 900ms var(--ease-io); }
+  .mo .loader.gone { display: none; }
+  .loader-in { display: flex; flex-direction: column; align-items: center; gap: 24px; }
+  .loader.out .loader-in { opacity: 0; transition: opacity 300ms var(--ease-out); }
+  .loader-mark { position: relative; width: 72px; height: 72px; animation: loader-mark 800ms var(--ease-out) 100ms both; }
+  .loader-mark img { display: block; width: 100%; height: 100%; }
+  .loader-mark::before { content: ""; position: absolute; inset: 0; border: 1px solid rgb(229 242 2 / 0.2); border-radius: 50%; animation: loader-ring 2s var(--ease-out) 500ms infinite both; }
+  .loader-word { width: 124px; height: auto; animation: show 800ms var(--ease-out) 400ms both; }
+  .loader-bar { width: 200px; height: 2px; background: var(--hairline); overflow: hidden; }
+  .loader-bar i { display: block; height: 100%; background: var(--gradient); transform: scaleX(0); transform-origin: left center; }
+  .loader-count { margin-top: -8px; font-family: var(--font-jetbrains), monospace; font-size: 11px; letter-spacing: 0.08em; color: var(--muted); font-variant-numeric: tabular-nums; }
+  @keyframes loader-mark { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: none; } }
+  @keyframes loader-ring { from { opacity: 0.8; transform: scale(1); } to { opacity: 0; transform: scale(2.2); } }
+  /* If the script never arrives, the page still shows. */
+  @keyframes loader-bail { to { transform: translate3d(0, -100%, 0); } }
+
+  /* Hero entrance */
   .line { display: block; overflow: hidden; padding-bottom: 0.16em; margin-bottom: -0.16em; }
   .line > span { display: block; }
-  .mo .hero .line > span { animation: rise 900ms var(--ease-out) both; }
-  .mo .hero .line:nth-child(2) > span { animation-delay: 90ms; }
-  .mo .hero .line:nth-child(3) > span { animation-delay: 180ms; }
-  .mo .hero .line:nth-child(4) > span { animation-delay: 270ms; }
-  .mo .hero-fade { animation: show 600ms var(--ease-out) 600ms both; }
-  .mo .hero-object { animation: show 900ms var(--ease-out) 450ms both; }
+  .mo.enter .hero .line > span { animation: rise 1000ms var(--ease-out) 380ms both; }
+  .mo.enter .hero .line:nth-child(2) > span { animation-delay: 470ms; }
+  .mo.enter .hero .line:nth-child(3) > span { animation-delay: 560ms; }
+  .mo.enter .hero .line:nth-child(4) > span { animation-delay: 650ms; }
+  .mo.enter .hero-fade { animation: show 700ms var(--ease-out) 950ms both; }
+  .mo.enter .hero-object { animation: show 900ms var(--ease-out) 500ms both; }
+  .mo.enter .site-nav { animation: show 500ms var(--ease-out) 300ms both; }
 
   /* The dragon flies over everything except the nav */
   .machine { display: none; }
   .mo .machine { display: block; position: fixed; left: 0; top: 0; width: 100%; height: 100lvh; z-index: 0; pointer-events: none; opacity: 0; transition: opacity 900ms var(--ease-out); }
   .mo .machine.on { opacity: 1; }
+  /* Behind the loader the machine and the still swap instantly. */
+  .mo:not(.enter) .machine, .mo:not(.enter) .hero-still { transition: none; }
   .mo .th-pin { z-index: 2; }
   .mo .spread, .spread-end { z-index: 2; }
 
@@ -274,6 +296,7 @@
   .mo .pr-lead > span { transform: translate3d(0, 112%, 0); transition: transform var(--t-reveal) var(--ease-out) 80ms; }
   .mo .pr-rest { opacity: 0; transition: opacity var(--t-reveal) var(--ease-out) 240ms; }
   .mo .in .pr-rule { transform: none; } .mo .in .pr-lead > span { transform: none; } .mo .in .pr-rest { opacity: 1; }
+  .st-portrait.frame { border-radius: 50%; }
   .mo .st-portrait { opacity: 0; transition: opacity 900ms var(--ease-out); }
   .mo .st-portrait.in { opacity: 1; }
   .st-pull p { overflow: hidden; padding-bottom: 0.18em; }

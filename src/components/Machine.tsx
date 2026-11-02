@@ -1,10 +1,13 @@
 "use client";
 import { useEffect, useRef } from "react";
 import type { CatmullRomCurve3 as Curve, Vector3 as V3 } from "three";
-import { motionOn } from "@/lib/ease";
+import { motionOn, out } from "@/lib/ease";
+import { loadDone, loadedTo, whenLifted } from "@/lib/opening";
 
 const top = (el: Element) => el.getBoundingClientRect().top + scrollY;
 const sstep = (a: number, b: number, x: number) => { const t = Math.min(1, Math.max(0, (x - a) / (b - a))); return t * t * (3 - 2 * t); };
+const INTRO = 2.6;
+const breathe = () => new Promise<void>((r) => setTimeout(r, 0));
 type Stop = { y: number; pos: [number, number, number]; look: [number, number, number]; dim: number; rest: number; veil?: number; fog?: number };
 
 /* The page's one moving world: the machine you fly through, plus the gear chain that runs down the last sections. Everything else is ordinary DOM in front of it. */
@@ -15,15 +18,23 @@ export function Machine() {
     let stopped = false, raf = 0, dispose = () => {};
     const root = document.documentElement;
     const conn = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection;
-    if (!motionOn() || conn?.saveData || !document.createElement("canvas").getContext("webgl2")) return;
+    if (!motionOn()) return;
+    if (conn?.saveData || !document.createElement("canvas").getContext("webgl2")) { loadDone(); return; }
     const frozen = process.env.NODE_ENV === "development" ? new URLSearchParams(location.search).get("t") : null;
     const start = async () => {
+      loadedTo(0.1);
       const [{ createMachine }, { CatmullRomCurve3, Vector3 }] = await Promise.all([import("@/components/machine-scene"), import("three")]);
       const canvas = ref.current;
       if (stopped || !canvas) return;
+      loadedTo(0.35);
       const wide = innerWidth >= 1024;
-      const m = createMachine(canvas, { mobile: innerWidth < 768 });
+      const m = await createMachine(canvas, { mobile: innerWidth < 768 });
       dispose = () => m.dispose();
+      if (stopped) return dispose();
+      loadedTo(0.6);
+      /* The chain is laid out around the text, so the text has to be in its final font first. */
+      await Promise.race([document.fonts.ready, new Promise((r) => setTimeout(r, 1500))]);
+      if (stopped) return;
       let stops: Stop[] = [], posC: Curve, lookC: Curve, th = { y: 0, S: 1 }, wwd = { y: 0, S: 1 };
       const work = document.querySelector("#work") as HTMLElement;
       const layout = () => {
@@ -111,27 +122,36 @@ export function Machine() {
           /* The heading in How we think is sticky, so its whole column stays a little quieter. */
           return wide && y > pri.t && y < pri.b && x < vw * 0.36 ? "soft" : "clear";
         });
+        m.warmChain();
       };
-      const scheduleChain = () => { clearTimeout(chainTimer); chainTimer = window.setTimeout(buildChain, frozen !== null ? 0 : 1200); };
+      const scheduleChain = () => { clearTimeout(chainTimer); chainTimer = window.setTimeout(buildChain, 1200); };
       layout();
+      clearTimeout(chainTimer);
+      buildChain();
+      loadedTo(0.75);
+      await breathe();
+      await m.warm();
+      if (stopped) return;
       addEventListener("resize", layout);
       addEventListener("load", layout);
       new ResizeObserver(layout).observe(document.body);
       const P: V3 = new Vector3(), L: V3 = new Vector3();
-      /* The founder's portrait: it rounds into a circle, and the machine's rings come up behind it. */
+      /* The founder's portrait: the machine's rings come up behind it. */
       const portrait = document.querySelector(".st-portrait") as HTMLElement | null;
-      let lastY = scrollY, move = 0;
+      let lastY = scrollY, move = 0, intro = frozen !== null ? 1 : 0;
       const step = (t: number, y: number, dt = 1 / 60) => {
         let i = 0;
         while (i < stops.length - 2 && y > stops[i + 1].y) i++;
         const a = stops[i], b = stops[i + 1], x = Math.min(1, Math.max(0, (y - a.y) / (b.y - a.y))), e = x * 0.5 + (x * x * (3 - 2 * x)) * 0.5;
         const u = (i + e) / (stops.length - 1);
         posC.getPoint(u, P); lookC.getPoint(u, L);
+        /* The opening: at the top of the page the camera arrives from further back as the machine starts up. */
+        if (intro < 1) P.sub(L).multiplyScalar(1 + 0.7 * (1 - out(intro)) * (1 - sstep(0, innerHeight * 0.5, y))).add(L);
         /* Never quite still: the camera breathes with the machine. */
         P.x += Math.sin(t * 0.3) * 0.12; P.y += Math.sin(t * 0.41 + 1) * 0.1;
         const v = Math.abs(y - lastY) / Math.max(dt, 1 / 240) / innerHeight; lastY = y;
         /* The machine comes alive as you travel and settles quickly into the background when you stop to read. */
-        const want = Math.min(1, v * 1.3);
+        const want = Math.max(Math.min(1, v * 1.3), 1 - sstep(0.4, 1, intro));
         move += (want - move) * (1 - Math.exp(-dt * (want > move ? 9 : 1.6)));
         const restNow = a.rest + (b.rest - a.rest) * e, moveNow = (a.dim + (b.dim - a.dim) * e) * (wide ? 1 : 0.7);
         const r = work.getBoundingClientRect();
@@ -140,8 +160,6 @@ export function Machine() {
           const b = portrait.getBoundingClientRect(), vh = innerHeight;
           cx = b.left + b.width / 2; cy = b.top + b.height / 2;
           pw = sstep(vh * 1.15, vh * 0.62, cy) * (1 - sstep(vh * 0.32, -vh * 0.12, cy));
-          /* Once it has become a circle it stays one. */
-          portrait.style.borderRadius = `${14 + (b.width / 2 - 14) * Math.max(sstep(vh * 1.15, vh * 0.72, cy), cy < vh * 0.72 ? 1 : 0)}px`;
         }
         /* While that happens the camera sits on the corridor's axis, so its lines all run in behind the circle. */
         if (pw > 0) { P.x *= 1 - pw; P.y *= 1 - pw; L.x *= 1 - pw; L.y *= 1 - pw; L.z = P.z - 20 * pw + (L.z - (P.z - 20)) * (1 - pw); }
@@ -156,37 +174,40 @@ export function Machine() {
           t, pos: P, look: L, roll: Math.sin(u * 14) * 0.06 * (1 - pw),
           tidy: sstep(0.72, 0.95, (y - th.y) / th.S),
           stack: { d, dt },
-          dim: restNow + (moveNow - restNow) * move, veil: wide ? (a.veil ?? 0) + ((b.veil ?? 0) - (a.veil ?? 0)) * e : 0, fogFar: (a.fog ?? 30) + ((b.fog ?? 30) - (a.fog ?? 30)) * e,
-          speed: Math.min(0.9, v * 0.16), bandTop: r.top, bandBottom: r.bottom,
+          dim: (restNow + (moveNow - restNow) * move) * sstep(0, 0.4, intro), veil: wide ? (a.veil ?? 0) + ((b.veil ?? 0) - (a.veil ?? 0)) * e : 0, fogFar: (a.fog ?? 30) + ((b.fog ?? 30) - (a.fog ?? 30)) * e,
+          speed: Math.max(Math.min(0.9, v * 0.16), 0.6 * (1 - sstep(0, 0.5, intro))), bandTop: r.top, bandBottom: r.bottom,
         });
       };
       if (process.env.NODE_ENV === "development") (window as unknown as { __shape: unknown }).__shape = { step, settle: (to = 0) => { move = to; lastY = scrollY; } };
       root.classList.add("world");
       const reveal = () => { canvas.classList.add("on"); root.classList.add("machine-on"); };
-      if (frozen !== null) { step(parseFloat(frozen), scrollY); reveal(); root.dataset.ready = "1"; return; }
-      let cur = scrollY, prev = performance.now(), frames = 0, slow = 0;
+      if (frozen !== null) { step(parseFloat(frozen), scrollY); reveal(); root.dataset.ready = "1"; loadDone(); return; }
+      /* The machine's own clock: stopped until the curtain lifts, then it runs up past its idle speed and settles. */
+      let cur = scrollY, prev = performance.now(), clock = prev / 1000, frames = 0, slow = 0, lifted = false;
+      whenLifted(() => { lifted = true; });
       const loop = (now: number) => {
         const delta = now - prev; prev = now;
         const dt = Math.min(delta, 50) / 1000;
+        if (lifted && intro < 1) intro = Math.min(1, intro + dt / INTRO);
+        clock += dt * sstep(0, 0.3, intro) * (1 + 1.5 * (1 - sstep(0.3, 1, intro)));
         cur += (scrollY - cur) * (1 - Math.exp(-dt * 5));
-        step(now / 1000, cur, dt);
-        frames++; if (delta > 24) slow++;
-        if (frames >= 60) { if (slow > 24) m.lowerQuality(); frames = 0; slow = 0; }
+        step(clock, cur, dt);
+        /* Quality is only judged once the opening is over. */
+        if (intro >= 1) {
+          frames++; if (delta > 24) slow++;
+          if (frames >= 60) { if (slow > 24) m.lowerQuality(); frames = 0; slow = 0; }
+        }
         raf = requestAnimationFrame(loop);
       };
+      step(clock, cur, 1 / 60);
+      reveal();
       raf = requestAnimationFrame(loop);
-      requestAnimationFrame(reveal);
       root.dataset.ready = "1";
+      loadDone();
     };
-    /* The page paints and settles first; the machine fades in over the still. */
-    const idle = () => {
-      const go = () => void start().catch(() => {});
-      const ric = (window as unknown as { requestIdleCallback?: (f: () => void, o?: object) => number }).requestIdleCallback;
-      setTimeout(() => (ric ? ric(go, { timeout: 1200 }) : go()), frozen !== null ? 0 : 900);
-    };
-    if (document.readyState === "complete") idle();
-    else addEventListener("load", idle, { once: true });
-    return () => { stopped = true; cancelAnimationFrame(raf); dispose(); removeEventListener("load", idle); root.classList.remove("machine-on", "world"); };
+    /* Everything is built and warmed behind the loader, so nothing has to happen once the page is on show. */
+    void start().catch(() => loadDone());
+    return () => { stopped = true; cancelAnimationFrame(raf); dispose(); root.classList.remove("machine-on", "world"); };
   }, []);
 
   return <canvas ref={ref} aria-hidden className="machine" />;

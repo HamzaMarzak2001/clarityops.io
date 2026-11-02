@@ -541,7 +541,10 @@ void main(){
 export type Shot = { pos: Vector3; look: Vector3 };
 export type ChainAnchor = { x: number; y: number; r: number; hole?: number; kind?: "clear" | "soft" | "dim" };
 
-export function createMachine(canvas: HTMLCanvasElement, opts: { mobile: boolean }) {
+/* Hands the thread back between heavy steps, so the loader keeps moving while the machine is built. */
+const breathe = () => new Promise<void>((r) => setTimeout(r, 0));
+
+export async function createMachine(canvas: HTMLCanvasElement, opts: { mobile: boolean }) {
   const q = opts.mobile ? 0.34 : 1;
   const renderer = new WebGLRenderer({ canvas, antialias: true, alpha: false, powerPreference: "high-performance" });
   renderer.setClearColor(0x000000, 1);
@@ -549,7 +552,9 @@ export function createMachine(canvas: HTMLCanvasElement, opts: { mobile: boolean
   let ratio = Math.min(devicePixelRatio || 1, opts.mobile ? 1.5 : 2);
   const scene = new Scene();
   const camera = new PerspectiveCamera(opts.mobile ? 62 : 44, 1, 0.2, 120);
+  await breathe();
   const world = buildWorld(q);
+  await breathe();
 
   const uni = { t: { value: 0 }, tidy: { value: 0 }, dpr: { value: ratio }, dim: { value: 1 }, fogFar: { value: 40 }, hallFade: { value: 0 }, lampC: { value: new Vector2(9, 2) }, clipZ: { value: -999 }, band: { value: new Vector2(-1, -1) }, veil: { value: 0 }, resX: { value: 1 }, resY: { value: 1 }, navFade: { value: 0 }, edge: { value: new Vector2(0.12, 0.72) } };
   const blend = { blending: CustomBlending, blendEquation: AddEquation, blendSrc: OneFactor, blendDst: OneMinusSrcAlphaFactor, transparent: true, depthWrite: false, depthTest: true } as const;
@@ -584,7 +589,9 @@ export function createMachine(canvas: HTMLCanvasElement, opts: { mobile: boolean
   stackGroup.rotation.x = -Math.PI / 2;
   scene.add(stackGroup);
   const tS = { value: 0 };
+  await breathe();
   const parts = buildStack(q);
+  await breathe();
   const mk = (c: Cloud, parent: Group = stackGroup, over: Partial<typeof uni> = { t: tS }) => {
     const dU = { value: 0 }, u = { ...uni, dim: dU, clipZ: { value: -999 }, fogFar: { value: 90 }, hallFade: { value: 0 }, ...over };
     const g = new Group();
@@ -624,8 +631,11 @@ export function createMachine(canvas: HTMLCanvasElement, opts: { mobile: boolean
   let rt: WebGLRenderTarget | null = null;
   const ortho = new PerspectiveCamera();
 
+  let sizedAt = "";
   const size = () => {
-    const w = canvas.clientWidth, h = canvas.clientHeight;
+    const w = canvas.clientWidth, h = canvas.clientHeight, sig = `${w}x${h}@${ratio}`;
+    if (sig === sizedAt) return;
+    sizedAt = sig;
     renderer.setPixelRatio(ratio); renderer.setSize(w, h, false);
     camera.aspect = w / h; camera.updateProjectionMatrix();
     const W = renderer.domElement.width, H = renderer.domElement.height;
@@ -686,6 +696,37 @@ export function createMachine(canvas: HTMLCanvasElement, opts: { mobile: boolean
       chainTop = Math.min(...ys) - 500; chainEnd = Math.max(...ys) + 500;
       chainRoot.traverse((o) => { o.frustumCulled = false; });
       chainCam.aspect = vw / vh; chainCam.updateProjectionMatrix();
+    },
+    /** Sets up everything the page will ever draw, while nobody is looking. Shaders are compiled once per target (the screen and the speed pass), and parts of the machine that are out of view would otherwise upload the first time you scroll to them. */
+    async warm() {
+      stackGroup.visible = solids.visible = chainScene.visible = true;
+      [...Object.values(st), ...Object.values(chainParts ?? {})].forEach((p) => { p.g.visible = true; });
+      for (const target of [null, rt]) {
+        renderer.setRenderTarget(target);
+        await renderer.compileAsync(bgScene, ortho);
+        await renderer.compileAsync(scene, camera);
+        await renderer.compileAsync(chainScene, chainCam);
+        renderer.clear(); renderer.render(bgScene, ortho);
+        await breathe();
+        renderer.render(scene, camera);
+        await breathe();
+        renderer.clearDepth(); renderer.render(chainScene, chainCam);
+        await breathe();
+      }
+      renderer.setRenderTarget(null);
+      await renderer.compileAsync(postScene, ortho);
+      renderer.render(postScene, ortho);
+      /* Reading a pixel waits for the GPU to really finish all of that. */
+      const gl = renderer.getContext();
+      gl.readPixels(0, 0, 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, new Uint8Array(4));
+    },
+    /** The same for a chain rebuilt later, after a resize. Only its data is new, so it never reaches the screen. */
+    warmChain() {
+      if (!rt) return;
+      const was = chainScene.visible;
+      chainScene.visible = true;
+      renderer.setRenderTarget(rt); renderer.render(chainScene, chainCam); renderer.setRenderTarget(null);
+      chainScene.visible = was;
     },
     lowerQuality() { if (ratio <= 1) return; ratio = Math.max(1, ratio - 0.25); size(); },
     draw(s: { chain: { y: number; turn: number; move: number; t: number }; stack: { d: number; dt: number }; navFade: number; edge: [number, number]; shift: [number, number]; clipZ: number; fogFar: number; t: number; pos: Vector3; look: Vector3; roll: number; tidy: number; dim: number; veil: number; speed: number; bandTop: number; bandBottom: number }) {
