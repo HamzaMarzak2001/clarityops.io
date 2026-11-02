@@ -17,8 +17,6 @@ export function Footer() {
             <ul>{social.map(([label, href]) => <li key={href}><a className="ft-link" href={href} target="_blank" rel="noopener noreferrer">{label}</a></li>)}</ul>
           </nav>
         </div>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/logos/logo-wordmark-white.svg#svgView(viewBox(65.51,57.45,400.38,77.85))" alt="" className="ft-mark" width={400} height={78} loading="lazy" />
         <p className="fine ft-legal">© 2026 ClarityOps SARL</p>
       </div>
     </footer>

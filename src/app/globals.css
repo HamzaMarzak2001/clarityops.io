@@ -354,10 +354,8 @@
 .ft-links { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
 .ft-link { display: inline-flex; align-items: center; min-height: 44px; font-size: 16px; color: var(--text); transition: color 200ms var(--ease-out); }
 .ft-link:hover { color: var(--lime); }
-.ft-mark { display: block; width: 100%; height: auto; margin-top: 56px; }
-.ft-legal { margin-top: 24px; }
+.ft-legal { margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--hairline); }
 @media (min-width: 768px) {
   .ft { padding-block: 96px 40px; }
   .ft-top { grid-template-columns: minmax(0, 1fr) minmax(0, 360px); align-items: start; }
-  .ft-mark { margin-top: 72px; }
 }
