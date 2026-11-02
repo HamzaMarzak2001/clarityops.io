@@ -9,7 +9,7 @@ const jetbrains = JetBrains_Mono({ subsets: ["latin"], weight: ["400", "500"], v
 const fraunces = Fraunces({ subsets: ["latin"], weight: "500", style: "italic", variable: "--font-fraunces", display: "swap" });
 
 const title = "ClarityOps · Operations & AI Systems Studio";
-const description = "ClarityOps designs how growing companies run, then builds the systems, automation and AI agents that run them. Founder-led, based in Casablanca, working worldwide.";
+const description = "ClarityOps designs how growing companies run, then builds the systems, automation and AI agents that run them. Founder-led, working worldwide.";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://clarityops.io"),
@@ -31,7 +31,6 @@ const schema = {
   url: "https://clarityops.io",
   logo: "https://clarityops.io/logos/favicon.svg",
   description,
-  address: { "@type": "PostalAddress", addressLocality: "Casablanca", addressCountry: "MA" },
   areaServed: ["Europe", "United States", "Middle East"],
   founder: { "@type": "Person", name: "Hamza Marzak" },
   sameAs: ["https://www.linkedin.com/in/hamza-marzak-347921231/", "https://x.com/hamza_arq"],
