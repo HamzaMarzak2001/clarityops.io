@@ -33,7 +33,7 @@ export function CaseDialog({ c, onClose }: { c: Case; onClose: () => void }) {
           <p className="body-l col-span-12 lg:col-span-6">{c.body}</p>
         </div>
         <figure className="frame mt-12 border border-hairline lg:mt-20" style={{ aspectRatio: `${first.width} / ${first.height}` }}>
-          <Image src={first.src} alt={first.alt} fill sizes="(min-width: 1344px) 1280px, 100vw" className="object-cover" />
+          <Image src={first.src} alt={first.alt} fill sizes="(min-width: 1344px) 80vw, 100vw" className="object-cover" />
         </figure>
         <div className="mt-6 grid gap-6 md:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] md:items-start">
           {rest.map((im) => (

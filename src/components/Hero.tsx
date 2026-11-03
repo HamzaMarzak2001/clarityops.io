@@ -5,7 +5,7 @@ const Line = ({ children }: { children: string }) => <span className="line"><spa
 
 export function Hero() {
   return (
-    <section aria-labelledby="hero-h" className="hero pt-[88px]">
+    <section aria-labelledby="hero-h" className="hero pt-[5.5rem]">
       <div className="wrap pt-6 lg:pt-12">
         <p className="label hero-fade mb-6">Operations &amp; AI systems studio</p>
         <h1 id="hero-h" className="d-xl" aria-label="We design how companies run.">

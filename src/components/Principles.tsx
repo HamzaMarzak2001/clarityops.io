@@ -14,13 +14,13 @@ export function Principles() {
       <div className="wrap grid12 gap-y-12">
         <div className="col-span-12 lg:col-span-4 lg:sticky lg:top-24 lg:self-start">
           <p className="label mb-6">How we think</p>
-          <h2 id="principles-h" className="h3 !text-[clamp(28px,2.8vw,40px)]">What we believe about running a company.</h2>
+          <h2 id="principles-h" className="h3 !text-[clamp(1.75rem,2.8vw,2.5rem)]">What we believe about running a company.</h2>
         </div>
         <ul className="col-span-12 lg:col-span-7 lg:col-start-6">
           {principles.map(([lead, rest]) => (
             <Reveal as="li" key={lead} className="pr-item py-8 first:pt-0 lg:py-12">
               <span aria-hidden className="pr-rule" />
-              <p className="pr-lead text-[clamp(32px,3.6vw,52px)] font-semibold leading-[1.08] tracking-[-0.03em]"><span>{lead}</span></p>
+              <p className="pr-lead text-[clamp(2rem,3.6vw,3.25rem)] font-semibold leading-[1.08] tracking-[-0.03em]"><span>{lead}</span></p>
               <p className="pr-rest body mt-4 text-muted">{rest}</p>
             </Reveal>
           ))}

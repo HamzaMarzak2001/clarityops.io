@@ -45,7 +45,7 @@ export function Nav() {
   return (
     <>
       <header className={`site-nav ${hidden ? "is-hidden" : ""}`} data-surface={paper ? "paper" : "black"}>
-        <nav aria-label="Primary" className="wrap flex h-[88px] items-center justify-between">
+        <nav aria-label="Primary" className="wrap flex h-[5.5rem] items-center justify-between">
           <a href="#top" aria-label="ClarityOps"><Logo draw /></a>
           <ul className="hidden gap-10 lg:flex">
             {links.map((l) => (
@@ -58,13 +58,13 @@ export function Nav() {
       </header>
       {open && (
         <div role="dialog" aria-modal="true" aria-label="Menu" className="fixed inset-0 z-20 flex flex-col bg-black px-[var(--m)] pb-8">
-          <div className="flex h-[88px] items-center justify-between">
+          <div className="flex h-[5.5rem] items-center justify-between">
             <Logo />
             <button type="button" autoFocus onClick={() => setOpen(false)} className="label nav-menu">Close</button>
           </div>
           <ul className="flex-1 pt-8">
             {links.map((l) => (
-              <li key={l.href}><a href={l.href} onClick={() => setOpen(false)} className="block text-[40px] font-semibold leading-[1.35] tracking-[-0.035em]">{l.label}</a></li>
+              <li key={l.href}><a href={l.href} onClick={() => setOpen(false)} className="block text-[2.5rem] font-semibold leading-[1.35] tracking-[-0.035em]">{l.label}</a></li>
             ))}
           </ul>
           <a href="#contact" onClick={() => setOpen(false)} className="btn btn-p"><span>Start a conversation</span></a>

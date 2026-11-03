@@ -95,7 +95,7 @@ export function SystemScene({ scene }: { scene: Scene }) {
   return (
     <span ref={root} className="sn" role="img" aria-label={scene.summary}>
       <span className="sn-shot">
-        <Image src={scene.shot.src} alt="" fill sizes="(min-width: 1344px) 1280px, 100vw" className="object-cover object-left-top" />
+        <Image src={scene.shot.src} alt="" fill sizes="(min-width: 1344px) 80vw, 100vw" className="object-cover object-left-top" />
       </span>
       <span className="sn-stage" aria-hidden>
         <span className="sn-story">

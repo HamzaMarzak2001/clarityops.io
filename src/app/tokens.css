@@ -21,17 +21,17 @@
   --ease-io: cubic-bezier(0.65, 0, 0.35, 1);
   --t-reveal: 800ms;
 
-  --r-s: 6px;
-  --r-l: 14px;
-  --m: 24px;
-  --gap: 24px;
-  --sec: 80px;
-  --gx: max(var(--m), calc((100vw - 1280px) / 2));
-  --col: calc((min(1280px, 100vw - 2 * var(--m)) - 11 * var(--gap)) / 12);
+  --r-s: 0.375rem;
+  --r-l: 0.875rem;
+  --m: 1.5rem;
+  --gap: 1.5rem;
+  --sec: 5rem;
+  --gx: max(var(--m), calc((100vw - 80rem) / 2));
+  --col: calc((min(80rem, 100vw - 2 * var(--m)) - 11 * var(--gap)) / 12);
 }
 @media (min-width: 768px) {
-  :root { --m: 48px; --sec: 96px; }
+  :root { --m: 3rem; --sec: 6rem; }
 }
 @media (min-width: 1200px) {
-  :root { --m: 64px; --sec: 128px; }
+  :root { --m: 4rem; --sec: 8rem; }
 }

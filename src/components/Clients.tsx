@@ -36,7 +36,7 @@ function Set({ copy = false }: { copy?: boolean }) {
       {companies.map((c) => (
         <li key={c.src}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={c.src} alt={copy ? "" : c.name} width={Math.round(c.w * 0.85)} height={Math.round(c.h * 0.85)} decoding="async" />
+          <img src={c.src} alt={copy ? "" : c.name} width={Math.round(c.w * 0.85)} height={Math.round(c.h * 0.85)} style={{ width: `${(c.w * 0.85) / 16}rem`, height: "auto" }} decoding="async" />
         </li>
       ))}
     </ul>
