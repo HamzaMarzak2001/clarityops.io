@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 
-/* Saves a lead to Notion. While the env vars are unset, or if Notion fails, it answers ok so booking still works. */
+/* Sends a lead to the Make scenario that files it in Notion. While the webhook is unset, or if Make fails, it answers ok so booking still works. */
 const text = (v: unknown, max = 2000) => (typeof v === "string" ? v.trim().slice(0, max) : "");
-const rich = (s: string) => ({ rich_text: s ? [{ text: { content: s } }] : [] });
+const esc = (s: string) => s.replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`);
 
 export async function POST(req: Request) {
   let body: Record<string, unknown>;
@@ -15,35 +15,33 @@ export async function POST(req: Request) {
     return NextResponse.json({ ok: false, error: "Name and a valid email are required." }, { status: 422 });
   }
 
-  const token = process.env.NOTION_TOKEN;
-  const db = process.env.NOTION_LEADS_DB_ID;
-  if (!token || !db) return NextResponse.json({ ok: true, saved: false });
+  const hook = process.env.MAKE_CONTACT_WEBHOOK_URL;
+  if (!hook) return NextResponse.json({ ok: true, saved: false });
 
   const website = text(body.website, 500);
-  const size = text(body.size, 50);
-  const slow = Array.isArray(body.slow) ? body.slow.map((s) => text(s, 90)).filter(Boolean).slice(0, 6) : [];
-  const properties: Record<string, unknown> = {
-    Name: { title: [{ text: { content: name } }] },
-    Email: { email },
-    Company: rich(text(body.company, 200)),
-    Industry: rich(text(body.industry, 200)),
-    Note: rich(text(body.note)),
-    Slowing: { multi_select: slow.map((s) => ({ name: s.replace(/,/g, "") })) },
+  const lead = {
+    name,
+    email,
+    company: text(body.company, 200),
+    website: website && !/^https?:\/\//.test(website) ? `https://${website}` : website,
+    size: text(body.size, 50),
+    industry: text(body.industry, 200),
+    slowing: Array.isArray(body.slow) ? body.slow.map((s) => text(s, 90).replace(/,/g, "")).filter(Boolean).slice(0, 6) : [],
+    note: text(body.note),
+    source: "Website",
+    submittedAt: new Date().toISOString(),
   };
-  if (website) properties.Website = { url: /^https?:\/\//.test(website) ? website : `https://${website}` };
-  if (size) properties["Team size"] = { select: { name: size } };
+  /* The scenario emails these two as they are, before filing the lead in Notion. */
+  const rows: [string, string][] = [["Name", lead.name], ["Email", lead.email], ["Company", lead.company], ["Website", lead.website], ["Team size", lead.size], ["Industry", lead.industry], ["Slowing them down", lead.slowing.join(", ")], ["Note", lead.note]];
+  const subject = `New website lead: ${lead.name}${lead.company ? ` (${lead.company})` : ""}`;
+  const html = `<table cellpadding="6" style="font:14px/1.5 sans-serif;border-collapse:collapse">${rows.filter(([, v]) => v).map(([k, v]) => `<tr><td style="color:#666;vertical-align:top">${k}</td><td>${esc(v).replace(/\n/g, "<br>")}</td></tr>`).join("")}</table>`;
 
   try {
-    const res = await fetch("https://api.notion.com/v1/pages", {
-      method: "POST",
-      headers: { authorization: `Bearer ${token}`, "content-type": "application/json", "notion-version": "2022-06-28" },
-      body: JSON.stringify({ parent: { database_id: db }, properties }),
-      signal: AbortSignal.timeout(8000),
-    });
-    if (!res.ok) console.error("Notion rejected a lead", res.status);
+    const res = await fetch(hook, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ ...lead, subject, html }), signal: AbortSignal.timeout(8000) });
+    if (!res.ok) console.error("Make rejected a lead", res.status);
     return NextResponse.json({ ok: true, saved: res.ok });
   } catch {
-    console.error("Notion request failed");
+    console.error("Make request failed");
     return NextResponse.json({ ok: true, saved: false });
   }
 }
