@@ -10,7 +10,7 @@ import { Glyph } from "./Glyph";
 const COL_W = 20.5, GAP = 2.6, LEFT = (100 - (4 * COL_W + 3 * GAP)) / 2;
 const TOP = 19, BOTTOM = 64, BAR: [number, number] = [73, 88];
 /* Platform colours, so each tool reads at a glance. */
-const BRAND: Record<string, string> = { make: "#6d00cc", drive: "#1fa463", docs: "#4285f4", gemini: "#7b61ff", gmail: "#ea4335", meta: "#0467df", facebook: "#1877f2", quickbooks: "#2ca01c", calendar: "#4285f4", notion: "#111" };
+export const BRAND: Record<string, string> = { make: "#6d00cc", drive: "#1fa463", docs: "#4285f4", gemini: "#7b61ff", gmail: "#ea4335", meta: "#0467df", facebook: "#1877f2", quickbooks: "#2ca01c", calendar: "#4285f4", notion: "#111" };
 
 export function layout(c: Case) {
   return c.zones.map((z, k) => {

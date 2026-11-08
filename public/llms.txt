@@ -36,6 +36,10 @@ The client owns what is built: their accounts, their data, their system. No lice
 
 - [Home](https://clarityops.io/): the full studio page.
 - [Selected work](https://clarityops.io/#work): systems running today.
+- [Case study: Bourbon Holdings](https://clarityops.io/work/bourbon-holdings): a real estate deal desk that opens, files and follows up on itself.
+- [Case study: Lighting supplier](https://clarityops.io/work/lighting-sales): leads that file themselves and quotes that go out in seconds.
+- [Case study: MAE Media](https://clarityops.io/work/mae-media): delivery, pipeline and cash for a media agency in one system.
+- [Case study: Inspection reports](https://clarityops.io/work/inspection-reports): building inspection reports written in Arabic in one click.
 - [Approach](https://clarityops.io/#approach): Operations Review, System Build, Partnership.
 - [Studio](https://clarityops.io/#studio): Hamza Marzak, founder.
 - [FAQ](https://clarityops.io/#faq): common questions.

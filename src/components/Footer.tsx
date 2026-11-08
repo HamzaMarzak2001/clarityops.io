@@ -16,7 +16,7 @@ function Col({ title, items, external }: { title: string; items: string[][]; ext
   );
 }
 
-export function Footer() {
+export function Footer({ base = "" }: { base?: string }) {
   return (
     <footer className="ft2">
       <div className="ft2-panel">
@@ -27,7 +27,7 @@ export function Footer() {
             <p className="fine mt-6">© 2026 ClarityOps SARL</p>
           </div>
           <nav aria-label="Footer" className="ft2-cols">
-            <Col title="Pages" items={pages} />
+            <Col title="Pages" items={pages.map(([l, h]) => [l, base + h])} />
             <Col title="Ask AI about us" items={ais} external />
             <Col title="Follow" items={social} external />
           </nav>

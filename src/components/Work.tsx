@@ -27,6 +27,7 @@ function CaseSlide({ c, i }: { c: Case; i: number }) {
       <div className="wk-head">
         <p className="label wk-who"><span className="wk-num">{pad(i + 1)}</span><span className="wk-name">{c.name}</span><span className="wk-kick">{c.kicker}</span></p>
         <h3 id={`case-${c.slug}`} className="wk-h">{c.headline}</h3>
+        <a href={`/work/${c.slug}`} className="tlink wk-read">Read the full case<span aria-hidden> →</span><span className="sr-only">: {c.name}</span></a>
       </div>
       <div className="wk-device">
         <Laptop app={c.hub[0]} island={<IslandMessages c={c} />}><SystemMap c={c} /></Laptop>

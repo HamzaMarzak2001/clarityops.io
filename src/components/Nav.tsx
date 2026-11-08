@@ -12,7 +12,8 @@ const links = [
   { href: "#faq", label: "FAQ" },
 ];
 
-export function Nav() {
+/* On other pages the links lead back to the home page sections. */
+export function Nav({ base = "" }: { base?: string }) {
   const [open, setOpen] = useState(false);
   const [hidden, setHidden] = useState(false);
   const [paper, setPaper] = useState(false);
@@ -36,9 +37,9 @@ export function Nav() {
     const spy = new IntersectionObserver((es) => {
       es.forEach((e) => { if (e.isIntersecting) setActive(`#${e.target.id}`); });
     }, { rootMargin: "-45% 0px -50% 0px" });
-    links.forEach((l) => { const el = document.querySelector(l.href); if (el) spy.observe(el); });
+    if (!base) links.forEach((l) => { const el = document.querySelector(l.href); if (el) spy.observe(el); });
     return () => { onPaper.disconnect(); spy.disconnect(); };
-  }, []);
+  }, [base]);
 
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
@@ -52,13 +53,13 @@ export function Nav() {
     <>
       <header className={`site-nav ${hidden ? "is-hidden" : ""}`} data-surface={paper ? "paper" : "black"}>
         <nav aria-label="Primary" className="wrap flex h-[5.5rem] items-center justify-between">
-          <a href="#top" aria-label="ClarityOps"><Logo draw /></a>
+          <a href={base ? "/" : "#top"} aria-label="ClarityOps"><Logo draw /></a>
           <ul className="hidden gap-8 lg:flex">
             {links.map((l) => (
-              <li key={l.href}><a href={l.href} aria-current={active === l.href ? "true" : undefined} className="nav-link">{l.label}</a></li>
+              <li key={l.href}><a href={base + l.href} aria-current={active === l.href ? "true" : undefined} className="nav-link">{l.label}</a></li>
             ))}
           </ul>
-          <a href="#contact" className="btn btn-s nav-cta hidden lg:inline-flex">Start a conversation</a>
+          <a href={`${base}#contact`} className="btn btn-s nav-cta hidden lg:inline-flex">Start a conversation</a>
           <button type="button" onClick={() => setOpen(true)} aria-expanded={open} className="label nav-menu lg:hidden">Menu</button>
         </nav>
       </header>
@@ -70,10 +71,10 @@ export function Nav() {
           </div>
           <ul className="flex-1 pt-8">
             {links.map((l) => (
-              <li key={l.href}><a href={l.href} onClick={() => setOpen(false)} className="block text-[2.5rem] font-semibold leading-[1.35] tracking-[-0.035em]">{l.label}</a></li>
+              <li key={l.href}><a href={base + l.href} onClick={() => setOpen(false)} className="block text-[2.5rem] font-semibold leading-[1.35] tracking-[-0.035em]">{l.label}</a></li>
             ))}
           </ul>
-          <a href="#contact" onClick={() => setOpen(false)} className="btn btn-p"><span>Start a conversation</span></a>
+          <a href={`${base}#contact`} onClick={() => setOpen(false)} className="btn btn-p"><span>Start a conversation</span></a>
         </div>
       )}
     </>
