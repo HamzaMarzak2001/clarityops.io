@@ -11,7 +11,7 @@ const jetbrains = JetBrains_Mono({ subsets: ["latin"], weight: ["400", "500"], v
 const fraunces = Fraunces({ subsets: ["latin"], weight: "500", style: "italic", variable: "--font-fraunces", display: "swap" });
 
 const title = "ClarityOps · Operations & AI Systems Studio";
-const description = "ClarityOps designs how growing companies run, then builds the systems, automation and AI agents that run them. Founder-led, working worldwide.";
+const description = "ClarityOps is an operations and AI systems studio. We design how founder-led companies run, then build the systems, automation and AI agents that run them.";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://clarityops.io"),
