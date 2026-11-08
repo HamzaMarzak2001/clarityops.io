@@ -510,14 +510,14 @@ void main(){
 }`;
 const FS = /* glsl */ `
 precision highp float;
-uniform vec2 band, edge; uniform float veil, resX, resY, navFade;
+uniform vec2 band, edge; uniform float veil, resX, resY, navFade, outside;
 varying float vA; varying float vL;
 void main(){
   bool paper=gl_FragCoord.y<band.y&&gl_FragCoord.y>band.x;
   /* A long, soft fall-off across the whole screen, never a shape: most of the copy sits to the left. */
   float a=vA*mix(1.,mix(.12,1.,smoothstep(edge.x,edge.y,gl_FragCoord.x/resX)),veil)*mix(1.,smoothstep(.93,.82,gl_FragCoord.y/resY),navFade);
   if(paper){ vec3 c=mix(vec3(.08,.1,.06),vec3(.34,.5,.03),vL); gl_FragColor=vec4(c*a*1.25,a*1.25); }
-  else { vec3 c=mix(vec3(.76,.8,.72),vec3(.9,.95,.02),vL); gl_FragColor=vec4(c*a,0.); }
+  else { vec3 c=mix(vec3(.76,.8,.72),vec3(.9,.95,.02),vL); gl_FragColor=vec4(c*a*outside,0.); }
 }`;
 const BG_FS = /* glsl */ `
 precision highp float;
@@ -556,7 +556,7 @@ export async function createMachine(canvas: HTMLCanvasElement, opts: { mobile: b
   const world = buildWorld(q);
   await breathe();
 
-  const uni = { t: { value: 0 }, tidy: { value: 0 }, dpr: { value: ratio }, dim: { value: 1 }, fogFar: { value: 40 }, hallFade: { value: 0 }, lampC: { value: new Vector2(9, 2) }, clipZ: { value: -999 }, band: { value: new Vector2(-1, -1) }, veil: { value: 0 }, resX: { value: 1 }, resY: { value: 1 }, navFade: { value: 0 }, edge: { value: new Vector2(0.12, 0.72) } };
+  const uni = { t: { value: 0 }, tidy: { value: 0 }, dpr: { value: ratio }, dim: { value: 1 }, fogFar: { value: 40 }, hallFade: { value: 0 }, lampC: { value: new Vector2(9, 2) }, clipZ: { value: -999 }, band: { value: new Vector2(-1, -1) }, veil: { value: 0 }, resX: { value: 1 }, resY: { value: 1 }, navFade: { value: 0 }, outside: { value: 1 }, edge: { value: new Vector2(0.12, 0.72) } };
   const blend = { blending: CustomBlending, blendEquation: AddEquation, blendSrc: OneFactor, blendDst: OneMinusSrcAlphaFactor, transparent: true, depthWrite: false, depthTest: true } as const;
   const geom = (p: number[], r: number[], f: number[], a: number[], g: number[], n: number[]) => {
     const G = new BufferGeometry();
@@ -729,7 +729,7 @@ export async function createMachine(canvas: HTMLCanvasElement, opts: { mobile: b
       chainScene.visible = was;
     },
     lowerQuality() { if (ratio <= 1) return; ratio = Math.max(1, ratio - 0.25); size(); },
-    draw(s: { chain: { y: number; turn: number; move: number; t: number }; stack: { d: number; dt: number }; navFade: number; edge: [number, number]; shift: [number, number]; clipZ: number; fogFar: number; t: number; pos: Vector3; look: Vector3; roll: number; tidy: number; dim: number; veil: number; speed: number; bandTop: number; bandBottom: number }) {
+    draw(s: { chain: { y: number; turn: number; move: number; t: number }; stack: { d: number; dt: number }; navFade: number; edge: [number, number]; shift: [number, number]; clipZ: number; fogFar: number; t: number; pos: Vector3; look: Vector3; roll: number; tidy: number; dim: number; veil: number; speed: number; bandTop: number; bandBottom: number; outside?: number }) {
       const vhNow = canvas.clientHeight;
       chainScene.visible = !!chainParts && s.chain.y + vhNow > chainTop && s.chain.y < chainEnd;
       if (chainParts && chainScene.visible) {
@@ -745,7 +745,8 @@ export async function createMachine(canvas: HTMLCanvasElement, opts: { mobile: b
       }
       /* What we do: plan, then mechanism on top, then agents on top, then all three lock into one running system. */
       const inHall = s.pos.z < -52 && s.pos.z > -100, d = s.stack.d;
-      stackGroup.visible = inHall;
+      /* The finished stack belongs to What we do: once the world moves to the paper sections it stays behind. */
+      stackGroup.visible = inHall && (s.outside ?? 1) > 0.5;
       if (!inHall) uni.hallFade.value = 0;
       if (inHall) {
         const a1 = ss(-0.14, 0.08, d), a2 = ss(0.3, 0.46, d), a3 = ss(0.62, 0.78, d), lock = ss(0.8, 0.93, d), done = ss(0.86, 0.97, d), gap = 3.7 - 2.3 * lock, B = s.dim * 1.75 * (1 - 0.8 * ss(1.04, 1.2, d));
@@ -759,10 +760,12 @@ export async function createMachine(canvas: HTMLCanvasElement, opts: { mobile: b
         st.frame.set(done * B, 0, gap);
         st.glow.set(done * B, 0, gap);
       }
-      uni.edge.value.set(...s.edge); uni.navFade.value = s.navFade; solids.visible = s.pos.z > -3; uni.t.value = s.t; uni.tidy.value = s.tidy; uni.dim.value = s.dim; uni.veil.value = s.veil; uni.fogFar.value = s.fogFar; uni.clipZ.value = s.clipZ;
+      uni.edge.value.set(...s.edge); uni.navFade.value = s.navFade; solids.visible = s.pos.z > -3 && (s.outside ?? 1) > 0.5; uni.t.value = s.t; uni.tidy.value = s.tidy; uni.dim.value = s.dim; uni.veil.value = s.veil; uni.fogFar.value = s.fogFar; uni.clipZ.value = s.clipZ;
       /* From screen pixels, top down, to GL pixels, bottom up. */
       const H = renderer.domElement.height, k = H / canvas.clientHeight;
       uni.band.value.set(H - s.bandBottom * k, H - s.bandTop * k);
+      /* Past What we do the world shows only on the paper sections, never on black. */
+      uni.outside.value = s.outside ?? 1;
       camera.position.copy(s.pos); camera.up.set(Math.sin(s.roll), Math.cos(s.roll), 0); camera.lookAt(s.look);
       /* The vanishing point can be moved on screen: the whole corridor then converges behind the portrait. */
       const w = canvas.clientWidth, hh = canvas.clientHeight;

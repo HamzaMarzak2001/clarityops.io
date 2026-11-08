@@ -5,9 +5,11 @@ import { Logo } from "./Logo";
 
 const links = [
   { href: "#work", label: "Work" },
+  { href: "#what-we-do", label: "What we do" },
   { href: "#approach", label: "Approach" },
   { href: "#studio", label: "Studio" },
-  { href: "#contact", label: "Contact" },
+  { href: "#stack", label: "Stack" },
+  { href: "#faq", label: "FAQ" },
 ];
 
 export function Nav() {
@@ -24,9 +26,13 @@ export function Nav() {
   });
 
   useEffect(() => {
-    const work = document.getElementById("work");
-    const onPaper = new IntersectionObserver(([e]) => setPaper(e.isIntersecting), { rootMargin: "0px 0px -92% 0px" });
-    if (work) onPaper.observe(work);
+    /* The nav turns light over every light surface: Selected work and the white ending. */
+    const under = new Set<Element>();
+    const onPaper = new IntersectionObserver((es) => {
+      es.forEach((e) => { if (e.isIntersecting) under.add(e.target); else under.delete(e.target); });
+      setPaper(under.size > 0);
+    }, { rootMargin: "0px 0px -92% 0px" });
+    document.querySelectorAll("#work, .paper-run").forEach((el) => onPaper.observe(el));
     const spy = new IntersectionObserver((es) => {
       es.forEach((e) => { if (e.isIntersecting) setActive(`#${e.target.id}`); });
     }, { rootMargin: "-45% 0px -50% 0px" });
@@ -47,7 +53,7 @@ export function Nav() {
       <header className={`site-nav ${hidden ? "is-hidden" : ""}`} data-surface={paper ? "paper" : "black"}>
         <nav aria-label="Primary" className="wrap flex h-[5.5rem] items-center justify-between">
           <a href="#top" aria-label="ClarityOps"><Logo draw /></a>
-          <ul className="hidden gap-10 lg:flex">
+          <ul className="hidden gap-8 lg:flex">
             {links.map((l) => (
               <li key={l.href}><a href={l.href} aria-current={active === l.href ? "true" : undefined} className="nav-link">{l.label}</a></li>
             ))}

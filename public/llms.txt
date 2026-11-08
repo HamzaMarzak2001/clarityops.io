@@ -1,0 +1,49 @@
+# ClarityOps
+
+> ClarityOps is an operations and AI systems studio. It designs how growing companies run, then builds the systems, automation and AI agents that run them. Founder-led by Hamza Marzak, working worldwide.
+
+ClarityOps works with a small number of companies at a time. Usually founder-led, between 10 and 100 people, in a phase where the business has outgrown the way it runs. Over four years it has built operations for companies in construction, real estate, media, consumer brands and professional services, across three continents. Every engagement is led by the founder, from the first review to the handover.
+
+Legal name: ClarityOps SARL. Website: https://clarityops.io
+
+## What ClarityOps does
+
+Three layers, one operation: design the structure, connect it, then put AI to work inside it. In that order.
+
+- Operations design: map how work actually moves through a company (who decides, where things stall, what lives in one person's head), then design the operation it should run on.
+- Systems & automation: one source of truth for the work, connected to the tools the company already pays for. Information moves on its own. Nobody copies, chases or re-enters anything.
+- AI agents: agents with real jobs inside the system. They read documents, draft replies, update records and flag what needs a person. Built where they earn their place.
+
+Tools: Notion, Make, n8n, Zapier, Claude and OpenAI, and the tools a team already uses. The stack is chosen for the operation, never the other way around.
+
+## How an engagement works
+
+- Operations Review: a review of how the company runs today. Every process that matters is mapped to find where time, money and attention leak. The client receives a written diagnosis, a system blueprint and a fixed proposal. If the right answer is not to build, ClarityOps says so.
+- System Build: design, build, migrate and train. Working parts within the first two weeks, with every stage approved before the next. The system is live, documented and in use before handover.
+- Partnership: ClarityOps stays on as the operations team. New automations, new agents and new parts of the business brought into the system. One monthly engagement, cancellable anytime.
+
+The client owns what is built: their accounts, their data, their system. No licences and no lock-in.
+
+## Principles
+
+- Tools don't fix an operation nobody designed.
+- The best system is usually smaller than the one you have.
+- AI where it earns its place. If a rule can do it, a rule should do it.
+- Adoption is the deliverable.
+- We'd rather be rehired than relied on.
+
+## Links
+
+- [Home](https://clarityops.io/): the full studio page.
+- [Selected work](https://clarityops.io/#work): systems running today.
+- [Approach](https://clarityops.io/#approach): Operations Review, System Build, Partnership.
+- [Studio](https://clarityops.io/#studio): Hamza Marzak, founder.
+- [FAQ](https://clarityops.io/#faq): common questions.
+- [Contact](https://clarityops.io/#contact): start with a short form, then book a call.
+
+## Elsewhere
+
+- [LinkedIn: Hamza Marzak](https://www.linkedin.com/in/hamza-marzak-347921231/)
+- [X: @hamza_arq](https://x.com/hamza_arq)
+- [Instagram: @hamza.clarityops](https://www.instagram.com/hamza.clarityops/)
+- [YouTube: @hamza.clarityops](https://www.youtube.com/@hamza.clarityops)

@@ -46,7 +46,7 @@ export function Contact() {
   };
 
   return (
-    <section id="contact" aria-labelledby="contact-h" className="sec bg-panel">
+    <section id="contact" aria-labelledby="contact-h" className="sec">
       <div className="wrap grid12 gap-y-12">
         <div className="col-span-12 lg:col-span-6">
           <h2 id="contact-h" className="d">Let&apos;s look at how your company runs.</h2>
@@ -104,7 +104,7 @@ export function Contact() {
               <div>
                 <p data-focus tabIndex={-1} className="h3">Thank you. Pick a time that works for you.</p>
                 <div className="cal-box" data-lenis-prevent>
-                  <Cal calLink="clarityops.io/discovery" config={{ name: v.name, email: v.email, theme: "dark" }} style={{ width: "100%", height: "100%", overflow: "auto" }} />
+                  <Cal calLink="clarityops.io/discovery" config={{ name: v.name, email: v.email, theme: "light" }} style={{ width: "100%", height: "100%", overflow: "auto" }} />
                 </div>
               </div>
             )}

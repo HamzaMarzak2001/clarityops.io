@@ -36,12 +36,15 @@ export function Machine() {
       await Promise.race([document.fonts.ready, new Promise((r) => setTimeout(r, 1500))]);
       if (stopped) return;
       let stops: Stop[] = [], posC: Curve, lookC: Curve, th = { y: 0, S: 1 }, wwd = { y: 0, S: 1 };
+      /* The machine ends with What we do: from Approach on, the page runs without it. */
+      let endAt = Infinity;
       const work = document.querySelector("#work") as HTMLElement;
+      const papers = Array.from(document.querySelectorAll<HTMLElement>(".paper-run"));
       const layout = () => {
         m.resize();
         const q = (s: string) => document.querySelector(s) as HTMLElement, vh = innerHeight;
         const thEl = q(".th"), thT = top(thEl), S = thEl.offsetHeight - vh, w = top(work), wEnd = w + work.offsetHeight, tr = q(".wwd-track"), pT = top(tr), pS = tr.offsetHeight - vh, ap = top(q("#approach")), co = top(q("#contact")), end = root.scrollHeight - vh;
-        th = { y: thT, S }; wwd = { y: pT, S: pS };
+        th = { y: thT, S }; wwd = { y: pT, S: pS }; endAt = ap;
         /* dim is its strength while you travel. rest is its strength once you stop to read. */
         const around = (x: number, y: number, z: number): [number, number, number] => { const k = wide ? 1 : 1.5; return [x * k, y * k, -82 + z * k]; };
         stops = [
@@ -67,10 +70,10 @@ export function Machine() {
           /* Then over the top of the finished system and on, down into the corridor. */
           { y: pT + pS + vh * 0.55, pos: [0, 7, -78], look: [0, -1, -98], dim: 1, rest: 0.25 },
           /* Into the long corridor as the page moves on. */
-          { y: ap, pos: [0, 0.4, -92], look: [0, 0, -108], dim: 0.65, rest: 0.07 },
-          { y: co - vh * 0.5, pos: [0, -0.2, -124], look: [0, 0, -137], dim: 0.6, rest: 0.06 },
+          { y: ap, pos: [0, 0.4, -92], look: [0, 0, -108], dim: 0.62, rest: 0.16 },
+          { y: co - vh * 0.5, pos: [0, -0.2, -124], look: [0, 0, -137], dim: 0.62, rest: 0.16 },
           /* The core. */
-          { y: end, pos: [wide ? 2.6 : 0, 0.2, -124.5], look: [wide ? -3.6 : 0, 0, -137], dim: 0.5, rest: 0.05, fog: 34 },
+          { y: end, pos: [wide ? 2.6 : 0, 0.2, -124.5], look: [wide ? -3.6 : 0, 0, -137], dim: 0.55, rest: 0.14, fog: 34 },
         ];
         scheduleChain();
         for (let i = 1; i < stops.length; i++) if (stops[i].y <= stops[i - 1].y) stops[i].y = stops[i - 1].y + 1;
@@ -80,6 +83,8 @@ export function Machine() {
       /* The drive line: anchored in the empty space each section leaves, ending at Contact. */
       let chainSig = "", chainTimer = 0;
       const buildChain = () => {
+        /* The gear chain is retired: from Approach on, the paper sections carry the world instead. */
+        if (papers.length) return;
         const vw = innerWidth, vh = innerHeight, Rc = (sel: string) => { const q = (document.querySelector(sel) as HTMLElement).getBoundingClientRect(); return { l: q.left, r: q.right, t: q.top + scrollY, b: q.bottom + scrollY, h: q.height, w: q.width }; };
         const apH = Rc("#approach h2"), ol = Rc("#approach ol"), pri = Rc("section:has(#principles-h)"), port = Rc(".st-portrait"), pull = Rc(".st-pull"), fitH = Rc("#fit-h"), fitB = Rc("section:has(#fit-h) p:not(.label)"), coB = Rc("#contact .body"), coH = Rc("#contact h2"), form = Rc("#contact form"), foot = Rc("footer");
         const pc = { x: (port.l + port.r) / 2, y: (port.t + port.b) / 2, r: port.w / 2 };
@@ -140,6 +145,9 @@ export function Machine() {
       const portrait = document.querySelector(".st-portrait") as HTMLElement | null;
       let lastY = scrollY, move = 0, intro = frozen !== null ? 1 : 0;
       const step = (t: number, y: number, dt = 1 / 60) => {
+        /* Gone before Approach comes into view. */
+        /* After What we do, the world leaves the black sections and stays only on paper. */
+        const gone = sstep(endAt - innerHeight * 1.45, endAt - innerHeight * 0.8, y);
         let i = 0;
         while (i < stops.length - 2 && y > stops[i + 1].y) i++;
         const a = stops[i], b = stops[i + 1], x = Math.min(1, Math.max(0, (y - a.y) / (b.y - a.y))), e = x * 0.5 + (x * x * (3 - 2 * x)) * 0.5;
@@ -154,7 +162,9 @@ export function Machine() {
         const want = Math.max(Math.min(1, v * 1.3), 1 - sstep(0.4, 1, intro));
         move += (want - move) * (1 - Math.exp(-dt * (want > move ? 9 : 1.6)));
         const restNow = a.rest + (b.rest - a.rest) * e, moveNow = (a.dim + (b.dim - a.dim) * e) * (wide ? 1 : 0.7);
-        const r = work.getBoundingClientRect();
+        /* The paper band: whichever paper surface fills most of the screen. */
+        let r = work.getBoundingClientRect(), best = Math.min(r.bottom, innerHeight) - Math.max(r.top, 0);
+        for (const el of papers) { const q = el.getBoundingClientRect(), o = Math.min(q.bottom, innerHeight) - Math.max(q.top, 0); if (o > best) { best = o; r = q; } }
         let pw = 0, cx = 0, cy = 0;
         if (portrait) {
           const b = portrait.getBoundingClientRect(), vh = innerHeight;
@@ -175,7 +185,7 @@ export function Machine() {
           tidy: sstep(0.72, 0.95, (y - th.y) / th.S),
           stack: { d, dt },
           dim: (restNow + (moveNow - restNow) * move) * sstep(0, 0.4, intro), veil: wide ? (a.veil ?? 0) + ((b.veil ?? 0) - (a.veil ?? 0)) * e : 0, fogFar: (a.fog ?? 30) + ((b.fog ?? 30) - (a.fog ?? 30)) * e,
-          speed: Math.max(Math.min(0.9, v * 0.16), 0.6 * (1 - sstep(0, 0.5, intro))), bandTop: r.top, bandBottom: r.bottom,
+          speed: Math.max(Math.min(0.9, v * 0.16), 0.6 * (1 - sstep(0, 0.5, intro))), bandTop: r.top, bandBottom: r.bottom, outside: 1 - gone,
         });
       };
       if (process.env.NODE_ENV === "development") (window as unknown as { __shape: unknown }).__shape = { step, settle: (to = 0) => { move = to; lastY = scrollY; } };

@@ -40,7 +40,7 @@ export function WhatWeDo() {
   });
 
   return (
-    <section aria-labelledby="what-h" className="wwd">
+    <section id="what-we-do" aria-labelledby="what-h" className="wwd">
       <div className="wrap wwd-head">
         <p className="label mb-6">What we do</p>
         <h2 id="what-h" className="d">Three layers. One operation.</h2>

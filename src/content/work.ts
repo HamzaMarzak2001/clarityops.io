@@ -1,76 +1,26 @@
-/* Headlines, kickers, facts and bodies are from COPY-DECK.md. Step wording is new, drawn from Hamza's automation notes, and needs his approval. */
-export type Step = { caption: string; field: string; value: string; who: string; icon?: string; mark?: string };
-export type Scene = { title: string; closing: string; shot: { src: string; w: number; h: number }; steps: Step[]; summary: string };
+/* Selected work. Each case is told as a map of its system on a laptop, then the manual steps it removed.
+   Bourbon's and MAE's headlines are from COPY-DECK.md. Everything else is a draft for Hamza, built from his project notes and his own case-study content.
+   Outcomes only use numbers Hamza has published or that can be counted from the build. No client records appear anywhere. */
+
+export type Tool = { name: string; job: string; icon?: string; mark?: string };
+export type Zone = { label: string; title: string; text: string; tools: Tool[]; island: { title: string; text: string; icon?: string; mark?: string } };
+export type Row = { name: string; icon?: string; mark?: string; /* the one step a person still does */ person?: boolean };
+export type Outcome = { from: string; to: string; label: string };
 
 export type Case = {
   slug: string;
   name: string;
   kicker: string;
   headline: string;
-  body: string;
-  facts: string[];
-  scene: Scene;
-  sequence: { src: string; width: number; height: number; alt: string }[];
-};
-
-const bourbon: Scene = {
-  title: "Deal",
-  closing: "Six automations, running daily",
-  summary: "A lead arrives from InvestorFuse, the contact is matched, the Drive folder and summary doc are created, Gemini reads the MLS report in, Smrtphone calls log themselves, and refund windows trigger reminders by Gmail.",
-  shot: { src: "/work/bourbon-overview.jpg", w: 2900, h: 1355 },
-  steps: [
-    { caption: "A lead comes in.", field: "Lead", value: "Captured", who: "InvestorFuse", mark: "IF" },
-    { caption: "The contact is matched.", field: "Contact", value: "Matched, no duplicates", who: "Make", icon: "make" },
-    { caption: "The folder builds itself.", field: "Deal folder", value: "Created", who: "Google Drive", icon: "drive" },
-    { caption: "So does the summary.", field: "Property summary", value: "Generated", who: "Google Docs", icon: "docs" },
-    { caption: "AI reads the MLS report.", field: "MLS comps", value: "Written in", who: "Gemini", icon: "gemini" },
-    { caption: "Every call logs itself.", field: "Call log", value: "Recording attached", who: "Smrtphone", mark: "SP" },
-    { caption: "Deadlines watch themselves.", field: "Refund window", value: "Reminder sent", who: "Gmail", icon: "gmail" },
-  ],
-};
-
-const mae: Scene = {
-  title: "Weekly scorecard",
-  closing: "Monday starts with facts",
-  summary: "Meta spend syncs daily, Facebook leads are captured, QuickBooks feeds cash and receivables, Google Calendar counts demos, new projects get Drive folders, and status changes email the right person.",
-  shot: { src: "/work/mae-overview.jpg", w: 1850, h: 1150 },
-  steps: [
-    { caption: "Ad spend syncs daily.", field: "Ad spend", value: "Synced", who: "Meta Ads", icon: "meta" },
-    { caption: "Leads capture themselves.", field: "New leads", value: "Captured", who: "Facebook Lead Ads", icon: "facebook" },
-    { caption: "Cash reads from the books.", field: "Cash and receivables", value: "Pulled in", who: "QuickBooks", icon: "quickbooks" },
-    { caption: "Demos count themselves.", field: "Demo meetings", value: "Counted Friday", who: "Google Calendar", icon: "calendar" },
-    { caption: "New project, new folder.", field: "Project folder", value: "Created", who: "Google Drive", icon: "drive" },
-    { caption: "The right person hears.", field: "Status change", value: "Emailed", who: "Gmail", icon: "gmail" },
-  ],
-};
-
-const fryaway: Scene = {
-  title: "One daily page",
-  closing: "Nobody rebuilds a report",
-  summary: "Ad spend, sales and performance flow into one daily page, return on ad spend calculates itself, and an AI assistant writes performance data into Notion.",
-  shot: { src: "/work/fryaway-overview.jpg", w: 1881, h: 1170 },
-  steps: [
-    { caption: "Ad spend flows in.", field: "Ad spend", value: "Today", who: "One daily page", icon: "notion" },
-    { caption: "Sales flow in.", field: "Sales", value: "Today", who: "One daily page", icon: "notion" },
-    { caption: "Performance flows in.", field: "Performance", value: "Today", who: "One daily page", icon: "notion" },
-    { caption: "Return on ad spend does the math.", field: "Return on ad spend", value: "Calculated", who: "Formula", mark: "fx" },
-    { caption: "AI writes the data.", field: "Performance data", value: "Written by AI", who: "AI assistant", mark: "AI" },
-  ],
-};
-
-const labinno: Scene = {
-  title: "Projet",
-  closing: "Delivered entirely in French",
-  summary: "One project record, in French, connected to meetings, tasks, documents, clients and partners. Meeting minutes create the actions, and clients and partners each see only their part.",
-  shot: { src: "/work/labinno-overview.jpg", w: 2745, h: 1670 },
-  steps: [
-    { caption: "One record, tender to handover.", field: "Phase", value: "Soumission à réception", who: "Projets", icon: "notion" },
-    { caption: "Meeting minutes are filed.", field: "Réunions et PV", value: "Reliés", who: "Réunions et PV", mark: "PV" },
-    { caption: "They create the actions.", field: "Tâches", value: "Créées depuis le PV", who: "Tâches", mark: "TÂ" },
-    { caption: "Documents stay attached.", field: "Documents", value: "Classés", who: "Documents", mark: "DO" },
-    { caption: "Clients see their part.", field: "Vue client", value: "Sa partie", who: "Clients", mark: "CL" },
-    { caption: "Partners see theirs.", field: "Vue partenaire", value: "Sa partie", who: "Partenaires", mark: "PA" },
-  ],
+  /* the middle of the map, before and after */
+  hub: [string, string];
+  before: { title: string; text: string; island: string };
+  zones: [Zone, Zone, Zone, Zone];
+  system: { title: string; text: string; island: [string, string] };
+  /* what one run used to take by hand */
+  unit: string;
+  rows: Row[];
+  outcomes: Outcome[];
 };
 
 export const cases: Case[] = [
@@ -79,13 +29,65 @@ export const cases: Case[] = [
     name: "Bourbon Holdings",
     kicker: "Real estate investment · Los Angeles",
     headline: "A deal desk that opens, files and follows up on itself.",
-    body: "A new lead becomes a deal with its contacts matched. Each deal gets its own Drive folder and property summary, with MLS reports read by AI and written into it. Calls are logged with recordings. Refund windows are watched daily. Dead deals archive themselves.",
-    facts: ["6 automations", "5 platforms", "629 records migrated"],
-    scene: bourbon,
-    sequence: [
-      { src: "/work/case/bourbon-1.jpg", width: 2900, height: 800, alt: "Bourbon Holdings' deal desk home page, with its banner and title." },
-      { src: "/work/case/bourbon-2.jpg", width: 520, height: 420, alt: "Quick actions for a new deal, task, call or contact." },
-      { src: "/work/case/bourbon-3.jpg", width: 2180, height: 500, alt: "Navigation to deals, tasks, the call log, contacts and probate order heirs." },
+    hub: ["Deal desk", "one place for every deal"],
+    before: {
+      title: "Five apps for every deal.",
+      text: "A lead landed in one app. Someone made the Drive folder by hand, copied the summary doc, typed in the MLS comps, then tracked the call somewhere else. Every deal, every time.",
+      island: "Five apps, every step by hand.",
+    },
+    zones: [
+      { label: "Comes in", title: "A lead comes in.", text: "A new lead from InvestorFuse opens a deal on its own, and Make matches the contact so nobody is entered twice.", tools: [{ name: "InvestorFuse", job: "New leads", mark: "IF" }, { name: "Make", job: "Matches the contact", icon: "make" }], island: { title: "New deal opened", text: "Contact matched, no duplicates.", mark: "IF" } },
+      { label: "Set up", title: "The deal sets itself up.", text: "Each deal gets its own Drive folder and a property summary doc, made from the template.", tools: [{ name: "Drive", job: "Deal folder", icon: "drive" }, { name: "Docs", job: "Property summary", icon: "docs" }], island: { title: "Folder and summary made", text: "Filed under the deal.", icon: "drive" } },
+      { label: "Reads itself", title: "AI reads the MLS report.", text: "The MLS report arrives by email, and Gemini writes the comps straight into the summary.", tools: [{ name: "Gemini", job: "Reads the MLS report", icon: "gemini" }], island: { title: "Comps written in", text: "Read from the MLS report.", icon: "gemini" } },
+      { label: "On track", title: "Nothing slips.", text: "Every call is logged on the right deal with its recording, and refund windows send a reminder before they close.", tools: [{ name: "Smrtphone", job: "Logs every call", mark: "SP" }, { name: "Gmail", job: "Refund reminders", icon: "gmail" }], island: { title: "Call logged", text: "Recording on the right deal.", mark: "SP" } },
+    ],
+    system: { title: "One deal desk that runs itself.", text: "Six automations run every day. The team steps in only to make the calls.", island: ["Six automations, every day", "One place for every deal."] },
+    unit: "Steps by hand per deal",
+    rows: [
+      { name: "Enter the new lead", mark: "IF" },
+      { name: "Check for a duplicate contact", icon: "make" },
+      { name: "Make the deal folder", icon: "drive" },
+      { name: "Write the property summary", icon: "docs" },
+      { name: "Type in the MLS comps", icon: "gemini" },
+      { name: "Log the call and recording", mark: "SP" },
+      { name: "Track the refund window", icon: "gmail" },
+      { name: "Call the seller", mark: "SP", person: true },
+    ],
+    outcomes: [
+      { from: "5", to: "1", label: "Apps to run a deal" },
+      { from: "7", to: "0", label: "Steps by hand per deal" },
+    ],
+  },
+  {
+    slug: "lighting-sales",
+    name: "Lighting supplier",
+    kicker: "Sales · Netherlands",
+    headline: "Leads that file themselves, and quotes that go out in seconds.",
+    hub: ["Sales desk", "every lead and quote in one place"],
+    before: {
+      title: "Every lead copied, every quote built by hand.",
+      text: "Leads from Meta ads were copied into the CRM one by one, every quote was put together by hand, and each new customer was typed into the books again.",
+      island: "Leads and quotes, all by hand.",
+    },
+    zones: [
+      { label: "Leads come in", title: "Leads file themselves.", text: "Every Meta lead form lands in the CRM on its own, through Make. Nobody copies it over.", tools: [{ name: "Meta ads", job: "Lead forms", icon: "meta" }, { name: "Make", job: "Files the lead", icon: "make" }], island: { title: "New lead filed", text: "Straight from the Meta form.", icon: "meta" } },
+      { label: "Quote", title: "A quote in seconds.", text: "The customer gets a branded quote PDF from the website in seconds, by email.", tools: [{ name: "Website", job: "Builds the quote", mark: "WEB" }, { name: "Email", job: "Sends the PDF", icon: "gmail" }], island: { title: "Quote sent", text: "Branded PDF, in seconds.", mark: "PDF" } },
+      { label: "Signed", title: "Signed and booked online.", text: "The customer signs the quote online and books the appointment in the same flow.", tools: [{ name: "E-sign", job: "Signed online", mark: "SIG" }, { name: "Cal.com", job: "Books the visit", icon: "calendar" }], island: { title: "Signed and booked", text: "No back and forth.", icon: "calendar" } },
+      { label: "Books", title: "The books stay in sync.", text: "One button creates the customer in Moneybird, so nothing is typed twice.", tools: [{ name: "Moneybird", job: "Customer created", mark: "MB" }], island: { title: "Customer in the books", text: "One button, no retyping.", mark: "MB" } },
+    ],
+    system: { title: "From ad to signed quote, without copying.", text: "The team only talks to customers. The client has since referred another business to ClarityOps.", island: ["Three manual jobs gone", "Leads, quotes and the books."] },
+    unit: "Steps by hand per lead",
+    rows: [
+      { name: "Copy the lead out of Meta", icon: "meta" },
+      { name: "Enter it in the CRM", icon: "make" },
+      { name: "Build the quote", mark: "WEB" },
+      { name: "Send it and chase the signature", mark: "SIG" },
+      { name: "Retype the customer in the books", mark: "MB" },
+      { name: "Talk to the customer", icon: "calendar", person: true },
+    ],
+    outcomes: [
+      { from: "20+", to: "0", label: "Leads a week copied by hand" },
+      { from: "3", to: "0", label: "Manual jobs" },
     ],
   },
   {
@@ -93,41 +95,64 @@ export const cases: Case[] = [
     name: "MAE Media",
     kicker: "Media agency · Operations and finance",
     headline: "Delivery, pipeline and cash, finally reading from the same numbers.",
-    body: "Automations across eight platforms keep the agency's work and money in one system. A weekly scorecard pulls cash and receivables from QuickBooks, so the Monday meeting starts with facts instead of questions.",
-    facts: ["10+ automations", "8 platforms", "Weekly scorecard"],
-    scene: mae,
-    sequence: [
-      { src: "/work/case/mae-1.jpg", width: 2870, height: 820, alt: "MAE Media's home page, with its banner and title." },
-      { src: "/work/case/mae-2.jpg", width: 700, height: 1050, alt: "MAE Media's quick actions and navigation." },
-      { src: "/work/case/mae-3.jpg", width: 640, height: 690, alt: "MAE Media's overview of projects by status." },
+    hub: ["Agency HQ", "work and money in one place"],
+    before: {
+      title: "Every number copied by hand.",
+      text: "Ad spend, cash, leads and client folders all lived in different tools, and everything was copied over by hand. It was too messy to show a client.",
+      island: "Every number, copied by hand.",
+    },
+    zones: [
+      { label: "Ads", title: "Ad spend syncs every day.", text: "Meta ad spend comes into the HQ daily, per client, without anyone exporting it.", tools: [{ name: "Meta ads", job: "Daily spend", icon: "meta" }], island: { title: "Ad spend synced", text: "Every morning, per client.", icon: "meta" } },
+      { label: "Money", title: "Cash reads from the books.", text: "Cash and money owed come in from QuickBooks every day, so the Monday meeting starts with facts.", tools: [{ name: "QuickBooks", job: "Cash and receivables", icon: "quickbooks" }], island: { title: "Cash updated", text: "Pulled from QuickBooks.", icon: "quickbooks" } },
+      { label: "Leads", title: "Leads land on their own.", text: "Facebook lead ads go straight into the pipeline, with an email to whoever follows up.", tools: [{ name: "Facebook", job: "Lead ads", icon: "facebook" }, { name: "Gmail", job: "Alerts the team", icon: "gmail" }], island: { title: "New lead in the pipeline", text: "And the right person is told.", icon: "facebook" } },
+      { label: "Delivery", title: "Projects run themselves.", text: "A new client gets its Drive folder automatically, and status changes or overdue work email the right person.", tools: [{ name: "Drive", job: "Client folders", icon: "drive" }, { name: "Gmail", job: "Status and overdue", icon: "gmail" }], island: { title: "Folder created", text: "Overdue work flagged by email.", icon: "drive" } },
+    ],
+    system: { title: "One HQ for the work and the money.", text: "Automations across eight platforms keep delivery, pipeline and cash in one system.", island: ["One HQ, eight platforms", "Work and money together."] },
+    unit: "Steps by hand each week",
+    rows: [
+      { name: "Export ad spend from Meta", icon: "meta" },
+      { name: "Pull cash from QuickBooks", icon: "quickbooks" },
+      { name: "Copy new leads into the pipeline", icon: "facebook" },
+      { name: "Make each client folder", icon: "drive" },
+      { name: "Email status changes", icon: "gmail" },
+      { name: "Chase overdue work", icon: "gmail" },
+      { name: "Run the Monday meeting", icon: "calendar", person: true },
+    ],
+    outcomes: [
+      { from: "8", to: "1", label: "Platforms read in one place" },
+      { from: "6", to: "0", label: "Copying jobs by hand" },
     ],
   },
   {
-    slug: "fryaway",
-    name: "FryAway",
-    kicker: "Consumer brand · Marketing operations",
-    headline: "Four reports a day, replaced by one page that's always current.",
-    body: "Ad spend, sales and performance flow into one daily view, with return on ad spend calculated on its own. An AI assistant writes performance data straight into the system, so nobody rebuilds a report again.",
-    facts: ["4 reports into 1", "Daily, automatic", "AI writes the data"],
-    scene: fryaway,
-    sequence: [
-      { src: "/work/case/fryaway-1.jpg", width: 2960, height: 830, alt: "FryAway's home page, with its banner and title." },
-      { src: "/work/case/fryaway-2.jpg", width: 680, height: 620, alt: "FryAway's navigation to advertising metrics, email campaigns, tasks and assets." },
-      { src: "/work/case/fryaway-3.jpg", width: 970, height: 650, alt: "FryAway's open tasks by status." },
+    slug: "inspection-reports",
+    name: "Inspection reports",
+    kicker: "Building inspection · Saudi Arabia",
+    headline: "Inspection reports that write themselves, in Arabic, in one click.",
+    hub: ["Inspection system", "one page per inspection"],
+    before: {
+      title: "Hours of formatting for every report.",
+      text: "After every site visit the inspector rebuilt the report by hand: writing up each item, placing 8 to 15 photos per item, then branding and formatting it in Arabic.",
+      island: "Every report was formatted by hand.",
+    },
+    zones: [
+      { label: "On site", title: "The inspector logs it on site.", text: "Each item and its photos go straight into the inspection page on an iPad, while walking the building.", tools: [{ name: "iPad", job: "Items and photos", mark: "iP" }, { name: "Notion", job: "Inspection page", icon: "notion" }], island: { title: "Logged on site", text: "Items and photos go in on the iPad.", mark: "iP" } },
+      { label: "One button", title: "One button starts the report.", text: "When the walk-through is done, the inspector presses one button. Nothing else to fill in.", tools: [{ name: "Generate", job: "One button", mark: "▶" }], island: { title: "One click", text: "The report starts building itself.", mark: "▶" } },
+      { label: "AI writes it", title: "AI writes the report.", text: "Claude turns the notes into a finished report in Arabic, with every photo placed under its item.", tools: [{ name: "Claude", job: "Writes it in Arabic", mark: "AI" }, { name: "Photos", job: "Placed per item", mark: "IMG" }], island: { title: "Written by AI", text: "In Arabic, photos in place.", mark: "AI" } },
+      { label: "Delivered", title: "The branded PDF is ready.", text: "The finished report comes back as a branded PDF, attached to the same inspection page and ready to send.", tools: [{ name: "PDF", job: "Branded report", mark: "PDF" }], island: { title: "PDF attached", text: "Branded and ready to send.", mark: "PDF" } },
     ],
-  },
-  {
-    slug: "labinno",
-    name: "Labinno",
-    kicker: "Construction · Geneva",
-    headline: "A construction firm, run from tender to handover in one place.",
-    body: "Projects, meetings, clients, partners and documents, connected around a single project record. Meeting minutes create the actions themselves. Clients and partners each see only their part. Delivered entirely in French.",
-    facts: ["7 connected databases", "Team, client and partner views", "Tender to handover"],
-    scene: labinno,
-    sequence: [
-      { src: "/work/case/labinno-1.jpg", width: 2745, height: 830, alt: "Labinno's home page, with its banner and title." },
-      { src: "/work/case/labinno-2.jpg", width: 720, height: 1400, alt: "Labinno's quick actions, navigation and resources, in French." },
-      { src: "/work/case/labinno-3.jpg", width: 1000, height: 850, alt: "Labinno's overview of projects by phase." },
+    system: { title: "Walk the site, press one button.", text: "The inspector's job is the inspection. The report builds itself, and a referred colleague now runs a copy of the same system.", island: ["One click per report", "The rest is automatic."] },
+    unit: "Steps by hand per report",
+    rows: [
+      { name: "Write up each inspected item", mark: "iP" },
+      { name: "Place 8 to 15 photos per item", mark: "IMG" },
+      { name: "Format the report in Arabic", mark: "AI" },
+      { name: "Apply the branding", mark: "PDF" },
+      { name: "Export and file the PDF", icon: "notion" },
+      { name: "Inspect the site", mark: "iP", person: true },
+    ],
+    outcomes: [
+      { from: "5 h", to: "1 click", label: "Per report, at most" },
+      { from: "5", to: "0", label: "Formatting steps by hand" },
     ],
   },
 ];
