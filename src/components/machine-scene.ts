@@ -441,8 +441,10 @@ function buildStack(q: number) {
 
 const SOLID_VS = `attribute vec3 aRot; uniform float t; varying vec3 vN; varying vec3 vP; varying vec3 vC;
       void main(){ vec3 p=position, n=normal; vC=aRot; if(aRot.x!=0.){ float a=t*aRot.x,c=cos(a),s=sin(a); vec2 d=p.xy-aRot.yz; p.xy=aRot.yz+vec2(c*d.x-s*d.y,s*d.x+c*d.y); n.xy=vec2(c*n.x-s*n.y,s*n.x+c*n.y); if(position.z>-9.) p.z+=.16*sin(t*.55+aRot.y*.7+aRot.z*.5); } vN=n; vP=p; gl_Position=projectionMatrix*modelViewMatrix*vec4(p,1.); }`;
-const SOLID_FS = `precision highp float; uniform float t, resX, resY, veil, dim; uniform vec2 edge, lampC; varying vec3 vN; varying vec3 vP; varying vec3 vC;
+const SOLID_FS = `precision highp float; uniform float t, resX, resY, veil, dim; uniform vec2 edge, lampC, band; varying vec3 vN; varying vec3 vP; varying vec3 vC;
       void main(){
+        /* Never paint black onto the paper sections. */
+        if(gl_FragCoord.y<band.y&&gl_FragCoord.y>band.x) discard;
         vec3 n=normalize(vN);
         vec2 lamp=lampC+vec2(15.*sin(t*.23),12.*cos(t*.17));
         float pool=.35+smoothstep(26.,4.,distance(vP.xy,lamp));
@@ -510,13 +512,13 @@ void main(){
 }`;
 const FS = /* glsl */ `
 precision highp float;
-uniform vec2 band, edge; uniform float veil, resX, resY, navFade, outside;
+uniform vec2 band, edge; uniform float veil, resX, resY, navFade, outside, paperK;
 varying float vA; varying float vL;
 void main(){
   bool paper=gl_FragCoord.y<band.y&&gl_FragCoord.y>band.x;
   /* A long, soft fall-off across the whole screen, never a shape: most of the copy sits to the left. */
   float a=vA*mix(1.,mix(.12,1.,smoothstep(edge.x,edge.y,gl_FragCoord.x/resX)),veil)*mix(1.,smoothstep(.93,.82,gl_FragCoord.y/resY),navFade);
-  if(paper){ vec3 c=mix(vec3(.08,.1,.06),vec3(.34,.5,.03),vL); gl_FragColor=vec4(c*a*1.25,a*1.25); }
+  if(paper){ vec3 c=mix(vec3(.08,.1,.06),vec3(.34,.5,.03),vL); gl_FragColor=vec4(c*a*1.25,a*1.25)*paperK; }
   else { vec3 c=mix(vec3(.76,.8,.72),vec3(.9,.95,.02),vL); gl_FragColor=vec4(c*a*outside,0.); }
 }`;
 const BG_FS = /* glsl */ `
@@ -556,7 +558,7 @@ export async function createMachine(canvas: HTMLCanvasElement, opts: { mobile: b
   const world = buildWorld(q);
   await breathe();
 
-  const uni = { t: { value: 0 }, tidy: { value: 0 }, dpr: { value: ratio }, dim: { value: 1 }, fogFar: { value: 40 }, hallFade: { value: 0 }, lampC: { value: new Vector2(9, 2) }, clipZ: { value: -999 }, band: { value: new Vector2(-1, -1) }, veil: { value: 0 }, resX: { value: 1 }, resY: { value: 1 }, navFade: { value: 0 }, outside: { value: 1 }, edge: { value: new Vector2(0.12, 0.72) } };
+  const uni = { t: { value: 0 }, tidy: { value: 0 }, dpr: { value: ratio }, dim: { value: 1 }, fogFar: { value: 40 }, hallFade: { value: 0 }, lampC: { value: new Vector2(9, 2) }, clipZ: { value: -999 }, band: { value: new Vector2(-1, -1) }, veil: { value: 0 }, resX: { value: 1 }, resY: { value: 1 }, navFade: { value: 0 }, outside: { value: 1 }, paperK: { value: 1 }, edge: { value: new Vector2(0.12, 0.72) } };
   const blend = { blending: CustomBlending, blendEquation: AddEquation, blendSrc: OneFactor, blendDst: OneMinusSrcAlphaFactor, transparent: true, depthWrite: false, depthTest: true } as const;
   const geom = (p: number[], r: number[], f: number[], a: number[], g: number[], n: number[]) => {
     const G = new BufferGeometry();
@@ -574,7 +576,7 @@ export async function createMachine(canvas: HTMLCanvasElement, opts: { mobile: b
   scene.add(lines, points);
   /* The solids paint black and hold depth, so nearer parts cover the ones behind. */
   const solids = new Mesh(mergeGeometries(world.solids), new ShaderMaterial({
-    uniforms: { t: uni.t, resX: uni.resX, resY: uni.resY, veil: uni.veil, edge: uni.edge, dim: uni.dim, lampC: uni.lampC },
+    uniforms: { t: uni.t, resX: uni.resX, resY: uni.resY, veil: uni.veil, edge: uni.edge, dim: uni.dim, lampC: uni.lampC, band: uni.band },
     vertexShader: SOLID_VS, fragmentShader: SOLID_FS,
     side: DoubleSide, polygonOffset: true, polygonOffsetFactor: 2, polygonOffsetUnits: 6,
   }));
@@ -593,12 +595,13 @@ export async function createMachine(canvas: HTMLCanvasElement, opts: { mobile: b
   const parts = buildStack(q);
   await breathe();
   const mk = (c: Cloud, parent: Group = stackGroup, over: Partial<typeof uni> = { t: tS }) => {
-    const dU = { value: 0 }, u = { ...uni, dim: dU, clipZ: { value: -999 }, fogFar: { value: 90 }, hallFade: { value: 0 }, ...over };
+    /* The stack fades through its own strength and never draws on paper: the paper scrolls up over it as it goes. */
+    const dU = { value: 0 }, u = { ...uni, dim: dU, clipZ: { value: -999 }, fogFar: { value: 90 }, hallFade: { value: 0 }, outside: { value: 1 }, paperK: { value: 0 }, ...over };
     const g = new Group();
     const P = new Points(geom(c.p, c.r, c.f, c.a, c.g, c.n), new ShaderMaterial({ uniforms: { ...u, isLine: { value: 0 } }, vertexShader: VS, fragmentShader: FS, ...blend }));
     g.add(P);
     if (c.lp.length) g.add(new LineSegments(geom(c.lp, c.lr, c.lf, c.la, c.lg, c.ln_n), new ShaderMaterial({ uniforms: { ...u, isLine: { value: 1 } }, vertexShader: VS, fragmentShader: FS, ...blend })));
-    if (c.solids.length) { const M = new Mesh(mergeGeometries(c.solids), new ShaderMaterial({ uniforms: { t: u.t, resX: u.resX, resY: u.resY, veil: u.veil, edge: u.edge, dim: dU, lampC: u.lampC }, vertexShader: SOLID_VS, fragmentShader: SOLID_FS, side: DoubleSide, polygonOffset: true, polygonOffsetFactor: 2, polygonOffsetUnits: 6 })); M.renderOrder = -1; g.add(M); }
+    if (c.solids.length) { const M = new Mesh(mergeGeometries(c.solids), new ShaderMaterial({ uniforms: { t: u.t, resX: u.resX, resY: u.resY, veil: u.veil, edge: u.edge, dim: dU, lampC: u.lampC, band: u.band }, vertexShader: SOLID_VS, fragmentShader: SOLID_FS, side: DoubleSide, polygonOffset: true, polygonOffsetFactor: 2, polygonOffsetUnits: 6 })); M.renderOrder = -1; g.add(M); }
     g.traverse((o) => { o.frustumCulled = false; });
     parent.add(g);
     return { g, set(a: number, z: number, sz = 1) { dU.value = a; g.visible = a > 0.003; g.position.z = z; g.scale.z = sz; } };
@@ -746,10 +749,11 @@ export async function createMachine(canvas: HTMLCanvasElement, opts: { mobile: b
       /* What we do: plan, then mechanism on top, then agents on top, then all three lock into one running system. */
       const inHall = s.pos.z < -52 && s.pos.z > -100, d = s.stack.d;
       /* The finished stack belongs to What we do: once the world moves to the paper sections it stays behind. */
-      stackGroup.visible = inHall && (s.outside ?? 1) > 0.5;
+      const out = s.outside ?? 1;
+      stackGroup.visible = inHall && out > 0.003;
       if (!inHall) uni.hallFade.value = 0;
       if (inHall) {
-        const a1 = ss(-0.14, 0.08, d), a2 = ss(0.3, 0.46, d), a3 = ss(0.62, 0.78, d), lock = ss(0.8, 0.93, d), done = ss(0.86, 0.97, d), gap = 3.7 - 2.3 * lock, B = s.dim * 1.75 * (1 - 0.8 * ss(1.04, 1.2, d));
+        const a1 = ss(-0.14, 0.08, d), a2 = ss(0.3, 0.46, d), a3 = ss(0.62, 0.78, d), lock = ss(0.8, 0.93, d), done = ss(0.86, 0.97, d), gap = 3.7 - 2.3 * lock, B = s.dim * 1.75 * (1 - 0.3 * ss(1, 1.35, d)) * out;
         uni.hallFade.value = ss(-0.12, 0, d);
         tS.value += s.stack.dt * (1 + 1.6 * lock);
         st.L1.set(a1 * B, -gap - (1 - a1) * 2.2);
@@ -760,7 +764,7 @@ export async function createMachine(canvas: HTMLCanvasElement, opts: { mobile: b
         st.frame.set(done * B, 0, gap);
         st.glow.set(done * B, 0, gap);
       }
-      uni.edge.value.set(...s.edge); uni.navFade.value = s.navFade; solids.visible = s.pos.z > -3 && (s.outside ?? 1) > 0.5; uni.t.value = s.t; uni.tidy.value = s.tidy; uni.dim.value = s.dim; uni.veil.value = s.veil; uni.fogFar.value = s.fogFar; uni.clipZ.value = s.clipZ;
+      uni.edge.value.set(...s.edge); uni.navFade.value = s.navFade; solids.visible = s.pos.z > -3 && (s.outside ?? 1) > 0.003; uni.t.value = s.t; uni.tidy.value = s.tidy; uni.dim.value = s.dim; uni.veil.value = s.veil; uni.fogFar.value = s.fogFar; uni.clipZ.value = s.clipZ;
       /* From screen pixels, top down, to GL pixels, bottom up. */
       const H = renderer.domElement.height, k = H / canvas.clientHeight;
       uni.band.value.set(H - s.bandBottom * k, H - s.bandTop * k);

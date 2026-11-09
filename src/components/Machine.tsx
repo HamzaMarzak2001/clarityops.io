@@ -68,7 +68,7 @@ export function Machine() {
           { y: pT + pS * 0.85, pos: around(-6.5, 10.5, 18.5), look: [0, -0.4, -82], dim: 1.1, rest: wide ? 1.1 : 0.6, veil: 0.3 },
           { y: pT + pS, pos: around(-8, 11, 19), look: [0, -0.4, -82], dim: 1.1, rest: wide ? 1.1 : 0.6, veil: 0.3 },
           /* Then over the top of the finished system and on, down into the corridor. */
-          { y: pT + pS + vh * 0.55, pos: [0, 7, -78], look: [0, -1, -98], dim: 1, rest: 0.25 },
+          { y: pT + pS + vh * 0.95, pos: [0, 7, -78], look: [0, -1, -98], dim: 1, rest: 0.25 },
           /* Into the long corridor as the page moves on. */
           { y: ap, pos: [0, 0.4, -92], look: [0, 0, -108], dim: 0.62, rest: 0.16 },
           { y: co - vh * 0.5, pos: [0, -0.2, -124], look: [0, 0, -137], dim: 0.62, rest: 0.16 },
@@ -147,7 +147,8 @@ export function Machine() {
       const step = (t: number, y: number, dt = 1 / 60) => {
         /* Gone before Approach comes into view. */
         /* After What we do, the world leaves the black sections and stays only on paper. */
-        const gone = sstep(endAt - innerHeight * 1.45, endAt - innerHeight * 0.8, y);
+        /* Spread over the whole stretch between What we do and Approach, so it fades at the pace you scroll. */
+        const gone = sstep(wwd.y + wwd.S, Math.max(wwd.y + wwd.S + innerHeight * 0.5, endAt - innerHeight * 0.35), y);
         let i = 0;
         while (i < stops.length - 2 && y > stops[i + 1].y) i++;
         const a = stops[i], b = stops[i + 1], x = Math.min(1, Math.max(0, (y - a.y) / (b.y - a.y))), e = x * 0.5 + (x * x * (3 - 2 * x)) * 0.5;
@@ -174,7 +175,7 @@ export function Machine() {
         /* While that happens the camera sits on the corridor's axis, so its lines all run in behind the circle. */
         if (pw > 0) { P.x *= 1 - pw; P.y *= 1 - pw; L.x *= 1 - pw; L.y *= 1 - pw; L.z = P.z - 20 * pw + (L.z - (P.z - 20)) * (1 - pw); }
         const d = (y - wwd.y) / wwd.S;
-        const wwdIn = sstep(wwd.y - innerHeight * 1.1, wwd.y - innerHeight * 0.2, y) * (1 - sstep(wwd.y + wwd.S + innerHeight * 0.1, wwd.y + wwd.S + innerHeight * 0.55, y));
+        const wwdIn = sstep(wwd.y - innerHeight * 1.1, wwd.y - innerHeight * 0.2, y) * (1 - sstep(wwd.y + wwd.S + innerHeight * 0.1, wwd.y + wwd.S + innerHeight * 1.0, y));
         /* Interior rooms appear as the camera nears the intake. */
         const inT = sstep(th.y - innerHeight * 0.3, th.y + th.S * 0.1, y);
         m.draw({
