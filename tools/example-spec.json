@@ -1,0 +1,8 @@
+{"kind":"carousel","tag":"CLARITYOPS · AI OPS","slides":[
+{"layout":"statement","title":"Your team doesn't need more tools. [[It needs fewer tabs.]]","body":"What I hear on almost every sales call, and what we do about it."},
+{"layout":"quote","eyebrow":"From a sales call","quote":"I pay for 14 tools and I still [[copy-paste]] between them every morning.","who":"Agency founder, 12 people"},
+{"layout":"compare","eyebrow":"Before / After","title":"Same work. [[Half the clicks.]]","left":{"label":"Before","items":["Leads in 3 inboxes","Proposals written from scratch","Status lives in someone's head"]},"right":{"label":"After","items":["One intake, one CRM","Claude drafts the proposal from the call","Dashboard updates itself"]}},
+{"layout":"flow","eyebrow":"The order matters","title":"Fix it in [[this order.]]","steps":["Map where work actually happens","Pick one source of truth","Automate the handoffs","Add AI where judgment repeats"]},
+{"layout":"stat","eyebrow":"The result","stat":"[[6h]]","title":"back per week, per person.","body":"Not from a new app. From removing the steps between apps."},
+{"layout":"list","eyebrow":"Start this week","title":"Three questions to ask your team","items":[{"title":"What do you copy by hand?","text":"That's your first automation."},{"title":"Where do you look for status?","text":"If the answer is a person, you need a dashboard."},{"title":"What do you rewrite every time?","text":"That's a Claude job."}]},
+{"layout":"cta","title":"Want the map for your business?","body":"Comment MAP and I'll send you the checklist we use on every build.","action":"COMMENT  MAP"}]}
