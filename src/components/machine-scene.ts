@@ -528,14 +528,18 @@ void main(){ bool paper=gl_FragCoord.y<band.y&&gl_FragCoord.y>band.x; if(!paper)
 /* Speed: the frame pulls radially and the colours separate, as in the references. Only runs while moving. */
 const POST_FS = /* glsl */ `
 precision highp float;
-uniform sampler2D tex; uniform float amt; varying vec2 vUv;
+uniform sampler2D tex; uniform float amt, resY; uniform vec2 band; varying vec2 vUv;
+/* The pull never crosses the edge of a paper section, or it smears paper into black as a coloured line. */
+bool inP(float v){ float y=v*resY; return y<band.y&&y>band.x; }
+vec4 tap(vec2 uv, bool me, vec4 own){ return inP(uv.y)==me ? texture2D(tex,uv) : own; }
 void main(){
   vec2 d=vUv-.5; float l=length(d);
+  vec4 own=texture2D(tex,vUv); bool me=inP(vUv.y);
   vec3 c=vec3(0.);
   const int N=9;
   for(int i=0;i<N;i++){
     float k=float(i)/float(N-1)*amt*l*.5;
-    c.r+=texture2D(tex,vUv-d*k*1.25).r; c.g+=texture2D(tex,vUv-d*k).g; c.b+=texture2D(tex,vUv-d*k*.75).b;
+    c.r+=tap(vUv-d*k*1.25,me,own).r; c.g+=tap(vUv-d*k,me,own).g; c.b+=tap(vUv-d*k*.75,me,own).b;
   }
   gl_FragColor=vec4(c/float(N),1.);
 }`;
@@ -627,7 +631,7 @@ export async function createMachine(canvas: HTMLCanvasElement, opts: { mobile: b
   bg.frustumCulled = false;
   bgScene.add(bg);
   const postScene = new Scene();
-  const postUni = { tex: { value: null as unknown }, amt: { value: 0 } };
+  const postUni = { tex: { value: null as unknown }, amt: { value: 0 }, band: uni.band, resY: uni.resY };
   const post = new Mesh(new PlaneGeometry(2, 2), new ShaderMaterial({ uniforms: postUni, vertexShader: fsVS, fragmentShader: POST_FS, depthTest: false, depthWrite: false, blending: NoBlending }));
   post.frustumCulled = false;
   postScene.add(post);

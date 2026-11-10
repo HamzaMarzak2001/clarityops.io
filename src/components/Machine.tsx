@@ -166,6 +166,11 @@ export function Machine() {
         /* The paper band: whichever paper surface fills most of the screen. */
         let r = work.getBoundingClientRect(), best = Math.min(r.bottom, innerHeight) - Math.max(r.top, 0);
         for (const el of papers) { const q = el.getBoundingClientRect(), o = Math.min(q.bottom, innerHeight) - Math.max(q.top, 0); if (o > best) { best = o; r = q; } }
+        /* The last paper section runs straight into the footer, which sits on paper too: carry the paper on underneath it,
+           so there is no canvas edge to show where the two meet. */
+        const last = papers[papers.length - 1];
+        let bandBottom = r.bottom;
+        if (last && r.bottom === last.getBoundingClientRect().bottom && last.classList.contains("white-run")) bandBottom = Math.max(r.bottom, innerHeight) + innerHeight;
         let pw = 0, cx = 0, cy = 0;
         if (portrait) {
           const b = portrait.getBoundingClientRect(), vh = innerHeight;
@@ -186,7 +191,7 @@ export function Machine() {
           tidy: sstep(0.72, 0.95, (y - th.y) / th.S),
           stack: { d, dt },
           dim: (restNow + (moveNow - restNow) * move) * sstep(0, 0.4, intro), veil: wide ? (a.veil ?? 0) + ((b.veil ?? 0) - (a.veil ?? 0)) * e : 0, fogFar: (a.fog ?? 30) + ((b.fog ?? 30) - (a.fog ?? 30)) * e,
-          speed: Math.max(Math.min(0.9, v * 0.16), 0.6 * (1 - sstep(0, 0.5, intro))), bandTop: r.top, bandBottom: r.bottom, outside: 1 - gone,
+          speed: Math.max(Math.min(0.9, v * 0.16), 0.6 * (1 - sstep(0, 0.5, intro))), bandTop: r.top, bandBottom, outside: 1 - gone,
         });
       };
       if (process.env.NODE_ENV === "development") (window as unknown as { __shape: unknown }).__shape = { step, settle: (to = 0) => { move = to; lastY = scrollY; } };
