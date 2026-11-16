@@ -1,7 +1,7 @@
 import { FooterMark } from "./FooterMark";
 import { Logo } from "./Logo";
 
-const pages = [["Work", "#work"], ["What we do", "#what-we-do"], ["Approach", "#approach"], ["Studio", "#studio"], ["Stack", "#stack"], ["FAQ", "#faq"], ["Contact", "#contact"]];
+const pages = [["Work", "#work"], ["What we do", "#what-we-do"], ["Approach", "#approach"], ["Studio", "#studio"], ["Stack", "#stack"], ["FAQ", "#faq"], ["Tools", "/tools"], ["Contact", "#contact"]];
 const social = [["Instagram", "https://www.instagram.com/hamza.clarityops/"], ["YouTube", "https://www.youtube.com/@hamza.clarityops"], ["X", "https://x.com/hamza_arq"], ["LinkedIn", "https://www.linkedin.com/in/hamza-marzak-347921231/"]];
 /* Opens an AI assistant with the question already asked, after kargul.studio. */
 const ask = "What does ClarityOps (clarityops.io) do, and who is it for?";
@@ -27,7 +27,7 @@ export function Footer({ base = "" }: { base?: string }) {
             <p className="fine mt-6">© 2026 ClarityOps SARL</p>
           </div>
           <nav aria-label="Footer" className="ft2-cols">
-            <Col title="Pages" items={pages.map(([l, h]) => [l, base + h])} />
+            <Col title="Pages" items={pages.map(([l, h]) => [l, h.startsWith("/") ? h : base + h])} />
             <Col title="Ask AI about us" items={ais} external />
             <Col title="Follow" items={social} external />
           </nav>

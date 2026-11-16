@@ -1,5 +1,6 @@
 "use client";
 import { useMotionValueEvent, useScroll } from "motion/react";
+import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { Logo } from "./Logo";
 
@@ -10,7 +11,10 @@ const links = [
   { href: "#studio", label: "Studio" },
   { href: "#stack", label: "Stack" },
   { href: "#faq", label: "FAQ" },
+  { href: "/tools", label: "Tools" },
 ];
+/* Section links lead back to the home page from other pages; page links like /tools are used as they are. */
+const to = (base: string, href: string) => (href.startsWith("/") ? href : base + href);
 
 /* On other pages the links lead back to the home page sections. */
 export function Nav({ base = "" }: { base?: string }) {
@@ -20,6 +24,7 @@ export function Nav({ base = "" }: { base?: string }) {
   const [active, setActive] = useState("");
   const last = useRef(0);
   const { scrollY } = useScroll();
+  const path = usePathname();
 
   useMotionValueEvent(scrollY, "change", (y) => {
     const d = y - last.current;
@@ -37,7 +42,7 @@ export function Nav({ base = "" }: { base?: string }) {
     const spy = new IntersectionObserver((es) => {
       es.forEach((e) => { if (e.isIntersecting) setActive(`#${e.target.id}`); });
     }, { rootMargin: "-45% 0px -50% 0px" });
-    if (!base) links.forEach((l) => { const el = document.querySelector(l.href); if (el) spy.observe(el); });
+    if (!base) links.forEach((l) => { if (l.href.startsWith("/")) return; const el = document.querySelector(l.href); if (el) spy.observe(el); });
     return () => { onPaper.disconnect(); spy.disconnect(); };
   }, [base]);
 
@@ -56,7 +61,7 @@ export function Nav({ base = "" }: { base?: string }) {
           <a href={base ? "/" : "#top"} aria-label="ClarityOps"><Logo draw /></a>
           <ul className="hidden gap-8 lg:flex">
             {links.map((l) => (
-              <li key={l.href}><a href={base + l.href} aria-current={active === l.href ? "true" : undefined} className="nav-link">{l.label}</a></li>
+              <li key={l.href}><a href={to(base, l.href)} aria-current={active === l.href || path === l.href ? "true" : undefined} className="nav-link">{l.label}</a></li>
             ))}
           </ul>
           <a href={`${base}#contact`} className="btn btn-s nav-cta hidden lg:inline-flex">Start a conversation</a>
@@ -71,7 +76,7 @@ export function Nav({ base = "" }: { base?: string }) {
           </div>
           <ul className="flex-1 pt-8">
             {links.map((l) => (
-              <li key={l.href}><a href={base + l.href} onClick={() => setOpen(false)} className="block text-[2.5rem] font-semibold leading-[1.35] tracking-[-0.035em]">{l.label}</a></li>
+              <li key={l.href}><a href={to(base, l.href)} onClick={() => setOpen(false)} className="block text-[2.5rem] font-semibold leading-[1.35] tracking-[-0.035em]">{l.label}</a></li>
             ))}
           </ul>
           <a href={`${base}#contact`} onClick={() => setOpen(false)} className="btn btn-p"><span>Start a conversation</span></a>

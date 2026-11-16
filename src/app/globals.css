@@ -600,6 +600,39 @@
 .cs-more a { display: flex; flex-direction: column; gap: 0.75rem; height: 100%; padding: 1.5rem; border-radius: var(--r-l); border: 1px solid var(--paper-rule); background: rgba(255, 255, 255, 0.4); transition: background 200ms var(--ease-out), border-color 200ms var(--ease-out); }
 .cs-more a:hover { background: rgba(255, 255, 255, 0.8); border-color: rgba(0, 0, 0, 0.3); }
 .cs-mh { font-size: 1.25rem; font-weight: 600; letter-spacing: -0.02em; line-height: 1.25; }
+
+/* Tools: the newest tool in full, then every tool as a numbered list. */
+.tl-lead { margin-top: 5rem; padding-top: 4rem; border-top: 1px solid var(--paper-rule); }
+.tl-kick { display: flex; gap: 0.875rem; }
+.tl-lead-copy { row-gap: 1.5rem; }
+.tl-tags { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.tl-tags li { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.06em; text-transform: uppercase; padding: 0.3rem 0.7rem; border-radius: 999px; border: 1px solid var(--paper-rule); background: rgba(255, 255, 255, 0.55); }
+.tl-tags li:first-child { background: var(--lime); border-color: transparent; }
+.tl-points { list-style: none; padding: 0; margin-top: 1.5rem; display: flex; flex-wrap: wrap; gap: 0.75rem 1.75rem; font-size: 0.9375rem; }
+.tl-points li { display: inline-flex; align-items: center; gap: 0.625rem; }
+.tl-points li::before { content: ""; width: 0.4rem; height: 0.4rem; border-radius: 50%; background: var(--deep); }
+.tl-device { margin-top: 4.5rem; }
+.tl-desk { position: absolute; inset: 0; background: radial-gradient(circle at 18% 82%, rgba(229, 242, 2, 0.32), transparent 46%), radial-gradient(circle at 70% 20%, rgba(255, 255, 255, 0.7), transparent 50%), linear-gradient(160deg, #e3e9da 0%, #c6d0bb 100%); }
+.tl-pin { position: absolute; top: 4.3cqw; right: 1.8cqw; width: 26cqw; height: auto; filter: drop-shadow(0 1.2cqw 2.4cqw rgba(0, 0, 0, 0.28)); }
+.tl-index { margin-top: 5rem; padding-block: 4rem; border-top: 1px solid var(--paper-rule); }
+.tl-list { list-style: none; padding: 0; margin-top: 1.5rem; border-top: 1px solid var(--paper-rule); }
+.tl-row { display: grid; grid-template-columns: 2.5rem 2.75rem minmax(0, 1fr) auto 1.5rem; align-items: center; gap: 1.25rem; padding: 1.5rem 0; border-bottom: 1px solid var(--paper-rule); transition: background 200ms var(--ease-out); }
+a.tl-row:hover { background: rgba(255, 255, 255, 0.45); }
+.tl-n { font-family: var(--font-mono); font-size: 0.8125rem; color: var(--ink-2); }
+.tl-ic { width: 2.75rem; height: 2.75rem; border-radius: 0.75rem; background: rgba(255, 255, 255, 0.55); border: 1px dashed var(--paper-rule); }
+img.tl-ic { border: 0; background: none; }
+.tl-t { display: flex; flex-direction: column; gap: 0.25rem; }
+.tl-t b { font-size: 1.25rem; font-weight: 600; letter-spacing: -0.02em; }
+.tl-t span { color: var(--ink-2); font-size: 0.9375rem; }
+.tl-tg { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-2); white-space: nowrap; }
+.tl-go { font-size: 1.125rem; }
+.tl-row.is-soon { opacity: 0.5; }
+@media (max-width: 640px) {
+  .tl-row { grid-template-columns: 2.75rem minmax(0, 1fr) 1.25rem; gap: 1rem; }
+  .tl-n { display: none; }
+  .tl-tg { grid-column: 2; grid-row: 2; }
+  .tl-go { grid-column: 3; grid-row: 1; }
+}
 /* The map on a case page shows the finished system, still. */
 .sm-static .sm-dash { opacity: 0 !important; }
 .sm-static .sm-base { opacity: 1 !important; }
