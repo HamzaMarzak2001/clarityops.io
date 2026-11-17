@@ -43,7 +43,7 @@ export default function ToolsPage() {
               name: p.name,
               description: `${p.line} ${p.text}`,
               url: p.href,
-              image: `${site}${p.tile.src}`,
+              image: `${site}${p.slides[0].src}`,
               operatingSystem: "macOS",
               applicationCategory: "DeveloperApplication",
               offers: p.tags.includes("Free") ? { "@type": "Offer", price: "0", priceCurrency: "USD" } : undefined,

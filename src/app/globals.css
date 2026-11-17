@@ -601,38 +601,64 @@
 .cs-more a:hover { background: rgba(255, 255, 255, 0.8); border-color: rgba(0, 0, 0, 0.3); }
 .cs-mh { font-size: 1.25rem; font-weight: 600; letter-spacing: -0.02em; line-height: 1.25; }
 
-/* Tools: a gallery of picture tiles; each opens a pop-up with the short version and a button on to the tool's site. */
+/* Tools: a gallery of picture tiles. Hovering a tile plays its close-ups, one feature at a time; a click opens the pop-up. */
 .tg { margin-top: 4rem; padding-top: 3rem; border-top: 1px solid var(--paper-rule); }
-.tg-grid { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 20rem), 1fr)); gap: 2.5rem 1.5rem; }
+.tg-grid { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 30rem), 1fr)); gap: 3rem 2rem; }
 .tg-tile { all: unset; box-sizing: border-box; display: block; width: 100%; cursor: pointer; }
-.tg-pic { position: relative; display: block; aspect-ratio: 4 / 3; overflow: hidden; border-radius: var(--r-l); background: radial-gradient(circle at 15% 92%, rgba(229, 242, 2, 0.5), transparent 52%), linear-gradient(150deg, #20231d, #0b0c0a); }
-.tg-pic img { position: absolute; left: 50%; top: 12%; width: 64%; height: auto; transform: translateX(-50%); border-radius: 0.75rem; box-shadow: 0 1.5rem 3rem rgba(0, 0, 0, 0.45); transition: transform 600ms var(--ease-out); }
-.tg-tile:hover .tg-pic img, .tg-tile:focus-visible .tg-pic img { transform: translateX(-50%) translateY(-4%); }
+.tg-pic { position: relative; display: block; aspect-ratio: 5 / 4; overflow: hidden; border-radius: var(--r-l); background: radial-gradient(120% 90% at 12% 100%, rgba(229, 242, 2, 0.42), transparent 55%), radial-gradient(80% 60% at 90% 0%, rgba(255, 255, 255, 0.08), transparent 60%), linear-gradient(155deg, #23261f 0%, #0b0c0a 70%); transition: transform 600ms var(--ease-out); }
+.tg-tile:hover .tg-pic { transform: translateY(-0.25rem); }
 .tg-tile:focus-visible .tg-pic { outline: 2px solid var(--ink); outline-offset: 0.25rem; }
-.tg-meta { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; margin-top: 1rem; }
+/* One close-up per slide: centred, never wider than it stays sharp, tall ones anchored at the top and faded out. */
+.tg-s { position: absolute; inset: 13% 9% 17%; display: flex; align-items: center; justify-content: center; opacity: 0; transform: translateY(6%) scale(0.97); transition: opacity 500ms ease, transform 900ms var(--ease-out); pointer-events: none; }
+.tg-s.is-on { opacity: 1; transform: none; }
+.tg-s.is-out { opacity: 0; transform: translateY(-5%) scale(0.98); }
+.tg-s img { display: block; max-width: min(100%, 27rem); max-height: 100%; width: auto; height: auto; object-fit: contain; filter: drop-shadow(0 1.25rem 2.25rem rgba(0, 0, 0, 0.5)); user-select: none; }
+.tg-s.is-tall { align-items: flex-start; overflow: hidden; -webkit-mask-image: linear-gradient(#000 68%, transparent); mask-image: linear-gradient(#000 68%, transparent); }
+.tg-s.is-tall img { max-height: none; width: min(100%, 27rem); }
+.tg-bars { position: absolute; z-index: 2; top: 1.125rem; left: 1.25rem; right: 1.25rem; display: flex; gap: 0.375rem; opacity: 0; transition: opacity 300ms ease; }
+.tg-tile.is-playing .tg-bars { opacity: 1; }
+.tg-bars i { position: relative; flex: 1; height: 2px; border-radius: 2px; overflow: hidden; background: rgba(255, 255, 255, 0.2); }
+.tg-bars i::after { content: ""; position: absolute; inset: 0; background: var(--lime); transform: scaleX(0); transform-origin: left; }
+.tg-bars i.is-done::after { transform: scaleX(1); }
+.tg-bars i.is-run::after { animation: tg-fill linear forwards; }
+@keyframes tg-fill { to { transform: scaleX(1); } }
+.tg-cap { position: absolute; z-index: 2; left: 1.25rem; bottom: 1.125rem; display: grid; font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.06em; text-transform: uppercase; color: rgba(255, 255, 255, 0.85); }
+.tg-cap span { grid-area: 1 / 1; display: inline-flex; align-items: center; gap: 0.5rem; opacity: 0; transform: translateY(0.375rem); transition: opacity 400ms ease, transform 500ms var(--ease-out); }
+.tg-cap span::before { content: ""; width: 0.375rem; height: 0.375rem; border-radius: 50%; background: var(--lime); }
+.tg-cap span.is-on { opacity: 1; transform: none; }
+.tg-meta { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; margin-top: 1.125rem; }
 .tg-meta > span:first-child { display: flex; flex-direction: column; gap: 0.25rem; }
-.tg-meta b { font-size: 1.25rem; font-weight: 600; letter-spacing: -0.02em; }
-.tg-meta b + span { font-size: 0.9375rem; color: var(--ink-2); }
+.tg-meta b { font-size: 1.375rem; font-weight: 600; letter-spacing: -0.02em; }
+.tg-meta b + span { font-size: 1rem; color: var(--ink-2); }
 .tg-tag { flex: none; font-family: var(--font-mono); font-size: 0.6875rem; letter-spacing: 0.06em; text-transform: uppercase; padding: 0.375rem 0.625rem; border-radius: 999px; background: var(--lime); color: #0b0c0a; }
 .tg-tile.is-soon { cursor: default; }
 .tg-tile.is-soon .tg-pic { background: repeating-linear-gradient(135deg, rgba(0, 0, 0, 0.035) 0 0.625rem, transparent 0.625rem 1.25rem), rgba(255, 255, 255, 0.35); border: 1px dashed rgba(0, 0, 0, 0.18); }
 .tg-tile.is-soon .tg-meta { opacity: 0.5; }
 .tg-tile.is-soon .tg-tag { background: transparent; border: 1px solid var(--paper-rule); color: var(--ink-2); }
 
-.tg-dlg { margin: auto; width: min(62rem, calc(100vw - 2rem)); max-height: calc(100dvh - 2rem); padding: 0; border: 0; border-radius: 1.5rem; background: var(--paper); color: var(--ink); box-shadow: 0 2rem 5rem rgba(0, 0, 0, 0.35); overflow: auto; overscroll-behavior: contain; }
+.tg-dlg { margin: auto; width: min(66rem, calc(100vw - 2rem)); max-height: calc(100dvh - 2rem); padding: 0; border: 0; border-radius: 1.5rem; background: var(--paper); color: var(--ink); box-shadow: 0 2rem 5rem rgba(0, 0, 0, 0.35); overflow: auto; overscroll-behavior: contain; }
 .tg-dlg::backdrop { background: rgba(10, 11, 9, 0.5); backdrop-filter: blur(6px); }
 .tg-dlg[open] { animation: tg-up 380ms var(--ease-out); }
 .tg-dlg[open]::backdrop { animation: tg-fade 300ms ease; }
 @keyframes tg-up { from { opacity: 0; transform: translateY(1rem); } }
 @keyframes tg-fade { from { opacity: 0; } }
-.tg-box { position: relative; display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); }
-.tg-shots { position: relative; display: grid; place-items: center; min-height: 32rem; padding: 2.5rem 2rem 3.5rem; background: radial-gradient(circle at 15% 92%, rgba(229, 242, 2, 0.5), transparent 52%), linear-gradient(150deg, #20231d, #0b0c0a); }
-.tg-shots img { width: auto; max-width: 78%; max-height: 30rem; height: auto; border-radius: 0.875rem; box-shadow: 0 1.5rem 3.5rem rgba(0, 0, 0, 0.5); animation: tg-fade 300ms ease; }
-.tg-dots { position: absolute; left: 0; right: 0; bottom: 1.25rem; display: flex; justify-content: center; gap: 0.25rem; }
-.tg-dots button { all: unset; cursor: pointer; display: grid; place-items: center; width: 1.5rem; height: 1.5rem; }
-.tg-dots button::before { content: ""; width: 0.5rem; height: 0.5rem; border-radius: 50%; background: rgba(255, 255, 255, 0.35); transition: background 200ms; }
-.tg-dots button[aria-current="true"]::before { background: var(--lime); }
-.tg-dots button:focus-visible { outline: 2px solid var(--lime); border-radius: 50%; }
+.tg-box { position: relative; display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); }
+.tg-shots { position: relative; display: flex; flex-direction: column; min-height: 36rem; padding: 2rem 2rem 1.25rem; background: radial-gradient(120% 90% at 12% 100%, rgba(229, 242, 2, 0.4), transparent 55%), linear-gradient(155deg, #23261f 0%, #0b0c0a 70%); color: #fff; }
+.tg-fig { flex: 1; display: flex; flex-direction: column; margin: 0; }
+.tg-stage { position: relative; flex: 1; min-height: 26rem; }
+.tg-stage .tg-s { inset: 0; }
+.tg-stage .tg-s img { max-width: min(100%, 31rem); }
+.tg-stage .tg-s.is-tall img { width: min(100%, 26rem); }
+.tg-fc { display: flex; justify-content: space-between; gap: 1rem; margin-top: 1rem; font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.06em; text-transform: uppercase; color: rgba(255, 255, 255, 0.85); }
+.tg-fc span { color: rgba(255, 255, 255, 0.45); }
+.tg-nav { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-top: 0.75rem; }
+.tg-arrow { display: grid; place-items: center; width: 2.5rem; height: 2.5rem; border-radius: 50%; border: 1px solid rgba(255, 255, 255, 0.2); background: rgba(255, 255, 255, 0.06); color: #fff; font-size: 1rem; cursor: pointer; transition: background 200ms; }
+.tg-arrow:hover { background: rgba(255, 255, 255, 0.16); }
+.tg-arrow:focus-visible, .tg-dots button:focus-visible { outline: 2px solid var(--lime); outline-offset: 2px; }
+.tg-dots { display: flex; gap: 0.125rem; }
+.tg-dots button { all: unset; cursor: pointer; display: grid; place-items: center; width: 1.375rem; height: 1.375rem; border-radius: 50%; }
+.tg-dots button::before { content: ""; width: 0.4375rem; height: 0.4375rem; border-radius: 50%; background: rgba(255, 255, 255, 0.3); transition: background 200ms, transform 200ms; }
+.tg-dots button[aria-current="true"]::before { background: var(--lime); transform: scale(1.2); }
 .tg-info { display: flex; flex-direction: column; gap: 1rem; padding: 2.75rem 2.5rem 2.5rem; }
 .tg-head { display: flex; align-items: center; gap: 1rem; }
 .tg-head img { width: 3.5rem; height: 3.5rem; border-radius: 0.875rem; }
@@ -644,15 +670,15 @@
 .tg-points li { display: flex; align-items: center; gap: 0.625rem; }
 .tg-points li::before { content: ""; width: 0.4rem; height: 0.4rem; border-radius: 50%; background: var(--deep); }
 .tg-btns { display: flex; flex-wrap: wrap; align-items: center; gap: 1.5rem; margin-top: auto; padding-top: 1rem; }
-.tg-x { position: absolute; top: 1rem; right: 1rem; display: grid; place-items: center; width: 2.5rem; height: 2.5rem; border-radius: 50%; border: 0; background: rgba(255, 255, 255, 0.8); color: var(--ink); font-size: 1.375rem; line-height: 1; cursor: pointer; }
+.tg-x { position: absolute; top: 1rem; right: 1rem; display: grid; place-items: center; width: 2.5rem; height: 2.5rem; border-radius: 50%; border: 0; background: rgba(255, 255, 255, 0.85); color: var(--ink); font-size: 1.375rem; line-height: 1; cursor: pointer; }
 .tg-x:hover { background: #fff; }
 @media (max-width: 760px) {
   .tg-box { grid-template-columns: 1fr; }
-  .tg-shots { min-height: 22rem; padding: 2rem 1.5rem 3rem; }
-  .tg-shots img { max-height: 20rem; }
+  .tg-shots { min-height: 0; padding: 1.5rem 1.25rem 1rem; }
+  .tg-stage { min-height: 19rem; }
   .tg-info { padding: 1.75rem 1.5rem 2rem; }
 }
-@media (prefers-reduced-motion: reduce) { .tg-dlg[open], .tg-dlg[open]::backdrop, .tg-shots img { animation: none; } .tg-pic img { transition: none; } }
+@media (prefers-reduced-motion: reduce) { .tg-dlg[open], .tg-dlg[open]::backdrop { animation: none; } .tg-s, .tg-cap span, .tg-pic { transition: none; } }
 /* The map on a case page shows the finished system, still. */
 .sm-static .sm-dash { opacity: 0 !important; }
 .sm-static .sm-base { opacity: 1 !important; }
