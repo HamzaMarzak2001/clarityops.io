@@ -601,38 +601,58 @@
 .cs-more a:hover { background: rgba(255, 255, 255, 0.8); border-color: rgba(0, 0, 0, 0.3); }
 .cs-mh { font-size: 1.25rem; font-weight: 600; letter-spacing: -0.02em; line-height: 1.25; }
 
-/* Tools: the newest tool in full, then every tool as a numbered list. */
-.tl-lead { margin-top: 5rem; padding-top: 4rem; border-top: 1px solid var(--paper-rule); }
-.tl-kick { display: flex; gap: 0.875rem; }
-.tl-lead-copy { row-gap: 1.5rem; }
-.tl-tags { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 0.5rem; }
-.tl-tags li { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.06em; text-transform: uppercase; padding: 0.3rem 0.7rem; border-radius: 999px; border: 1px solid var(--paper-rule); background: rgba(255, 255, 255, 0.55); }
-.tl-tags li:first-child { background: var(--lime); border-color: transparent; }
-.tl-points { list-style: none; padding: 0; margin-top: 1.5rem; display: flex; flex-wrap: wrap; gap: 0.75rem 1.75rem; font-size: 0.9375rem; }
-.tl-points li { display: inline-flex; align-items: center; gap: 0.625rem; }
-.tl-points li::before { content: ""; width: 0.4rem; height: 0.4rem; border-radius: 50%; background: var(--deep); }
-.tl-device { margin-top: 4.5rem; }
-.tl-desk { position: absolute; inset: 0; background: radial-gradient(circle at 18% 82%, rgba(229, 242, 2, 0.32), transparent 46%), radial-gradient(circle at 70% 20%, rgba(255, 255, 255, 0.7), transparent 50%), linear-gradient(160deg, #e3e9da 0%, #c6d0bb 100%); }
-.tl-pin { position: absolute; top: 4.3cqw; right: 1.8cqw; width: 26cqw; height: auto; filter: drop-shadow(0 1.2cqw 2.4cqw rgba(0, 0, 0, 0.28)); }
-.tl-index { margin-top: 5rem; padding-block: 4rem; border-top: 1px solid var(--paper-rule); }
-.tl-list { list-style: none; padding: 0; margin-top: 1.5rem; border-top: 1px solid var(--paper-rule); }
-.tl-row { display: grid; grid-template-columns: 2.5rem 2.75rem minmax(0, 1fr) auto 1.5rem; align-items: center; gap: 1.25rem; padding: 1.5rem 0; border-bottom: 1px solid var(--paper-rule); transition: background 200ms var(--ease-out); }
-a.tl-row:hover { background: rgba(255, 255, 255, 0.45); }
-.tl-n { font-family: var(--font-mono); font-size: 0.8125rem; color: var(--ink-2); }
-.tl-ic { width: 2.75rem; height: 2.75rem; border-radius: 0.75rem; background: rgba(255, 255, 255, 0.55); border: 1px dashed var(--paper-rule); }
-img.tl-ic { border: 0; background: none; }
-.tl-t { display: flex; flex-direction: column; gap: 0.25rem; }
-.tl-t b { font-size: 1.25rem; font-weight: 600; letter-spacing: -0.02em; }
-.tl-t span { color: var(--ink-2); font-size: 0.9375rem; }
-.tl-tg { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-2); white-space: nowrap; }
-.tl-go { font-size: 1.125rem; }
-.tl-row.is-soon { opacity: 0.5; }
-@media (max-width: 640px) {
-  .tl-row { grid-template-columns: 2.75rem minmax(0, 1fr) 1.25rem; gap: 1rem; }
-  .tl-n { display: none; }
-  .tl-tg { grid-column: 2; grid-row: 2; }
-  .tl-go { grid-column: 3; grid-row: 1; }
+/* Tools: a gallery of picture tiles; each opens a pop-up with the short version and a button on to the tool's site. */
+.tg { margin-top: 4rem; padding-top: 3rem; border-top: 1px solid var(--paper-rule); }
+.tg-grid { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 20rem), 1fr)); gap: 2.5rem 1.5rem; }
+.tg-tile { all: unset; box-sizing: border-box; display: block; width: 100%; cursor: pointer; }
+.tg-pic { position: relative; display: block; aspect-ratio: 4 / 3; overflow: hidden; border-radius: var(--r-l); background: radial-gradient(circle at 15% 92%, rgba(229, 242, 2, 0.5), transparent 52%), linear-gradient(150deg, #20231d, #0b0c0a); }
+.tg-pic img { position: absolute; left: 50%; top: 12%; width: 64%; height: auto; transform: translateX(-50%); border-radius: 0.75rem; box-shadow: 0 1.5rem 3rem rgba(0, 0, 0, 0.45); transition: transform 600ms var(--ease-out); }
+.tg-tile:hover .tg-pic img, .tg-tile:focus-visible .tg-pic img { transform: translateX(-50%) translateY(-4%); }
+.tg-tile:focus-visible .tg-pic { outline: 2px solid var(--ink); outline-offset: 0.25rem; }
+.tg-meta { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; margin-top: 1rem; }
+.tg-meta > span:first-child { display: flex; flex-direction: column; gap: 0.25rem; }
+.tg-meta b { font-size: 1.25rem; font-weight: 600; letter-spacing: -0.02em; }
+.tg-meta b + span { font-size: 0.9375rem; color: var(--ink-2); }
+.tg-tag { flex: none; font-family: var(--font-mono); font-size: 0.6875rem; letter-spacing: 0.06em; text-transform: uppercase; padding: 0.375rem 0.625rem; border-radius: 999px; background: var(--lime); color: #0b0c0a; }
+.tg-tile.is-soon { cursor: default; }
+.tg-tile.is-soon .tg-pic { background: repeating-linear-gradient(135deg, rgba(0, 0, 0, 0.035) 0 0.625rem, transparent 0.625rem 1.25rem), rgba(255, 255, 255, 0.35); border: 1px dashed rgba(0, 0, 0, 0.18); }
+.tg-tile.is-soon .tg-meta { opacity: 0.5; }
+.tg-tile.is-soon .tg-tag { background: transparent; border: 1px solid var(--paper-rule); color: var(--ink-2); }
+
+.tg-dlg { margin: auto; width: min(62rem, calc(100vw - 2rem)); max-height: calc(100dvh - 2rem); padding: 0; border: 0; border-radius: 1.5rem; background: var(--paper); color: var(--ink); box-shadow: 0 2rem 5rem rgba(0, 0, 0, 0.35); overflow: auto; overscroll-behavior: contain; }
+.tg-dlg::backdrop { background: rgba(10, 11, 9, 0.5); backdrop-filter: blur(6px); }
+.tg-dlg[open] { animation: tg-up 380ms var(--ease-out); }
+.tg-dlg[open]::backdrop { animation: tg-fade 300ms ease; }
+@keyframes tg-up { from { opacity: 0; transform: translateY(1rem); } }
+@keyframes tg-fade { from { opacity: 0; } }
+.tg-box { position: relative; display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); }
+.tg-shots { position: relative; display: grid; place-items: center; min-height: 32rem; padding: 2.5rem 2rem 3.5rem; background: radial-gradient(circle at 15% 92%, rgba(229, 242, 2, 0.5), transparent 52%), linear-gradient(150deg, #20231d, #0b0c0a); }
+.tg-shots img { width: auto; max-width: 78%; max-height: 30rem; height: auto; border-radius: 0.875rem; box-shadow: 0 1.5rem 3.5rem rgba(0, 0, 0, 0.5); animation: tg-fade 300ms ease; }
+.tg-dots { position: absolute; left: 0; right: 0; bottom: 1.25rem; display: flex; justify-content: center; gap: 0.25rem; }
+.tg-dots button { all: unset; cursor: pointer; display: grid; place-items: center; width: 1.5rem; height: 1.5rem; }
+.tg-dots button::before { content: ""; width: 0.5rem; height: 0.5rem; border-radius: 50%; background: rgba(255, 255, 255, 0.35); transition: background 200ms; }
+.tg-dots button[aria-current="true"]::before { background: var(--lime); }
+.tg-dots button:focus-visible { outline: 2px solid var(--lime); border-radius: 50%; }
+.tg-info { display: flex; flex-direction: column; gap: 1rem; padding: 2.75rem 2.5rem 2.5rem; }
+.tg-head { display: flex; align-items: center; gap: 1rem; }
+.tg-head img { width: 3.5rem; height: 3.5rem; border-radius: 0.875rem; }
+.tg-head h2 { font-size: 1.75rem; font-weight: 600; letter-spacing: -0.03em; line-height: 1.1; }
+.tg-tags { margin-top: 0.25rem; font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-2); }
+.tg-line { font-size: 1.25rem; font-weight: 500; letter-spacing: -0.02em; line-height: 1.3; }
+.tg-text { color: var(--ink-2); font-size: 1rem; }
+.tg-points { list-style: none; padding: 0; display: grid; gap: 0.5rem; font-size: 0.9375rem; }
+.tg-points li { display: flex; align-items: center; gap: 0.625rem; }
+.tg-points li::before { content: ""; width: 0.4rem; height: 0.4rem; border-radius: 50%; background: var(--deep); }
+.tg-btns { display: flex; flex-wrap: wrap; align-items: center; gap: 1.5rem; margin-top: auto; padding-top: 1rem; }
+.tg-x { position: absolute; top: 1rem; right: 1rem; display: grid; place-items: center; width: 2.5rem; height: 2.5rem; border-radius: 50%; border: 0; background: rgba(255, 255, 255, 0.8); color: var(--ink); font-size: 1.375rem; line-height: 1; cursor: pointer; }
+.tg-x:hover { background: #fff; }
+@media (max-width: 760px) {
+  .tg-box { grid-template-columns: 1fr; }
+  .tg-shots { min-height: 22rem; padding: 2rem 1.5rem 3rem; }
+  .tg-shots img { max-height: 20rem; }
+  .tg-info { padding: 1.75rem 1.5rem 2rem; }
 }
+@media (prefers-reduced-motion: reduce) { .tg-dlg[open], .tg-dlg[open]::backdrop, .tg-shots img { animation: none; } .tg-pic img { transition: none; } }
 /* The map on a case page shows the finished system, still. */
 .sm-static .sm-dash { opacity: 0 !important; }
 .sm-static .sm-base { opacity: 1 !important; }
