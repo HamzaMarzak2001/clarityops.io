@@ -41,7 +41,7 @@ The client owns what is built: their accounts, their data, their system. No lice
 - [Case study: MAE Media](https://clarityops.io/work/mae-media): delivery, pipeline and cash for a media agency in one system.
 - [Case study: Inspection reports](https://clarityops.io/work/inspection-reports): building inspection reports written in Arabic in one click.
 - [Tools](https://clarityops.io/tools): apps and resources ClarityOps builds and shares.
-- [AgentPin](https://agentpin.vercel.app): a free macOS panel by ClarityOps for watching, approving and messaging Claude agents.
+- [AgentPin](https://clarityops.io/agentpin): a free macOS panel by ClarityOps for watching, approving and messaging Claude agents.
 - [Approach](https://clarityops.io/#approach): Operations Review, System Build, Partnership.
 - [Studio](https://clarityops.io/#studio): Hamza Marzak, founder.
 - [FAQ](https://clarityops.io/#faq): common questions.

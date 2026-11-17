@@ -42,7 +42,7 @@ export default function ToolsPage() {
               "@type": "SoftwareApplication",
               name: p.name,
               description: `${p.line} ${p.text}`,
-              url: p.href,
+              url: p.href.startsWith("/") ? `${site}${p.href}` : p.href,
               image: `${site}${p.slides[0].src}`,
               operatingSystem: "macOS",
               applicationCategory: "DeveloperApplication",

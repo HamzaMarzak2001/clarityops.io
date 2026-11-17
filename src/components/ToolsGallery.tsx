@@ -7,7 +7,8 @@ import { lenisRef } from "@/lib/lenis";
    they play while the tile is in view). A tile opens a pop-up with every close-up, the short version and a button on to
    the tool's own site. A link to /tools#<slug> opens that tool's pop-up straight away. */
 
-const ext = { target: "_blank", rel: "noopener" } as const;
+/* Outside links open in a new tab; a tool served on clarityops.io opens in place. */
+const ext = (href: string) => (href.startsWith("/") ? {} : ({ target: "_blank", rel: "noopener" } as const));
 const SOON = 1;
 const FIRST = 700, EACH = 2000;
 const tall = (s: Slide) => s.h > s.w * 1.2;
@@ -154,8 +155,8 @@ export function ToolsGallery({ products }: { products: Product[] }) {
               <p className="tg-text">{cur.text}</p>
               <ul className="tg-points">{cur.points.map((t) => <li key={t}>{t}</li>)}</ul>
               <div className="tg-btns">
-                <a href={cur.href} {...ext} className="btn btn-p"><span>{cur.cta}</span></a>
-                {cur.more && <a href={cur.more.href} {...ext} className="tlink">{cur.more.label} ↗</a>}
+                <a href={cur.href} {...ext(cur.href)} className="btn btn-p"><span>{cur.cta}</span></a>
+                {cur.more && <a href={cur.more.href} {...ext(cur.more.href)} className="tlink">{cur.more.label}{cur.more.href.startsWith("/") ? " →" : " ↗"}</a>}
               </div>
             </div>
             <button type="button" className="tg-x" aria-label="Close" onClick={() => dlg.current?.close()}>×</button>
