@@ -605,26 +605,27 @@
 .tg { margin-top: 4rem; padding-top: 3rem; border-top: 1px solid var(--paper-rule); }
 .tg-grid { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 30rem), 1fr)); gap: 3rem 2rem; }
 .tg-tile { all: unset; box-sizing: border-box; display: block; width: 100%; cursor: pointer; }
-.tg-pic { position: relative; display: block; aspect-ratio: 5 / 4; overflow: hidden; border-radius: var(--r-l); background: radial-gradient(120% 90% at 12% 100%, rgba(229, 242, 2, 0.42), transparent 55%), radial-gradient(80% 60% at 90% 0%, rgba(255, 255, 255, 0.08), transparent 60%), linear-gradient(155deg, #23261f 0%, #0b0c0a 70%); transition: transform 600ms var(--ease-out); }
+.tg-pic { position: relative; display: block; aspect-ratio: 5 / 4; overflow: hidden; border-radius: var(--r-l); background: radial-gradient(rgba(0, 0, 0, 0.13) 1px, transparent 1.4px) 0 0 / 0.875rem 0.875rem, #dde4d3; box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.06); transition: transform 600ms var(--ease-out); }
 .tg-tile:hover .tg-pic { transform: translateY(-0.25rem); }
 .tg-tile:focus-visible .tg-pic { outline: 2px solid var(--ink); outline-offset: 0.25rem; }
 /* One close-up per slide: centred, never wider than it stays sharp, tall ones anchored at the top and faded out. */
-.tg-s { position: absolute; inset: 13% 9% 17%; display: flex; align-items: center; justify-content: center; opacity: 0; transform: translateY(6%) scale(0.97); transition: opacity 500ms ease, transform 900ms var(--ease-out); pointer-events: none; }
+.tg-s { position: absolute; inset: 12% 6% 16%; display: flex; align-items: center; justify-content: center; opacity: 0; transform: translateY(6%) scale(0.97); transition: opacity 500ms ease, transform 900ms var(--ease-out); pointer-events: none; }
 .tg-s.is-on { opacity: 1; transform: none; }
 .tg-s.is-out { opacity: 0; transform: translateY(-5%) scale(0.98); }
-.tg-s img { display: block; max-width: min(100%, 27rem); max-height: 100%; width: auto; height: auto; object-fit: contain; filter: drop-shadow(0 1.25rem 2.25rem rgba(0, 0, 0, 0.5)); user-select: none; }
+.tg-s img { display: block; max-width: min(100%, 27rem); max-height: 100%; width: auto; height: auto; object-fit: contain; filter: drop-shadow(0 1.5rem 1.875rem rgba(20, 24, 16, 0.28)) drop-shadow(0 0.25rem 0.5rem rgba(20, 24, 16, 0.18)); user-select: none; }
 .tg-s.is-tall { align-items: flex-start; overflow: hidden; -webkit-mask-image: linear-gradient(#000 68%, transparent); mask-image: linear-gradient(#000 68%, transparent); }
 .tg-s.is-tall img { max-height: none; width: min(100%, 27rem); }
+.tg-s img.is-exact { max-width: 100%; }
 .tg-bars { position: absolute; z-index: 2; top: 1.125rem; left: 1.25rem; right: 1.25rem; display: flex; gap: 0.375rem; opacity: 0; transition: opacity 300ms ease; }
 .tg-tile.is-playing .tg-bars { opacity: 1; }
-.tg-bars i { position: relative; flex: 1; height: 2px; border-radius: 2px; overflow: hidden; background: rgba(255, 255, 255, 0.2); }
-.tg-bars i::after { content: ""; position: absolute; inset: 0; background: var(--lime); transform: scaleX(0); transform-origin: left; }
+.tg-bars i { position: relative; flex: 1; height: 2px; border-radius: 2px; overflow: hidden; background: rgba(0, 0, 0, 0.12); }
+.tg-bars i::after { content: ""; position: absolute; inset: 0; background: var(--ink); transform: scaleX(0); transform-origin: left; }
 .tg-bars i.is-done::after { transform: scaleX(1); }
 .tg-bars i.is-run::after { animation: tg-fill linear forwards; }
 @keyframes tg-fill { to { transform: scaleX(1); } }
-.tg-cap { position: absolute; z-index: 2; left: 1.25rem; bottom: 1.125rem; display: grid; font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.06em; text-transform: uppercase; color: rgba(255, 255, 255, 0.85); }
+.tg-cap { position: absolute; z-index: 2; left: 1.25rem; bottom: 1.125rem; display: grid; font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-2); }
 .tg-cap span { grid-area: 1 / 1; display: inline-flex; align-items: center; gap: 0.5rem; opacity: 0; transform: translateY(0.375rem); transition: opacity 400ms ease, transform 500ms var(--ease-out); }
-.tg-cap span::before { content: ""; width: 0.375rem; height: 0.375rem; border-radius: 50%; background: var(--lime); }
+.tg-cap span::before { content: ""; width: 0.375rem; height: 0.375rem; border-radius: 50%; background: var(--deep); }
 .tg-cap span.is-on { opacity: 1; transform: none; }
 .tg-meta { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; margin-top: 1.125rem; }
 .tg-meta > span:first-child { display: flex; flex-direction: column; gap: 0.25rem; }
@@ -643,22 +644,23 @@
 @keyframes tg-up { from { opacity: 0; transform: translateY(1rem); } }
 @keyframes tg-fade { from { opacity: 0; } }
 .tg-box { position: relative; display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); }
-.tg-shots { position: relative; display: flex; flex-direction: column; min-height: 36rem; padding: 2rem 2rem 1.25rem; background: radial-gradient(120% 90% at 12% 100%, rgba(229, 242, 2, 0.4), transparent 55%), linear-gradient(155deg, #23261f 0%, #0b0c0a 70%); color: #fff; }
+.tg-shots { position: relative; display: flex; flex-direction: column; min-height: 36rem; padding: 2rem 2rem 1.25rem; background: radial-gradient(rgba(0, 0, 0, 0.13) 1px, transparent 1.4px) 0 0 / 0.875rem 0.875rem, #dde4d3; color: var(--ink); }
 .tg-fig { flex: 1; display: flex; flex-direction: column; margin: 0; }
 .tg-stage { position: relative; flex: 1; min-height: 26rem; }
 .tg-stage .tg-s { inset: 0; }
 .tg-stage .tg-s img { max-width: min(100%, 31rem); }
 .tg-stage .tg-s.is-tall img { width: min(100%, 26rem); }
-.tg-fc { display: flex; justify-content: space-between; gap: 1rem; margin-top: 1rem; font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.06em; text-transform: uppercase; color: rgba(255, 255, 255, 0.85); }
-.tg-fc span { color: rgba(255, 255, 255, 0.45); }
+.tg-stage .tg-s img.is-exact { max-width: 100%; }
+.tg-fc { display: flex; justify-content: space-between; gap: 1rem; margin-top: 1rem; font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-2); }
+.tg-fc span { color: rgba(0, 0, 0, 0.35); }
 .tg-nav { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-top: 0.75rem; }
-.tg-arrow { display: grid; place-items: center; width: 2.5rem; height: 2.5rem; border-radius: 50%; border: 1px solid rgba(255, 255, 255, 0.2); background: rgba(255, 255, 255, 0.06); color: #fff; font-size: 1rem; cursor: pointer; transition: background 200ms; }
-.tg-arrow:hover { background: rgba(255, 255, 255, 0.16); }
-.tg-arrow:focus-visible, .tg-dots button:focus-visible { outline: 2px solid var(--lime); outline-offset: 2px; }
+.tg-arrow { display: grid; place-items: center; width: 2.5rem; height: 2.5rem; border-radius: 50%; border: 1px solid rgba(0, 0, 0, 0.14); background: rgba(255, 255, 255, 0.55); color: var(--ink); font-size: 1rem; cursor: pointer; transition: background 200ms; }
+.tg-arrow:hover { background: #fff; }
+.tg-arrow:focus-visible, .tg-dots button:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
 .tg-dots { display: flex; gap: 0.125rem; }
 .tg-dots button { all: unset; cursor: pointer; display: grid; place-items: center; width: 1.375rem; height: 1.375rem; border-radius: 50%; }
-.tg-dots button::before { content: ""; width: 0.4375rem; height: 0.4375rem; border-radius: 50%; background: rgba(255, 255, 255, 0.3); transition: background 200ms, transform 200ms; }
-.tg-dots button[aria-current="true"]::before { background: var(--lime); transform: scale(1.2); }
+.tg-dots button::before { content: ""; width: 0.4375rem; height: 0.4375rem; border-radius: 50%; background: rgba(0, 0, 0, 0.2); transition: background 200ms, transform 200ms; }
+.tg-dots button[aria-current="true"]::before { background: var(--ink); transform: scale(1.2); }
 .tg-info { display: flex; flex-direction: column; gap: 1rem; padding: 2.75rem 2.5rem 2.5rem; }
 .tg-head { display: flex; align-items: center; gap: 1rem; }
 .tg-head img { width: 3.5rem; height: 3.5rem; border-radius: 0.875rem; }

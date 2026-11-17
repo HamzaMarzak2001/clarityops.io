@@ -12,10 +12,13 @@ const SOON = 1;
 const FIRST = 700, EACH = 2000;
 const tall = (s: Slide) => s.h > s.w * 1.2;
 
+/* With a render set, the close-up is shown at exactly its render size, and each screen gets the render made for its
+   pixel density, so nothing is resized and the text stays as sharp as in the app. */
 function Pic({ s, eager }: { s: Slide; eager?: boolean }) {
+  const exact = s.set ? { src: `${s.set}@2.5x.png`, srcSet: `${s.set}@1.25x.png 1x, ${s.set}@2.5x.png 2x, ${s.set}@3.75x.png 3x`, style: { width: s.w }, className: "is-exact" } : { src: s.src };
   return (
     // eslint-disable-next-line @next/next/no-img-element
-    <img src={s.src} width={s.w} height={s.h} alt={s.alt} loading={eager ? "eager" : "lazy"} decoding="async" draggable={false} />
+    <img {...exact} width={Math.round(s.w)} height={Math.round(s.h)} alt={s.alt} loading={eager ? "eager" : "lazy"} decoding="async" draggable={false} />
   );
 }
 

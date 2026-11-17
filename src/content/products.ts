@@ -11,6 +11,8 @@ export type Slide = {
   alt: string;
   /* On the gallery tile as well as in the pop-up. */
   tile?: boolean;
+  /* Base path of pixel-exact renders (<set>@1.25x.png, @2.5x, @3.75x). w and h are then the size it's shown at, in CSS px. */
+  set?: string;
 };
 
 export type Product = {
@@ -28,7 +30,7 @@ export type Product = {
   slides: Slide[];
 };
 
-const ap = (name: string) => `/tools/agentpin/${name}.webp`;
+const ap = (name: string) => `/tools/agentpin/${name}@2.5x.png`;
 
 export const products: Product[] = [
   {
@@ -43,13 +45,13 @@ export const products: Product[] = [
     points: ["One-click permissions", "Live token use per agent", "Runs only on your Mac"],
     icon: "/tools/agentpin-icon.png",
     slides: [
-      { src: ap("permission"), w: 1140, h: 669, tile: true, label: "Approve in one click", alt: "A permission card: marketing-site wants to run vercel deploy, with Deny, Always allow and Allow." },
-      { src: ap("usage"), w: 1092, h: 564, tile: true, label: "Your plan limits, live", alt: "Plan usage: 77% of the 5-hour window left, 41% of the week used, tokens in the last hour." },
-      { src: ap("question"), w: 1092, h: 567, tile: true, label: "Answer questions", alt: "A question card: switch the checkout to Stripe and open a PR, with Yes, do it and Not yet." },
-      { src: ap("agents"), w: 1092, h: 2121, tile: true, label: "Every agent, step by step", alt: "The agent list grouped into Needs you, Working and Idle, with one agent's checklist open." },
-      { src: ap("done"), w: 1140, h: 495, tile: true, label: "A chime when one finishes", alt: "A done card: ios-app finished all 6 steps, with an Open button." },
-      { src: ap("new-task"), w: 1092, h: 627, label: "Start new work from the pin", alt: "Starting a new Claude task from the pin, in any folder." },
-      { src: ap("icons"), w: 1092, h: 810, label: "An icon for every agent", alt: "Choosing an animated icon for each agent." },
+      { src: ap("permission"), set: "/tools/agentpin/permission", w: 470.5, h: 276, tile: true, label: "Approve in one click", alt: "A permission card: marketing-site wants to run vercel deploy, with Deny, Always allow and Allow." },
+      { src: ap("usage"), set: "/tools/agentpin/usage", w: 455, h: 236, tile: true, label: "Your plan limits, live", alt: "Plan usage: 77% of the 5-hour window left, 41% of the week used, tokens in the last hour." },
+      { src: ap("question"), set: "/tools/agentpin/question", w: 468.5, h: 251.5, tile: true, label: "Answer questions", alt: "A question card: switch the checkout to Stripe and open a PR, with Yes, do it and Not yet." },
+      { src: ap("agents"), set: "/tools/agentpin/agents", w: 455, h: 844, tile: true, label: "Every agent, step by step", alt: "The agent list grouped into Needs you, Working and Idle, with one agent's checklist open." },
+      { src: ap("done"), set: "/tools/agentpin/done", w: 468.5, h: 201.5, tile: true, label: "A chime when one finishes", alt: "A done card: ios-app finished all 6 steps, with an Open button." },
+      { src: ap("new-task"), set: "/tools/agentpin/new-task", w: 455, h: 261.5, label: "Start new work from the pin", alt: "Starting a new Claude task from the pin, in any folder." },
+      { src: ap("icons"), set: "/tools/agentpin/icons", w: 455, h: 337.5, label: "An icon for every agent", alt: "Choosing an animated icon for each agent." },
     ],
   },
 ];
